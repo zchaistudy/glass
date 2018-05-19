@@ -1,24 +1,18 @@
 /**
   ******************************************************************************
   * @file    main.c
-  * @author  fire
+  * @author  chzh
   * @version V1.0
-  * @date    2013-xx-xx
-  * @brief   串口中断接收测试
-  ******************************************************************************
-  * @attention
-  *
-  * 实验平台:野火 iSO STM32 开发板 
-  * 论坛    :http://www.chuxue123.com
-  * 淘宝    :http://firestm32.taobao.com
-  *
+  * @date    2018-05-19
+  * @brief   智能避障眼镜
   ******************************************************************************
   */ 
  
  
 #include "stm32f10x.h"
 #include "bsp_usart1.h"
-#include"queue.h"
+#include "queue.h"
+#include "mp3.h"
 LinkQueue q;
 /**
   * @brief  主函数
@@ -27,14 +21,12 @@ LinkQueue q;
   */
 int main(void)
 {
-// int i;
-	USART1_Config();	
-	NVIC_Configuration();
-
-	USART2_Initialise( 38400 );
-
-	init_Queue(&q); 
-	
+	USART1_Config();	     			//初始化串口1用于蓝牙通讯
+	NVIC_Configuration();				//设置优先级
+	USART2_Initialise( 38400 );	//串口2用于调试
+	init_Queue(&q); 						
+	MP3_GPIO_Config();
+	MP3Run(1);									//用于输出语音
 	for(;;)
 	{
 		Deal_Data();

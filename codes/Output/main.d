@@ -13,3 +13,4 @@
 ..\..\output\main.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdio.h
 ..\..\output\main.o: ..\..\User\queue.h
 ..\..\output\main.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdlib.h
+..\..\output\main.o: ..\..\User\mp3\mp3.h

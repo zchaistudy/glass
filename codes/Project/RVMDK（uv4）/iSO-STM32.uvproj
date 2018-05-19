@@ -364,7 +364,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Libraries\CMSIS;..\..\User;..\..\Libraries\FWlib\inc;..\..\User\usart</IncludePath>
+              <IncludePath>..\..\Libraries\CMSIS;..\..\User;..\..\Libraries\FWlib\inc;..\..\User\usart;..\..\User\mp3</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -601,6 +601,16 @@
               <FileName>queue.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\User\queue.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>MP3</GroupName>
+          <Files>
+            <File>
+              <FileName>mp3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\mp3\mp3.c</FilePath>
             </File>
           </Files>
         </Group>
