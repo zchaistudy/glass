@@ -30,7 +30,10 @@
 "..\..\output\bsp_usart1.o"
 "..\..\output\queue.o"
 "..\..\output\mp3.o"
+"..\..\output\bsp_delay.o"
+"..\..\output\bsp_generaltim.o"
+"..\..\output\ultrasonicwave.o"
 --library_type=microlib --strict --scatter "..\..\Output\Template.sct"
---summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "..\..\Listing\Template.map" -o ..\..\Output\Template.axf
