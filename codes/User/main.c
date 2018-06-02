@@ -16,6 +16,7 @@
 #include "bsp_GeneralTim.h"
 #include "UltrasonicWave.h"
 #include "debug.h"
+
 LinkQueue q;
 /**
   * @brief  主函数
@@ -24,16 +25,17 @@ LinkQueue q;
   */
 int main(void)
 {
-	USART1_Config();	     			//初始化串口1用于蓝牙通讯
-	NVIC_Configuration();				//设置优先级
-	USART2_Initialise( 38400 );	//串口2用于调试
+	USART1_Config();	     						//初始化串口1用于蓝牙通讯
+	NVIC_Configuration();							//设置优先级
+	USART2_Initialise( 38400 );				//串口2用于调试
+	USART3_Config();									//初始化串口3用于语音模块
+	
 	UltrasonicWave_Configuration();
 	GENERAL_TIM_Init();
 	TIM2_Init();
 	init_Queue(&q); 						
-	MP3_GPIO_Config();
-	MP3Run(1);									//用于输出语音
 	printf("start\r\n");
+//	USART3_Send_String(NorthEast,sizeof(NorthEast));
 	for(;;)
 	{
 		Deal_Data();
