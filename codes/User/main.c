@@ -24,19 +24,22 @@ LinkQueue q;
   */
 int main(void)
 {
+	int num[2];
 	USART1_Config();	     			//初始化串口1用于蓝牙通讯
 	NVIC_Configuration();				//设置优先级
 	USART2_Initialise( 38400 );	//串口2用于调试
 	UltrasonicWave_Configuration();
 	GENERAL_TIM_Init();
-	TIM2_Init();
-	init_Queue(&q); 						
-	MP3_GPIO_Config();
-	MP3Run(1);									//用于输出语音
+//	TIM2_Init();
+//	init_Queue(&q); 						
+//	MP3_GPIO_Config();
+//	MP3Run(1);									//用于输出语音
 	printf("start\r\n");
 	for(;;)
 	{
-		Deal_Data();
+		//Deal_Data();
+		UltrasonicWave(num);
+		delayMs(500);
 	}
 }
 /*********************************************END OF FILE**********************/

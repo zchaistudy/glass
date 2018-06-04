@@ -11,15 +11,15 @@
 
 
 
-#define	TRIG_PORT1     			  GPIOC		//TRIG       
-#define	TRIG_PIN1      			  GPIO_Pin_0   //TRIG       
+#define	TRIG_PORT1     			  GPIOA		//TRIG       
+#define	TRIG_PIN1      			  GPIO_Pin_4   //TRIG       
 
-#define	TRIG_PORT2     			  GPIOC		//TRIG       
-#define	TRIG_PIN2      			  GPIO_Pin_1   //TRIG     
+#define	TRIG_PORT2     			  GPIOA		//TRIG       
+#define	TRIG_PIN2      			  GPIO_Pin_5  //TRIG     
 
 
 
-#define RCC_APB2Periph_GPIOx  RCC_APB2Periph_GPIOC
+#define RCC_APB2Periph_GPIOx  RCC_APB2Periph_GPIOA
 
 #define AVER_NUM        2              //超声波数量
 
@@ -30,6 +30,6 @@ int minusDistance(int distance);
 int addDistance(int distance);
 void UltrasonicWave_Configuration(void);               //对超声波模块初始化
 void UltrasonicWave(int* num);
-void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserValueStructurex, int i);
+
 #endif /* __UltrasonicWave_H */
 

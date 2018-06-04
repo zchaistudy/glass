@@ -18,4 +18,5 @@
 ..\..\output\stm32f10x_it.o: ..\..\User\UltrasonicWave\UltrasonicWave.h
 ..\..\output\stm32f10x_it.o: ..\..\User\UltrasonicWave\bsp_delay.h
 ..\..\output\stm32f10x_it.o: ..\..\User\usart\bsp_usart1.h
+..\..\output\stm32f10x_it.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h
 ..\..\output\stm32f10x_it.o: ..\..\User\debug.h

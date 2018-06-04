@@ -14,7 +14,7 @@
 *********************************************************************************/
 
 #include "UltrasonicWave.h"
-
+#include "debug.h"
 
 
 
@@ -54,15 +54,17 @@ void UltrasonicWave_Configuration(void)
 			i：对应超声波序号
  * 输出  ：无	
  */
-void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserValueStructurex, int i)
+static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserValueStructurex)
 {
 
-	uint32_t time;
+//	uint32_t time;
 	double ftime;
+	int i;
+	i = TIM_ICUserValueStructurex.Capture_CCx;
 	// 计算高电平时间的计数器的值
-	time = TIM_ICUserValueStructurex.Capture_CcrValue+1;
+//	time = TIM_ICUserValueStructurex.Capture_CcrValue+1;
 	// 打印高电平脉宽时间
-	ftime = ((double)time)/TIM_PscCLK;
+	ftime = ((double) TIM_ICUserValueStructurex.Capture_CcrValue+1)/TIM_PscCLK;
 	UltrasonicWave_Distance[i] = ftime * 340 / 2  * 100;
 //	printf( "\r\n time %d\r\n",time );	
 //	printf( "\r\n ftime %lf\r\n",ftime );
@@ -129,6 +131,13 @@ int getDistance()
 	return MAX_DISTACE;
 }
 
+////////调试开关//////////////
+#ifdef DEBUG_ON_OFF 
+#undef  DEBUG_ON_OFF
+#endif
+#define DEBUG_ON_OFF 0      //1打开调试。0关闭
+//////////////////////////////
+
 
 /****************************************************************************
 * 名    称：void UltrasonicWave(void *arg)
@@ -140,18 +149,30 @@ int getDistance()
 ****************************************************************************/
 void UltrasonicWave(int* num)
 {
-	static int8_t tag = 0;	
-    if( TIM_ICUserValueStructure.Capture_FinishFlag == 1 )  
+	static int i = 0;
+	static int8_t tag;	
+	
+//	p_debug("&tag %d\r\n", tag);
+//	p_debug("&i %d\r\n", i);
+    if( TIM_ICUserValueStructure[0].Capture_FinishFlag == 1 )  
 	{
-		TIM_ICUserValueStructure.Capture_FinishFlag = 0;
-	    dealTIM_ICUserValueStructureData(TIM_ICUserValueStructure, tag);
+	    dealTIM_ICUserValueStructureData(TIM_ICUserValueStructure[0]);
+		TIM_ICUserValueStructure[0].Capture_FinishFlag = 0;
+	}
+    if( TIM_ICUserValueStructure[1].Capture_FinishFlag == 1 )  
+	{
+	    dealTIM_ICUserValueStructureData(TIM_ICUserValueStructure[1]);
+		p_debug("test\r\n");
+		TIM_ICUserValueStructure[1].Capture_FinishFlag = 0;
 	}	
-	tag = (tag +1) % AVER_NUM;
 	switch(tag)          //开始测距，发送一个>10us的脉冲，
 	{
 		case 0: UltrasonicWave_StartMeasure(TRIG_PORT1,TRIG_PIN1); break;
 		case 1: UltrasonicWave_StartMeasure(TRIG_PORT2,TRIG_PIN2); break;
 	}
+	p_debug("#tag %d\r\n", tag);	
+	tag = (tag +1) % AVER_NUM;
+	p_debug("@tag %d\r\n", tag);	
 
 	
 }

@@ -2,7 +2,7 @@
 #include "bsp_GeneralTim.h"
 
 // 定时器输入捕获用户自定义变量结构体定义
-TIM_ICUserValueTypeDef TIM_ICUserValueStructure = {0,0,0,0};
+TIM_ICUserValueTypeDef TIM_ICUserValueStructure[AVER_NUM];
 // 中断优先级配置
 
 
@@ -102,7 +102,7 @@ void TIM2_Init()
 
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE); //时钟使能
 
-	TIM_TimeBaseStructure.TIM_Period = 9999; //设置在下一个更新事件装入活动的自动重装载寄存器周期的值	 计数到5000为500ms
+	TIM_TimeBaseStructure.TIM_Period = 1999; //设置在下一个更新事件装入活动的自动重装载寄存器周期的值	 计数到5000为500ms
 	TIM_TimeBaseStructure.TIM_Prescaler =7199; //设置用来作为TIMx时钟频率除数的预分频值  10Khz的计数频率  
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0; //设置时钟分割:TDTS = Tck_tim
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  //TIM向上计数模式
@@ -114,8 +114,8 @@ void TIM2_Init()
 		ENABLE  //使能
 		);
 	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;  //TIM3中断
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;  //先占优先级0级
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;  //从优先级3级
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;  //先占优先级0级
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;  //从优先级3级
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ通道被使能
 	NVIC_Init(&NVIC_InitStructure);  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
 

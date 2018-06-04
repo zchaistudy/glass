@@ -18,4 +18,5 @@
 ..\..\output\main.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h
 ..\..\output\main.o: ..\..\User\UltrasonicWave\UltrasonicWave.h
 ..\..\output\main.o: ..\..\User\UltrasonicWave\bsp_delay.h
+..\..\output\main.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h
 ..\..\output\main.o: ..\..\User\debug.h
