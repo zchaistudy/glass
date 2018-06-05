@@ -1,9 +1,9 @@
 ..\..\output\inv_mpu_dmp_motion_driver.o: ..\..\User\MPU6050\driver\eMPL\inv_mpu_dmp_motion_driver.c
-..\..\output\inv_mpu_dmp_motion_driver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-..\..\output\inv_mpu_dmp_motion_driver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\..\output\inv_mpu_dmp_motion_driver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-..\..\output\inv_mpu_dmp_motion_driver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-..\..\output\inv_mpu_dmp_motion_driver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\..\output\inv_mpu_dmp_motion_driver.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdio.h
+..\..\output\inv_mpu_dmp_motion_driver.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdint.h
+..\..\output\inv_mpu_dmp_motion_driver.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdlib.h
+..\..\output\inv_mpu_dmp_motion_driver.o: G:\software\keil5\ARM\ARMCC\bin\..\include\string.h
+..\..\output\inv_mpu_dmp_motion_driver.o: G:\software\keil5\ARM\ARMCC\bin\..\include\math.h
 ..\..\output\inv_mpu_dmp_motion_driver.o: ..\..\User\MPU6050\driver\eMPL\inv_mpu.h
 ..\..\output\inv_mpu_dmp_motion_driver.o: ..\..\User\MPU6050\driver\eMPL\inv_mpu_dmp_motion_driver.h
 ..\..\output\inv_mpu_dmp_motion_driver.o: ..\..\User\MPU6050\driver\eMPL\dmpKey.h
@@ -18,6 +18,7 @@
 ..\..\output\inv_mpu_dmp_motion_driver.o: ..\..\Libraries\FWlib\inc\stm32f10x_gpio.h
 ..\..\output\inv_mpu_dmp_motion_driver.o: ..\..\Libraries\FWlib\inc\stm32f10x_i2c.h
 ..\..\output\inv_mpu_dmp_motion_driver.o: ..\..\Libraries\FWlib\inc\stm32f10x_rcc.h
+..\..\output\inv_mpu_dmp_motion_driver.o: ..\..\Libraries\FWlib\inc\stm32f10x_tim.h
 ..\..\output\inv_mpu_dmp_motion_driver.o: ..\..\Libraries\FWlib\inc\stm32f10x_usart.h
 ..\..\output\inv_mpu_dmp_motion_driver.o: ..\..\Libraries\FWlib\inc\misc.h
 ..\..\output\inv_mpu_dmp_motion_driver.o: ..\..\User\./usart/bsp_usart1.h

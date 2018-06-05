@@ -7,6 +7,161 @@ G:\QGStudio\Project\BlindTravelEquipment\codes\glasses\codes\Project\RVMDK£¨uv4£
 Project File Date:  06/05/2018
 
 <h2>Output:</h2>
+Build target 'BLINDGLASS'
+linking...
+Program Size: Code=58080 RO-data=4752 RW-data=344 ZI-data=4936  
+FromELF: creating hex file...
+"..\..\Output\MPU.axf" - 0 Error(s), 0 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.4.1.0.pack
+                ARM::CMSIS:CORE:3.30.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 3.30.0
+
+<h2>Collection of Component include folders:</h2>
+  G:\QGStudio\Project\BlindTravelEquipment\codes\glasses\codes\Project\RVMDK£¨uv4£©\RTE
+  G:\software\keil5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include
+  G:\software\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.0.0
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:3.30.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
 </pre>
 </body>
 </html>
+DFP\2.0.0
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:3.30.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+Load "..\\..\\Output\\MPU.axf" 
+Set JLink Project File to "G:\QGStudio\Project\BlindTravelEquipment\codes\glasses\codes\Project\RVMDK£¨uv4£©\JLinkSettings.ini"
+* JLink Info: Device "STM32F103ZE" selected (512 KB flash, 64 KB RAM).
+ 
+JLink info:
+------------
+DLL: V4.80g, compiled Feb 13 2014 20:50:02
+Firmware: J-Link V9 compiled Mar  2 2018 17:07:57
+Hardware: V9.30
+S/N : 59304865 
+Feature(s) : RDI, GDB, FlashDL, FlashBP, JFlash 
+ 
+* JLink Info: TotalIRLen = 9, IRPrint = 0x0011
+* JLink Info: TotalIRLen = 9, IRPrint = 0x0011
+* JLink Info: Found Cortex-M3 r1p1, Little endian.
+* JLink Info: FPUnit: 6 code (BP) slots and 2 literal slots
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+ROMTableAddr = 0xE00FF003
+ 
+Target info:
+------------
+Device: STM32F103ZE
+VTarget = 3.283V
+State of Pins: 
+TCK: 1, TDI: 0, TDO: 1, TMS: 0, TRES: 1, TRST: 1
+Hardware-Breakpoints: 6
+Software-Breakpoints: 8192
+Watchpoints:          4
+JTAG speed: 500 kHz
+ 
+Full Chip Erase Done.
+Programming Done.
+Verify OK.
+Application running ...
+\User\UltrasonicWave\bsp_delay.c(49): warning:  #550-D: variable "fac_ms" was set but never used
+  static uint16_t fac_ms=0;                                                     //msÑÓÊ±±¶³ËÊý,ÔÚucosÏÂ,´ú±íÃ¿¸ö½ÚÅÄµÄmsÊý
+..\..\User\UltrasonicWave\bsp_delay.c: 1 warning, 0 errors
+compiling bsp_GeneralTim.c...
+compiling UltrasonicWave.c...
+linking...
+Program Size: Code=58080 RO-data=4752 RW-data=344 ZI-data=4936  
+FromELF: creating hex file...
+"..\..\Output\MPU.axf" - 0 Error(s), 8 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.4.1.0.pack
+                ARM::CMSIS:CORE:3.30.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 3.30.0
+
+<h2>Collection of Component include folders:</h2>
+  G:\QGStudio\Project\BlindTravelEquipment\codes\glasses\codes\Project\RVMDK£¨uv4£©\RTE
+  G:\software\keil5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include
+  G:\software\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.0.0
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:3.30.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+  #20: identifier "TIM_CounterMode_Up" is undefined
+        TIM_TimeBaseStructure.TIM_CounterMode=TIM_CounterMode_Up;               
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(59): warning:  #223-D: function "TIM_TimeBaseInit" declared implicitly
+        TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(63): error:  #20: identifier "TIM_ICPolarity_Rising" is undefined
+        TIM_ICInitStructure.TIM_ICPolarity = GENERAL_TIM_STRAT_ICPolarity;
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(65): error:  #20: identifier "TIM_ICSelection_DirectTI" is undefined
+        TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(67): error:  #20: identifier "TIM_ICPSC_DIV1" is undefined
+        TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(71): error:  #20: identifier "TIM_Channel_1" is undefined
+        TIM_ICInitStructure.TIM_Channel = TIM_Channel_1;
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(73): warning:  #223-D: function "TIM_ICInit" declared implicitly
+        TIM_ICInit(TIM3, &TIM_ICInitStructure); 
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(75): error:  #20: identifier "TIM_Channel_2" is undefined
+        TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(80): warning:  #223-D: function "TIM_ClearFlag" declared implicitly
+        TIM_ClearFlag(TIM3, TIM_FLAG_Update|TIM_IT_CC1);
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(80): error:  #20: identifier "TIM_FLAG_Update" is undefined
+        TIM_ClearFlag(TIM3, TIM_FLAG_Update|TIM_IT_CC1);
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(80): error:  #20: identifier "TIM_IT_CC1" is undefined
+        TIM_ClearFlag(TIM3, TIM_FLAG_Update|TIM_IT_CC1);
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(81): error:  #20: identifier "TIM_IT_CC2" is undefined
+      TIM_ClearFlag(TIM3, TIM_FLAG_Update|TIM_IT_CC2);
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(84): warning:  #223-D: function "TIM_ITConfig" declared implicitly
+        TIM_ITConfig (TIM3, TIM_IT_Update | TIM_IT_CC2, ENABLE );
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(84): error:  #20: identifier "TIM_IT_Update" is undefined
+        TIM_ITConfig (TIM3, TIM_IT_Update | TIM_IT_CC2, ENABLE );
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(87): warning:  #223-D: function "TIM_Cmd" declared implicitly
+        TIM_Cmd(TIM3, ENABLE);
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(100): error:  #20: identifier "TIM_TimeBaseInitTypeDef" is undefined
+      TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(108): error:  #20: identifier "TIM_CounterMode_Up" is undefined
+        TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  //TIMÏòÉÏ¼ÆÊýÄ£Ê½
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(109): warning:  #223-D: function "TIM_TimeBaseInit" declared implicitly
+        TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure); //¸ù¾ÝTIM_TimeBaseInitStructÖÐÖ¸¶¨µÄ²ÎÊý³õÊ¼»¯TIMxµÄÊ±¼ä»ùÊýµ¥Î»
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(111): warning:  #223-D: function "TIM_ITConfig" declared implicitly
+        TIM_ITConfig(  //Ê¹ÄÜ»òÕßÊ§ÄÜÖ¸¶¨µÄTIMÖÐ¶Ï
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(113): error:  #20: identifier "TIM_IT_Update" is undefined
+                TIM_IT_Update ,
+..\..\User\UltrasonicWave\bsp_GeneralTim.c(122): warning:  #223-D: function "TIM_Cmd" declared implicitly
+        TIM_Cmd(TIM2, ENABLE);  //Ê¹ÄÜTIMxÍâÉè
+..\..\User\UltrasonicWave\bsp_GeneralTim.c: 8 warnings, 16 errors
+compiling UltrasonicWave.c...
+"..\..\Output\MPU.axf" - 16 Error(s), 16 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.4.1.0.pack
+                ARM::CMSIS:CORE:3.30.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 3.30.0
+
+<h2>Collection of Component include folders:</h2>
+  G:\QGStudio\Project\BlindTravelEquipment\codes\glasses\codes\Project\RVMDK£¨uv4£©\RTE
+  G:\software\keil5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include
+  G:\software\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.0.0
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:3.30.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+Target not created

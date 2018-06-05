@@ -19,6 +19,9 @@
 #include "./exti/bsp_exti.h" 
 #include "./MPU6050/mpu6050/mpu6050.h"
 #include "bsp_key.h"
+#include "bsp_GeneralTim.h"
+#include "UltrasonicWave.h"
+#include "debug.h"
 
 LinkQueue q;
 extern int flag_FALLING;	//盲人摔倒标志 =1表示摔倒， =0表示正常
@@ -124,10 +127,15 @@ int main(void)
 	USART1_Config();	     			//初始化串口1用于蓝牙通讯
 	NVIC_Configuration();				//设置优先级
 	USART2_Initialise( 38400 );	//串口2用于调试
-	init_Queue(&q); 						
-	MP3_GPIO_Config();
-	MP3Run(1);									//用于输出语音
+	USART3_Config();						//初始化串口3用于语音模块
 	
+	init_Queue(&q); 		
+	
+	UltrasonicWave_Configuration();
+	GENERAL_TIM_Init();
+	TIM2_Init();
+	
+	USART3_Send_String(NorthEast,sizeof(NorthEast));
 	PeriphInit();	//外设初始化
 	printf("\n系统初始化完毕......\n");
 	
