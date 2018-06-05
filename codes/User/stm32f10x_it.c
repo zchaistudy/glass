@@ -24,12 +24,25 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
+#include "stm32f10x_exti.h"
 #include "stm32f10x_it.h"
+#include "./exti/bsp_exti.h" 
+#include "./i2c/bsp_i2c.h"
+#include "bsp_key.h"
+#include "./systick/bsp_SysTick.h"
 #include <stdio.h>
 #include"queue.h"
 extern LinkQueue q;
+
+extern int flag_FALLING;
 //char Receive[10];
 //int Num;
+
+unsigned int Task_Delay[NumOfTask]={0};
+extern void TimingDelay_Decrement(void);
+extern void TimeStamp_Increment(void);
+extern void gyro_data_ready_cb(void);
+
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
@@ -141,7 +154,33 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
+	unsigned char i;
+
+	TimingDelay_Decrement();
+	TimeStamp_Increment();
+	
+	for(i=0;i<NumOfTask;i++)
+	{
+		if(Task_Delay[i])
+		{
+			Task_Delay[i]--;
+		}
+	}
 }
+
+/// IO 线中断
+void EXTI_INT_FUNCTION (void)
+{
+//	MPU_DEBUG("intterrupt");
+	if(EXTI_GetITStatus(EXTI_LINE) != RESET) //确保是否产生了EXTI Line中断
+	{
+
+		  /* Handle new gyro*/
+		gyro_data_ready_cb();
+		EXTI_ClearITPendingBit(EXTI_LINE);     //清除中断标志位
+	}  
+}
+
 
 /******************************************************************************/
 /*                 STM32F10x Peripherals Interrupt Handlers                   */
@@ -186,6 +225,19 @@ void USART2_IRQHandler(void)
 					printf( "%c", ch );    //将接受到的数据直接返回打印
         }   
 } 
+
+
+void KEY1_IRQHandler(void)
+{
+  //确保是否产生了EXTI Line中断
+	if(EXTI_GetITStatus(KEY1_INT_EXTI_LINE) != RESET) 
+	{
+		printf("\nsafe!\n");
+		flag_FALLING=0;
+    //清除中断标志位
+		EXTI_ClearITPendingBit(KEY1_INT_EXTI_LINE);     
+	}  
+}
 
 /**
   * @brief  This function handles PPP interrupt request.
