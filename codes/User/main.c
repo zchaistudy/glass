@@ -135,7 +135,6 @@ int main(void)
 	GENERAL_TIM_Init();
 	TIM2_Init();
 	
-	USART3_Send_String(NorthEast,sizeof(NorthEast));
 	PeriphInit();	//外设初始化
 	printf("\n系统初始化完毕......\n");
 	
