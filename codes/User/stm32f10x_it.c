@@ -32,8 +32,8 @@
 #include "./systick/bsp_SysTick.h"
 #include <stdio.h>
 #include"queue.h"
-#include "bsp_GeneralTim.h"
-#include "UltrasonicWave.h"
+//#include "bsp_GeneralTim.h"
+//#include "UltrasonicWave.h"
 #include "debug.h"
 
 extern LinkQueue q;

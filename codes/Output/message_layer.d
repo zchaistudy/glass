@@ -1,0 +1,11 @@
+..\..\output\message_layer.o: ..\..\User\MPU6050\mllite\message_layer.c
+..\..\output\message_layer.o: ..\..\User\MPU6050\mllite\message_layer.h
+..\..\output\message_layer.o: ..\..\User\MPU6050\driver\include\mltypes.h
+..\..\output\message_layer.o: ..\..\User\MPU6050\driver\include\stdint_invensense.h
+..\..\output\message_layer.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdint.h
+..\..\output\message_layer.o: G:\software\keil5\ARM\ARMCC\bin\..\include\string.h
+..\..\output\message_layer.o: G:\software\keil5\ARM\ARMCC\bin\..\include\errno.h
+..\..\output\message_layer.o: G:\software\keil5\ARM\ARMCC\bin\..\include\limits.h
+..\..\output\message_layer.o: ..\..\User\MPU6050\driver\include\log.h
+..\..\output\message_layer.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdlib.h
+..\..\output\message_layer.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdarg.h
