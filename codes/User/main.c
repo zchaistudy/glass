@@ -138,6 +138,8 @@ int main(void)
 	PeriphInit();	//外设初始化
 	printf("\n系统初始化完毕......\n");
 	
+
+	
 	for(;;)
 	{
 //		MPU6050Triaxial(Angle);	//三轴检测
