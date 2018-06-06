@@ -1181,7 +1181,7 @@ void MPU6050Triaxial(float Angle[4])
 	pitch=Angle[0];
 	roll=Angle[1];
 	
-	printf("\n%.4f	%.4f	%.4f", Angle[0],Angle[1],Angle[2]);
+//	printf("\n%.4f	%.4f	%.4f", Angle[0],Angle[1],Angle[2]);
 	
 	dmp_get_pedometer_step_count(&new_count);
 
@@ -1189,15 +1189,15 @@ void MPU6050Triaxial(float Angle[4])
 	{
 		printf("\r\nhelp!!!!!!");//严重事故，连续撞击
 		flag_FALLING=1;
-		mdelay(100);
+//		mdelay(100);
 	}	
-	else if(PitchFalling(pitch) || RollFalling(roll))
-	{
-		printf("\r\nhelp!!!!!!");//首次摔倒
-		flag_FALLING=1;
-		mdelay(100);
+//	else if(PitchFalling(pitch) || RollFalling(roll))
+//	{
+//		printf("\r\nhelp!!!!!!");//首次摔倒
+//		flag_FALLING=1;
+//		mdelay(100);
 
-	}
+//	}
 	
 	old_count=new_count;
 

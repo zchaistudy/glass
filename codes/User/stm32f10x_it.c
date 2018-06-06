@@ -237,7 +237,7 @@ void KEY1_IRQHandler(void)
 	if(EXTI_GetITStatus(KEY1_INT_EXTI_LINE) != RESET) 
 	{
 		printf("\nsafe!\n");
-		flag_FALLING=0;
+		flag_FALLING=0;	//盲人安全
     //清除中断标志位
 		EXTI_ClearITPendingBit(KEY1_INT_EXTI_LINE);     
 	}  
