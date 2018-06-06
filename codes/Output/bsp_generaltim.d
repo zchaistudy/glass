@@ -2,7 +2,7 @@
 ..\..\output\bsp_generaltim.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h
 ..\..\output\bsp_generaltim.o: ..\..\Libraries\CMSIS\stm32f10x.h
 ..\..\output\bsp_generaltim.o: ..\..\Libraries\CMSIS\core_cm3.h
-..\..\output\bsp_generaltim.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdint.h
+..\..\output\bsp_generaltim.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\..\output\bsp_generaltim.o: ..\..\Libraries\CMSIS\system_stm32f10x.h
 ..\..\output\bsp_generaltim.o: ..\..\User\stm32f10x_conf.h
 ..\..\output\bsp_generaltim.o: ..\..\Libraries\FWlib\inc\stm32f10x_exti.h
@@ -16,5 +16,5 @@
 ..\..\output\bsp_generaltim.o: ..\..\User\UltrasonicWave\UltrasonicWave.h
 ..\..\output\bsp_generaltim.o: ..\..\User\UltrasonicWave\bsp_delay.h
 ..\..\output\bsp_generaltim.o: ..\..\User\usart\bsp_usart1.h
-..\..\output\bsp_generaltim.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdio.h
+..\..\output\bsp_generaltim.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\..\output\bsp_generaltim.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h

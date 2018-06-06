@@ -551,15 +551,6 @@ ARM Macro Assembler    Page 9
   356 0000001C                 END
               00000000 
               00000000 
-<<<<<<< HEAD
-Command Line: --debug --xref --cpu=Cortex-M3 --apcs=interwork --depend=..\..\ou
-tput\startup_stm32f10x_hd.d -o..\..\output\startup_stm32f10x_hd.o -IG:\QGStudio
-\Project\BlindTravelEquipment\codes\glasses\codes\Project\RVMDK£¨uv4£©\RTE -IG:
-\software\keil5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include -IG:\software\keil5\ARM\
-PACK\Keil\STM32F1xx_DFP\2.0.0 --predefine="__MICROLIB SETA 1" --list=..\..\list
-ing\startup_stm32f10x_hd.lst ..\..\Libraries\CMSIS\startup\startup_stm32f10x_hd
-.s
-=======
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=..\..\output\startup_stm32f10x_hd.d -o..\..\output\startup_stm32f1
 0x_hd.o -I.\RTE\_BLINDGLASS -IG:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include
@@ -567,7 +558,6 @@ ork --depend=..\..\output\startup_stm32f10x_hd.d -o..\..\output\startup_stm32f1
 ICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 525" --predefine="_RTE_ SET
 A 1" --predefine="STM32F10X_HD SETA 1" --list=..\..\listing\startup_stm32f10x_h
 d.lst ..\..\Libraries\CMSIS\startup\startup_stm32f10x_hd.s
->>>>>>> 2804d4a4e8c99c0b13cb855c658c30e2fb7bf5db
 
 
 
@@ -1439,8 +1429,4 @@ Symbol: __main
       At line 153 in file ..\..\Libraries\CMSIS\startup\startup_stm32f10x_hd.s
 Comment: __main used once
 2 symbols
-<<<<<<< HEAD
-420 symbols in table
-=======
 423 symbols in table
->>>>>>> 2804d4a4e8c99c0b13cb855c658c30e2fb7bf5db

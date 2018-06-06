@@ -1,11 +1,11 @@
 ..\..\output\start_manager.o: ..\..\User\MPU6050\mllite\start_manager.c
-..\..\output\start_manager.o: G:\software\keil5\ARM\ARMCC\bin\..\include\string.h
+..\..\output\start_manager.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ..\..\output\start_manager.o: ..\..\User\MPU6050\driver\include\log.h
-..\..\output\start_manager.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdlib.h
-..\..\output\start_manager.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdarg.h
+..\..\output\start_manager.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\start_manager.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
 ..\..\output\start_manager.o: ..\..\User\MPU6050\mllite\start_manager.h
 ..\..\output\start_manager.o: ..\..\User\MPU6050\driver\include\mltypes.h
 ..\..\output\start_manager.o: ..\..\User\MPU6050\driver\include\stdint_invensense.h
-..\..\output\start_manager.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdint.h
-..\..\output\start_manager.o: G:\software\keil5\ARM\ARMCC\bin\..\include\errno.h
-..\..\output\start_manager.o: G:\software\keil5\ARM\ARMCC\bin\..\include\limits.h
+..\..\output\start_manager.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\..\output\start_manager.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\errno.h
+..\..\output\start_manager.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
