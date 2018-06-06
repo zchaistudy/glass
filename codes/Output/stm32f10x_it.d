@@ -22,4 +22,8 @@
 ..\..\output\stm32f10x_it.o: ..\..\User\./systick/bsp_SysTick.h
 ..\..\output\stm32f10x_it.o: ..\..\User\queue.h
 ..\..\output\stm32f10x_it.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdlib.h
+..\..\output\stm32f10x_it.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h
+..\..\output\stm32f10x_it.o: ..\..\User\UltrasonicWave\UltrasonicWave.h
+..\..\output\stm32f10x_it.o: ..\..\User\UltrasonicWave\bsp_delay.h
+..\..\output\stm32f10x_it.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h
 ..\..\output\stm32f10x_it.o: ..\..\User\debug.h

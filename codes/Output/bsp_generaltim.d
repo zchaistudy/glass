@@ -13,3 +13,8 @@
 ..\..\output\bsp_generaltim.o: ..\..\Libraries\FWlib\inc\stm32f10x_tim.h
 ..\..\output\bsp_generaltim.o: ..\..\Libraries\FWlib\inc\stm32f10x_usart.h
 ..\..\output\bsp_generaltim.o: ..\..\Libraries\FWlib\inc\misc.h
+..\..\output\bsp_generaltim.o: ..\..\User\UltrasonicWave\UltrasonicWave.h
+..\..\output\bsp_generaltim.o: ..\..\User\UltrasonicWave\bsp_delay.h
+..\..\output\bsp_generaltim.o: ..\..\User\usart\bsp_usart1.h
+..\..\output\bsp_generaltim.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdio.h
+..\..\output\bsp_generaltim.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h

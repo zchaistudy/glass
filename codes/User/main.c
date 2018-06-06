@@ -47,7 +47,7 @@ static void PeriphInit()
 	//MPU6050初始化
 	MPU6050Config();
 	//按键初始化
-	Key_GPIO_Config();	//轮询
+//	Key_GPIO_Config();	//轮询
 	EXTI_Key_Config();	//中断
 }
 

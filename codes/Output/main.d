@@ -23,4 +23,8 @@
 ..\..\output\main.o: ..\..\User\./exti/bsp_exti.h
 ..\..\output\main.o: ..\..\User\./MPU6050/mpu6050/mpu6050.h
 ..\..\output\main.o: ..\..\User\Key\bsp_key.h
+..\..\output\main.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h
+..\..\output\main.o: ..\..\User\UltrasonicWave\UltrasonicWave.h
+..\..\output\main.o: ..\..\User\UltrasonicWave\bsp_delay.h
+..\..\output\main.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h
 ..\..\output\main.o: ..\..\User\debug.h

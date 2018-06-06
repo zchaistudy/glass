@@ -17,3 +17,5 @@
 ..\..\output\ultrasonicwave.o: ..\..\User\usart\bsp_usart1.h
 ..\..\output\ultrasonicwave.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdio.h
 ..\..\output\ultrasonicwave.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h
+..\..\output\ultrasonicwave.o: ..\..\User\UltrasonicWave\UltrasonicWave.h
+..\..\output\ultrasonicwave.o: ..\..\User\debug.h
