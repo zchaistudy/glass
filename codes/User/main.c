@@ -26,7 +26,7 @@
 
 LinkQueue q;
 extern key_four key4;
-
+extern int time;
 
 /**
   * @brief  初始化函数
@@ -138,6 +138,9 @@ int main(void)
 	USART3_Config();						//初始化串口3用于语音模块
 	
 	init_Queue(&q); 		
+	
+	TIM6_TIM_NVIC_Config();			//初始化定时器6
+	TIM6_TIM_Mode_Config();			//用于语音模块
 	
 	UltrasonicWave_Configuration();
 	GENERAL_TIM_Init();

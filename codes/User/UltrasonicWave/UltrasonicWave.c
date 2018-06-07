@@ -27,11 +27,12 @@
 static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin);              
 
 static int UltrasonicWave_Distance[AVER_NUM_GLASS];      //计算出的距离    
-int UltrasonicWave_Distance_Walk[AVER_NUM_WALK] = { 500, 500, 500, 500, 500};   //拐杖采集数据
+
 static int16_t MAX_DISTACE =150;        //最大距离
 int8_t  MEASURE_FLAG = 0;   // 0 眼镜采集数据， 1 等待拐杖采集数据
 
 int8_t GET_WALK_FLAG = 0;       //接收拐杖数据标志
+int UltrasonicWave_Distance_Walk[AVER_NUM_WALK] = { 500, 500, 500, 500, 500};   //拐杖采集数据
 
 static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoice, int* distanceRate );
 

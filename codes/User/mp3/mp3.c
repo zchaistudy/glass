@@ -10,8 +10,8 @@
 #include "mp3.h"
 
 int Rate=0;
-
-
+int time=0;
+int flag_volume=0;
 
 
 u8 Call[5]={0x7E,0x03,0x0E,0x0D,0xEF};//停止指令
@@ -155,18 +155,24 @@ int Weighting(int degree)
  */
 void PlayVoice(int position)
 {
-		switch(position)
+		if(flag_volume==1)
+			return;
+		else
 		{
-			case head:
-				USART3_Send_String(CareHead,sizeof(CareHead));
-				break;
-			case hand:
-				USART3_Send_String(CareHand,sizeof(CareHand));
-				break;
-			case foot:
-				USART3_Send_String(CareFoot,sizeof(CareFoot));
-				break;
-				
+			flag_volume=1;
+			time=0;
+			switch(position)
+			{
+				case head:
+					USART3_Send_String(CareHead,sizeof(CareHead));
+					break;
+				case hand:
+					USART3_Send_String(CareHand,sizeof(CareHand));
+					break;
+				case foot:
+					USART3_Send_String(CareFoot,sizeof(CareFoot));
+					break;
+			}
 		}
 }
 
@@ -198,5 +204,63 @@ void PlayRate(int degree)
 				USART3_Send_String(rate_5,sizeof(rate_5));				//频率5
 				break;
 		}
+}
+
+// 中断优先级配置
+void TIM6_TIM_NVIC_Config(void)
+{
+    NVIC_InitTypeDef NVIC_InitStructure; 
+    // 设置中断组为0
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);		
+		// 设置中断来源
+    NVIC_InitStructure.NVIC_IRQChannel = TIM6_IRQn ;	
+		// 设置主优先级为 0
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	 
+	  // 设置抢占优先级为3
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;	
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
+}
+
+/*
+ * 注意：TIM_TimeBaseInitTypeDef结构体里面有5个成员，TIM6和TIM7的寄存器里面只有
+ * TIM_Prescaler和TIM_Period，所以使用TIM6和TIM7的时候只需初始化这两个成员即可，
+ * 另外三个成员是通用定时器和高级定时器才有.
+ *-----------------------------------------------------------------------------
+ *typedef struct
+ *{ TIM_Prescaler            都有
+ *	TIM_CounterMode			     TIMx,x[6,7]没有，其他都有
+ *  TIM_Period               都有
+ *  TIM_ClockDivision        TIMx,x[6,7]没有，其他都有
+ *  TIM_RepetitionCounter    TIMx,x[1,8,15,16,17]才有
+ *}TIM_TimeBaseInitTypeDef; 
+ *-----------------------------------------------------------------------------
+ */
+
+
+void TIM6_TIM_Mode_Config(void)
+{
+    TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+		
+		// 开启定时器时钟,即内部时钟CK_INT=72M
+    TIM6_TIM_APBxClock_FUN(TIM6_TIM_CLK, ENABLE);
+	
+		// 自动重装载寄存器的值，累计TIM_Period+1个频率后产生一个更新或者中断
+    TIM_TimeBaseStructure.TIM_Period = TIM6_TIM_Period;	
+
+	  // 时钟预分频数为
+    TIM_TimeBaseStructure.TIM_Prescaler= TIM6_TIM_Prescaler;
+	
+	  // 初始化定时器
+    TIM_TimeBaseInit(TIM6_TIM, &TIM_TimeBaseStructure);
+		
+		// 清除计数器中断标志位
+    TIM_ClearFlag(TIM6_TIM, TIM_FLAG_Update);
+	  
+		// 开启计数器中断
+    TIM_ITConfig(TIM6_TIM,TIM_IT_Update,ENABLE);
+		
+		// 使能计数器
+    TIM_Cmd(TIM6_TIM, ENABLE);	
 }
 
