@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\..\Output\MPU.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\..\Output\MPU.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Jun 06 21:13:04 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Jun 07 20:51:15 2018
 <BR><P>
 <H3>Maximum Stack Usage =        440 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -886,7 +886,7 @@ Global Symbols
 <LI><a href="#[1c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getEulerAngles
 </UL>
 
-<P><STRONG><a name="[c1]"></a>USART_ClearFlag</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f10x_usart.o(.text))
+<P><STRONG><a name="[c1]"></a>USART_ClearFlag</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f10x_usart.o(.text), UNUSED)
 <BR><BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_Send_String
 <LI><a href="#[1c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getEulerAngles
 </UL>
@@ -984,8 +984,8 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(RESET)
 </UL>
-<P><STRONG><a name="[26]"></a>TIM2_IRQHandler</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, stm32f10x_it.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = TIM2_IRQHandler &rArr; UltrasonicWave &rArr; dealTIM_ICUserValueStructureData &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
+<P><STRONG><a name="[26]"></a>TIM2_IRQHandler</STRONG> (Thumb, 58 bytes, Stack size 8 bytes, stm32f10x_it.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = TIM2_IRQHandler &rArr; UltrasonicWave &rArr; dealTIM_ICUserValueStructureData &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ClearITPendingBit
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_GetITStatus
@@ -1266,10 +1266,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[c0]"></a>USART3_Send_String</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, mp3.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = USART3_Send_String
-</UL>
-<BR>[Calls]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ClearFlag
+<P><STRONG><a name="[c0]"></a>USART3_Send_String</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, mp3.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ClearFlag
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetFlagStatus
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SendData
 </UL>
@@ -1293,20 +1291,12 @@ Global Symbols
 
 <P><STRONG><a name="[2da]"></a>Weighting</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, mp3.o(.text), UNUSED)
 
-<P><STRONG><a name="[c4]"></a>PlayVoice</STRONG> (Thumb, 50 bytes, Stack size 8 bytes, mp3.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = PlayVoice &rArr; USART3_Send_String
-</UL>
-<BR>[Calls]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_Send_String
-</UL>
-<BR>[Called By]<UL><LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
+<P><STRONG><a name="[c4]"></a>PlayVoice</STRONG> (Thumb, 50 bytes, Stack size 8 bytes, mp3.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_Send_String
 </UL>
 
-<P><STRONG><a name="[c5]"></a>PlayRate</STRONG> (Thumb, 72 bytes, Stack size 8 bytes, mp3.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = PlayRate &rArr; USART3_Send_String
-</UL>
-<BR>[Calls]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_Send_String
-</UL>
-<BR>[Called By]<UL><LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
+<P><STRONG><a name="[c5]"></a>PlayRate</STRONG> (Thumb, 72 bytes, Stack size 8 bytes, mp3.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_Send_String
 </UL>
 
 <P><STRONG><a name="[c7]"></a>mpu_reg_dump</STRONG> (Thumb, 90 bytes, Stack size 16 bytes, inv_mpu.o(.text), UNUSED)
@@ -3097,11 +3087,12 @@ Global Symbols
 
 <P><STRONG><a name="[312]"></a>getDistance</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, ultrasonicwave.o(.text), UNUSED)
 
-<P><STRONG><a name="[91]"></a>UltrasonicWave</STRONG> (Thumb, 148 bytes, Stack size 16 bytes, ultrasonicwave.o(.text))
+<P><STRONG><a name="[91]"></a>UltrasonicWave</STRONG> (Thumb, 116 bytes, Stack size 16 bytes, ultrasonicwave.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = UltrasonicWave &rArr; dealTIM_ICUserValueStructureData &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UltrasonicWave_StartMeasure
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
+<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM2_IRQHandler
 </UL>
@@ -4380,6 +4371,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_Queue
+<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UltrasonicWave
 <LI><a href="#[10]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI0_IRQHandler
 <LI><a href="#[30]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_IRQHandler
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Deal_Data
@@ -5207,15 +5199,13 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
 </UL>
 
-<P><STRONG><a name="[1d0]"></a>dealTIM_ICUserValueStructureData</STRONG> (Thumb, 132 bytes, Stack size 56 bytes, ultrasonicwave.o(.text))
+<P><STRONG><a name="[1d0]"></a>dealTIM_ICUserValueStructureData</STRONG> (Thumb, 126 bytes, Stack size 56 bytes, ultrasonicwave.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = dealTIM_ICUserValueStructureData &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[175]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[176]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
-<LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayRate
-<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayVoice
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
 <LI><a href="#[1d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Obstacle
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf

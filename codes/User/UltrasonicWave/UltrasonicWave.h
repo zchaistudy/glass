@@ -19,7 +19,7 @@ int getRange(void);
 int minusDistance(void);
 int addDistance(void);
 void UltrasonicWave_Configuration(void);               //对超声波模块初始化
-void UltrasonicWave(int* num);
+void UltrasonicWave(int);
 
 #endif /* __UltrasonicWave_H */
 
