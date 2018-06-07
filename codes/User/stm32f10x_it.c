@@ -38,8 +38,9 @@
 #include "bsp_key.h"
 
 extern LinkQueue q;
-
+extern int time;
 extern int flag_FALLING;
+extern int flag_volume;
 //char Receive[10];
 //int Num;
 
@@ -369,6 +370,18 @@ void TIM3_IRQHandler(void)
 	}		
 }
 
+void  TIM6_IRQHandler (void)
+{
+	if ( TIM_GetITStatus( TIM6, TIM_IT_Update) != RESET ) 
+	{	
+		time++;
+		if(time==2000)
+			flag_volume=0;
+		if(time==2002)
+			time=0;
+		TIM_ClearITPendingBit(TIM6 , TIM_FLAG_Update);  		 
+	}		 	
+}
 
 /**
   * @brief  This function handles PPP interrupt request.

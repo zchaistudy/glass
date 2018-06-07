@@ -66,7 +66,7 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
 
 //	PlayRate(distanceRate);                    //调用频率模式
-//	PlayVoice(distanceVoice);                  //修改语音模式
+	PlayVoice(distanceVoice);                  //修改语音模式
 }
 
 /*
