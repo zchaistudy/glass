@@ -45,10 +45,13 @@ extern int Rate;
 
 void USART3_Config(void);
 void USART3_Send_String(u8 *p,u8 cnt);
+
 void AddRate(void);
 void SubRate(void);
+
 void AddVolume(void);
 void SubVolume(void);
+
 int Weighting(int degree);
 void PlayVoice(int position);
 void PlayRate(int degree);
