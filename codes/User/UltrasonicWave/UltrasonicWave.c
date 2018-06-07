@@ -27,26 +27,6 @@ int8_t  IT_TAG = 0;          //读取标志，为1时表示以读取到数据
 
 static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoice, int* distanceRate );
 
-/*
- * 函数名：UltrasonicWave_Configuration
- * 描述  ：超声波模块的初始化
- * 输入  ：无
- * 输出  ：无	
- */
-void UltrasonicWave_Configuration(void)
-{
-    GPIO_InitTypeDef GPIO_InitStructure;	
-	
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOx, ENABLE);
-    
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;		     //设为推挽输出模式
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	
-	GPIO_InitStructure.GPIO_Pin = TRIG_PIN1;					
-	GPIO_Init(TRIG_PORT1, &GPIO_InitStructure);	
-	GPIO_InitStructure.GPIO_Pin = TRIG_PIN2;					
-	GPIO_Init(TRIG_PORT2, &GPIO_InitStructure);		
-}
 
 
 
@@ -79,25 +59,6 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 	PlayRate(distanceRate);                    //调用频率模式
 	PlayVoice(distanceVoice);                  //修改语音模式
 }
-
-
-
-/*
- * 函数名：UltrasonicWave_StartMeasure
- * 描述  ：开始测距，发送一个>10us的脉冲，然后测量返回的高电平时间
- * 输入  ：port = TRIG_PORTX ,pin = TRIG_PINX
- * 输出  ：无	
- */
-void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin)
-{
-  GPIO_SetBits(port,pin); 		  //送>10US的高电平RIG_PORT,TRIG_PIN这两个在define中有?
-  delayUs(11);		                      //延时20US
-  GPIO_ResetBits(port,pin);
-
-}
-
-
-
 
 /*
  * 函数名：addDistance
@@ -175,7 +136,6 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 		*distanceVoice = 2; 
 	}
 
-
 //频率模式下障碍物提示,取最近障碍物距离
 	for( i = 0; i < AVER_NUM_GLASS; i++ )                
 	{
@@ -189,12 +149,23 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
     	
 }
 
-////////调试开关//////////////
-#ifdef DEBUG_ON_OFF 
-#undef  DEBUG_ON_OFF
-#endif
-#define DEBUG_ON_OFF 0      //1打开调试。0关闭
-//////////////////////////////
+
+
+
+/*
+ * 函数名：UltrasonicWave_StartMeasure
+ * 描述  ：开始测距，发送一个>10us的脉冲，然后测量返回的高电平时间
+ * 输入  ：port = TRIG_PORTX ,pin = TRIG_PINX
+ * 输出  ：无	
+ */
+static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin)
+{
+  GPIO_SetBits(port,pin); 		  //送>10US的高电平RIG_PORT,TRIG_PIN这两个在define中有?
+  delayUs(11);		                      //延时20US
+  GPIO_ResetBits(port,pin);
+
+}
+
 
 
 /****************************************************************************

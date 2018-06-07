@@ -4,22 +4,10 @@
 #include "stm32f10x.h"
 #include "bsp_delay.h"
 #include "bsp_usart1.h"
-#include "bsp_GeneralTim.h"
+#include "UltraConfig.h"
 
 
 
-
-
-
-#define	TRIG_PORT1     			  GPIOA		//TRIG       
-#define	TRIG_PIN1      			  GPIO_Pin_4   //TRIG       
-
-#define	TRIG_PORT2     			  GPIOA		//TRIG       
-#define	TRIG_PIN2      			  GPIO_Pin_5  //TRIG     
-
-
-
-#define RCC_APB2Periph_GPIOx  RCC_APB2Periph_GPIOA
 
 #define AVER_NUM_GLASS        2              //眼睛上超声波数量
 #define AVER_NUM_WALK         5              //拐杖上超声波数量

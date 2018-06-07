@@ -50,8 +50,8 @@
 "..\..\output\mpu6050.o"
 "..\..\output\bsp_key.o"
 "..\..\output\bsp_delay.o"
-"..\..\output\bsp_generaltim.o"
 "..\..\output\ultrasonicwave.o"
+"..\..\output\ultraconfig.o"
 --library_type=microlib --strict --scatter "..\..\Output\MPU.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

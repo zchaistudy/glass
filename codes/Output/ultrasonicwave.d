@@ -16,7 +16,7 @@
 ..\..\output\ultrasonicwave.o: ..\..\User\UltrasonicWave\bsp_delay.h
 ..\..\output\ultrasonicwave.o: ..\..\User\usart\bsp_usart1.h
 ..\..\output\ultrasonicwave.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-..\..\output\ultrasonicwave.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h
+..\..\output\ultrasonicwave.o: ..\..\User\UltrasonicWave\UltraConfig.h
 ..\..\output\ultrasonicwave.o: ..\..\User\UltrasonicWave\UltrasonicWave.h
 ..\..\output\ultrasonicwave.o: ..\..\User\debug.h
 ..\..\output\ultrasonicwave.o: ..\..\User\mp3\mp3.h

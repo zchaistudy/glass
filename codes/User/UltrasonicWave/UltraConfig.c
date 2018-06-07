@@ -1,5 +1,5 @@
 
-#include "bsp_GeneralTim.h"
+#include "UltraConfig.h"
 
 // 定时器输入捕获用户自定义变量结构体定义
 TIM_ICUserValueTypeDef TIM_ICUserValueStructure[AVER_NUM_GLASS];
@@ -124,4 +124,26 @@ void TIM2_Init()
 }
 
 
-/*********************************************END OF FILE**********************/
+/*********************************************引脚配置**********************/
+
+
+/*
+ * 函数名：UltrasonicWave_Configuration
+ * 描述  ：超声波模块的初始化
+ * 输入  ：无
+ * 输出  ：无	
+ */
+void UltrasonicWave_Configuration(void)
+{
+    GPIO_InitTypeDef GPIO_InitStructure;	
+	
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOx, ENABLE);
+    
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;		     //设为推挽输出模式
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	
+	GPIO_InitStructure.GPIO_Pin = TRIG_PIN1;					
+	GPIO_Init(TRIG_PORT1, &GPIO_InitStructure);	
+	GPIO_InitStructure.GPIO_Pin = TRIG_PIN2;					
+	GPIO_Init(TRIG_PORT2, &GPIO_InitStructure);		
+}

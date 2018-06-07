@@ -19,7 +19,7 @@
 #include "./exti/bsp_exti.h" 
 #include "./MPU6050/mpu6050/mpu6050.h"
 #include "bsp_key.h"
-#include "bsp_GeneralTim.h"
+#include "UltraConfig.h"
 #include "UltrasonicWave.h"
 #include "debug.h"
 

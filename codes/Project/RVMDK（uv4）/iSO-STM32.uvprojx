@@ -720,14 +720,14 @@
               <FilePath>..\..\User\UltrasonicWave\bsp_delay.c</FilePath>
             </File>
             <File>
-              <FileName>bsp_GeneralTim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\User\UltrasonicWave\bsp_GeneralTim.c</FilePath>
-            </File>
-            <File>
               <FileName>UltrasonicWave.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\UltrasonicWave\UltrasonicWave.c</FilePath>
+            </File>
+            <File>
+              <FileName>UltraConfig.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\UltrasonicWave\UltraConfig.c</FilePath>
             </File>
           </Files>
         </Group>
