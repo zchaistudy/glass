@@ -48,6 +48,7 @@
 "..\..\output\storage_manager.o"
 "..\..\User\MPU6050\mpl\libmpllib.lib"
 "..\..\output\mpu6050.o"
+"..\..\output\bsp_mpu6050.o"
 "..\..\output\bsp_key.o"
 "..\..\output\bsp_delay.o"
 "..\..\output\bsp_generaltim.o"

@@ -9,7 +9,7 @@ Project File Date:  06/07/2018
 <h2>Output:</h2>
 Build target 'BLINDGLASS'
 linking...
-Program Size: Code=58864 RO-data=4752 RW-data=376 ZI-data=4944  
+Program Size: Code=58772 RO-data=4748 RW-data=372 ZI-data=4980  
 FromELF: creating hex file...
 "..\..\Output\MPU.axf" - 0 Error(s), 0 Warning(s).
 
@@ -33,96 +33,132 @@ Package Vendor: ARM
 </pre>
 </body>
 </html>
-\CMSIS\4.1.0\CMSIS\Include
+uv4）\RTE
+  G:\software\keil5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include
   G:\software\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.0.0
 
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:3.30.0
       Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
-Load "..\\..\\Output\\MPU.axf" 
-Set JLink Project File to "G:\QGStudio\Project\BlindTravelEquipment\codes\glasses\codes\Project\RVMDK（uv4）\JLinkSettings.ini"
-* JLink Info: Device "STM32F103ZE" selected (512 KB flash, 64 KB RAM).
- 
-JLink info:
-------------
-DLL: V4.80g, compiled Feb 13 2014 20:50:02
-Firmware: J-Link V9 compiled Mar  2 2018 17:07:57
-Hardware: V9.30
-S/N : 59305423 
-Feature(s) : RDI, GDB, FlashDL, FlashBP, JFlash 
- 
-* JLink Info: TotalIRLen = 9, IRPrint = 0x0011
-* JLink Info: TotalIRLen = 9, IRPrint = 0x0011
-* JLink Info: Found Cortex-M3 r1p1, Little endian.
-* JLink Info: FPUnit: 6 code (BP) slots and 2 literal slots
-* JLink Info: TPIU fitted.
-* JLink Info: ETM fitted.
-ROMTableAddr = 0xE00FF003
- 
-Target info:
-------------
-Device: STM32F103ZE
-VTarget = 3.308V
-State of Pins: 
-TCK: 1, TDI: 0, TDO: 1, TMS: 0, TRES: 1, TRST: 1
-Hardware-Breakpoints: 6
-Software-Breakpoints: 8192
-Watchpoints:          4
-JTAG speed: 500 kHz
- 
-Full Chip Erase Done.
-Programming Done.
-Verify OK.
-Application running ...
-----------
-Device: STM32F103ZE
-VTarget = 3.308V
-State of Pins: 
-TCK: 1, TDI: 0, TDO: 1, TMS: 0, TRES: 1, TRST: 1
-Hardware-Breakpoints: 6
-Software-Breakpoints: 8192
-Watchpoints:          4
-JTAG speed: 500 kHz
- 
-Full Chip Erase Done.
-Programming Done.
-Verify OK.
-Application running ...
-) slots and 2 literal slots
-* JLink Info: TPIU fitted.
-* JLink Info: ETM fitted.
-ROMTableAddr = 0xE00FF003
- 
-Target info:
-------------
-Device: STM32F103ZE
-VTarget = 3.312V
-State of Pins: 
-TCK: 1, TDI: 0, TDO: 1, TMS: 0, TRES: 1, TRST: 1
-Hardware-Breakpoints: 6
-Software-Breakpoints: 8192
-Watchpoints:          4
-JTAG speed: 500 kHz
- 
-Full Chip Erase Done.
-Programming Done.
-Verify OK.
-Application running ...
- * Component: ARM::CMSIS:CORE:3.30.0
+2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.4.1.0.pack
+                ARM::CMSIS:CORE:3.30.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 3.30.0
+
+<h2>Collection of Component include folders:</h2>
+  G:\QGStudio\Project\BlindTravelEquipment\codes\glasses\codes\Project\RVMDK（uv4）\RTE
+  G:\software\keil5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include
+  G:\software\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.0.0
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:3.30.0
       Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
 Target not created
-compiling mp3.c...
-"..\..\User\mp3\mp3.c" - 0 Error(s), 0 Warning(s).
-Load "..\\..\\Output\\MPU.axf" 
-_____^
-*** error 56: cannot open file
-Error: Flash Download failed  -  Could not load file '..\..\Output\MPU.axf'
-Load "..\\..\\Output\\MPU.axf" 
-_____^
-*** error 56: cannot open file
-Error: Flash Download failed  -  Could not load file '..\..\Output\MPU.axf'
-Load "..\\..\\Output\\MPU.axf" 
-_____^
-*** error 56: cannot open file
-Error: Flash Download failed  -  Could not load file '..\..\Output\MPU.axf'
+.c...
+compiling log_stm32.c...
+compiling eMPL_outputs.c...
+compiling data_builder.c...
+compiling hal_outputs.c...
+compiling message_layer.c...
+compiling ml_math_func.c...
+compiling mlmath.c...
+compiling mpl.c...
+compiling results_holder.c...
+compiling start_manager.c...
+compiling storage_manager.c...
+compiling mpu6050.c...
+..\..\User\MPU6050\mpu6050\mpu6050.c(1121): warning:  #550-D: variable "roll" was set but never used
+        float pitch1, pitch2, roll;
+..\..\User\MPU6050\mpu6050\mpu6050.c(1036): warning:  #177-D: function "delay" was declared but never referenced
+  static void delay(void)
+..\..\User\MPU6050\mpu6050\mpu6050.c(1073): warning:  #177-D: function "RollFalling" was declared but never referenced
+  static int RollFalling(float roll)
+..\..\User\MPU6050\mpu6050\mpu6050.c: 3 warnings, 0 errors
+compiling bsp_mpu6050.c...
+compiling bsp_key.c...
+..\..\User\Key\bsp_key.c(586): warning:  #177-D: function "EXTI_n" was declared but never referenced
+  static void EXTI_n(int key_n)
+..\..\User\Key\bsp_key.c(630): warning:  #177-D: function "EXTI_n_Open" was declared but never referenced
+  static void EXTI_n_Open(int key_n)
+..\..\User\Key\bsp_key.c(676): warning:  #177-D: function "delay" was declared but never referenced
+  static void delay(int i, int j)
+..\..\User\Key\bsp_key.c: 3 warnings, 0 errors
+compiling bsp_delay.c...
+..\..\User\UltrasonicWave\bsp_delay.c(49): warning:  #550-D: variable "fac_ms" was set but never used
+  static uint16_t fac_ms=0;                                                     //ms延时倍乘数,在ucos下,代表每个节拍的ms数
+..\..\User\UltrasonicWave\bsp_delay.c: 1 warning, 0 errors
+compiling bsp_GeneralTim.c...
+compiling UltrasonicWave.c...
+..\..\User\UltrasonicWave\UltrasonicWave.c(25): error:  #169: expected a declaration
+  <<<<<<< HEAD
+..\..\User\UltrasonicWave\UltrasonicWave.c(27): error:  #169: expected a declaration
+  =======
+..\..\User\UltrasonicWave\UltrasonicWave.c(29): error:  #169: expected a declaration
+  >>>>>>> 4109c278e71f77f348e4a77a8b76cd1275b7e467
+..\..\User\UltrasonicWave\UltrasonicWave.c(34): error:  #169: expected a declaration
+  <<<<<<< HEAD
+..\..\User\UltrasonicWave\UltrasonicWave.c(97): warning:  #12-D: parsing restarts here after previous syntax error
+        Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
+..\..\User\UltrasonicWave\UltrasonicWave.c(99): error:  #169: expected a declaration
+  <<<<<<< HEAD
+..\..\User\UltrasonicWave\UltrasonicWave.c(102): error:  #169: expected a declaration
+        p_debug("$$$$$$$$$$$$$$$$%d\r\n", distanceVoice);
+..\..\User\UltrasonicWave\UltrasonicWave.c(103): error:  #169: expected a declaration
+  =======
+..\..\User\UltrasonicWave\UltrasonicWave.c(105): error:  #260-D: explicit type is missing ("int" assumed)
+        PlayVoice(distanceVoice);                  //修改语音模式
+..\..\User\UltrasonicWave\UltrasonicWave.c(105): error:  #92: identifier-list parameters may only be used in a function definition
+        PlayVoice(distanceVoice);                  //修改语音模式
+..\..\User\UltrasonicWave\UltrasonicWave.c(105): error:  #147: declaration is incompatible with "void PlayVoice(int)" (declared at line 56 of "..\..\User\mp3\mp3.h")
+        PlayVoice(distanceVoice);                  //修改语音模式
+..\..\User\UltrasonicWave\UltrasonicWave.c(106): error:  #169: expected a declaration
+  >>>>>>> 4109c278e71f77f348e4a77a8b76cd1275b7e467
+..\..\User\UltrasonicWave\UltrasonicWave.c(196): warning:  #12-D: parsing restarts here after previous syntax error
+                        *distanceVoice = 1;                     
+..\..\User\UltrasonicWave\UltrasonicWave.c(197): error:  #169: expected a declaration
+                }
+..\..\User\UltrasonicWave\UltrasonicWave.c(215): warning:  #12-D: parsing restarts here after previous syntax error
+        *distanceRate = mindistace / 100;
+..\..\User\UltrasonicWave\UltrasonicWave.c(217): error:  #169: expected a declaration
+  }
+..\..\User\UltrasonicWave\UltrasonicWave.c(253): warning:  #12-D: parsing restarts here after previous syntax error
+        p_debug("#tag %d\r\n", tag);    
+..\..\User\UltrasonicWave\UltrasonicWave.c(254): error:  #77-D: this declaration has no storage class or type specifier
+        tag = (tag +1) % AVER_NUM_GLASS;
+..\..\User\UltrasonicWave\UltrasonicWave.c(254): error:  #28: expression must have a constant value
+        tag = (tag +1) % AVER_NUM_GLASS;
+..\..\User\UltrasonicWave\UltrasonicWave.c(255): error:  #169: expected a declaration
+        p_debug("@tag %d\r\n", tag);    
+..\..\User\UltrasonicWave\UltrasonicWave.c(258): error:  #169: expected a declaration
+  }
+..\..\User\UltrasonicWave\UltrasonicWave.c(261): warning: At end of source:  #12-D: parsing restarts here after previous syntax error
+..\..\User\UltrasonicWave\UltrasonicWave.c(21): warning:  #177-D: function "UltrasonicWave_StartMeasure" was declared but never referenced
+  static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin);              
+..\..\User\UltrasonicWave\UltrasonicWave.c(32): warning:  #177-D: function "Obstacle" was declared but never referenced
+  static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoice, int* distanceRate );
+..\..\User\UltrasonicWave\UltrasonicWave.c: 7 warnings, 17 errors
+"..\..\Output\MPU.axf" - 19 Error(s), 18 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.4.1.0.pack
+                ARM::CMSIS:CORE:3.30.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 3.30.0
+
+<h2>Collection of Component include folders:</h2>
+  G:\QGStudio\Project\BlindTravelEquipment\codes\glasses\codes\Project\RVMDK（uv4）\RTE
+  G:\software\keil5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include
+  G:\software\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.0.0
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:3.30.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+Target not created

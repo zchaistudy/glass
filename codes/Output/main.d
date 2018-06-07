@@ -28,3 +28,4 @@
 ..\..\output\main.o: ..\..\User\UltrasonicWave\bsp_delay.h
 ..\..\output\main.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h
 ..\..\output\main.o: ..\..\User\debug.h
+..\..\output\main.o: ..\..\User\MPU6050\mpu6050\bsp_mpu6050.h

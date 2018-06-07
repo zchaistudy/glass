@@ -23,6 +23,7 @@ static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin);
 int UltrasonicWave_Distance[AVER_NUM_GLASS];      //计算出的距离    
 int UltrasonicWave_Distance_Walk[AVER_NUM_WALK] = { 500, 500, 500, 500, 500};   //拐杖采集数据
 static int16_t MAX_DISTACE =150;        //最大距离
+
 int8_t  IT_TAG = 0;          //读取标志，为1时表示以读取到数据
 
 static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoice, int* distanceRate );
@@ -33,7 +34,6 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 #endif
 #define DEBUG_ON_OFF 0      //1打开调试。0关闭
 //////////////////////////////
-
 /*
  * 函数名：UltrasonicWave_Configuration
  * 描述  ：超声波模块的初始化
@@ -80,12 +80,14 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 
 	printf( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
 
+
 	
 	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
 
 //	PlayRate(distanceRate);                    //调用频率模式
 	PlayVoice(distanceVoice);                  //修改语音模式
 	p_debug("$$$$$$$$$$$$$$$$%d\r\n", distanceVoice);
+
 }
 
 
