@@ -686,6 +686,7 @@ static void delay(int i, int j)
 	四个中断的printf()函数的中文，注意是中文语句，都需要语音输出提示
 */
 
+#ifdef xuyaocxkaiqi
 
 void KEY1_IRQHandler(void)
 {
@@ -885,6 +886,7 @@ void KEY5_IRQHandler(void)	//减号键
 	}  
 }
 
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
