@@ -12,6 +12,12 @@
 #define AVER_NUM_GLASS        2              //眼睛上超声波数量
 #define AVER_NUM_WALK         5              //拐杖上超声波数量
 #define AVER_NUM_ALL   AVER_NUM +AVER_NUM_WALK    //超声波总数量
+#define LATE_NUM              3               //保留最近？次数据
+
+#define OBSTACLE_HEAD            3
+#define OBSTACLE_AHEAD           2
+#define OBSTACLE_FOOT            1
+#define OBSTACLE_NO              0
 
 extern int8_t  IT_TAG;
 

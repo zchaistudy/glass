@@ -21,18 +21,17 @@
 #ifdef DEBUG_ON_OFF 
 #undef  DEBUG_ON_OFF
 #endif
-#define DEBUG_ON_OFF 1       //1打开调试。0关闭
+#define DEBUG_ON_OFF 0       //1打开调试。0关闭
 //////////////////////////////
 
 static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin);              
 
-int UltrasonicWave_Distance[AVER_NUM_GLASS];      //计算出的距离    
+static int UltrasonicWave_Distance[AVER_NUM_GLASS];      //计算出的距离    
 int UltrasonicWave_Distance_Walk[AVER_NUM_WALK] = { 500, 500, 500, 500, 500};   //拐杖采集数据
 static int16_t MAX_DISTACE =150;        //最大距离
-
-int8_t  IT_TAG = 0;          //读取标志，为1时表示以读取到数据
 int8_t  MEASURE_FLAG = 0;   // 0 眼镜采集数据， 1 等待拐杖采集数据
 
+int8_t GET_WALK_FLAG = 0;       //接收拐杖数据标志
 
 static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoice, int* distanceRate );
 
@@ -60,13 +59,13 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 	ftime = ((double) TIM_ICUserValueStructurex.Capture_CcrValue+1)/TIM_PscCLK;
 	UltrasonicWave_Distance[i-1] = ftime * 340 / 2  * 100;
 	
-	printf( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
+	p_debug( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
 
 	
 	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
 
 //	PlayRate(distanceRate);                    //调用频率模式
-//	PlayVoice(distanceVoice);                  //修改语音模式
+	PlayVoice(distanceVoice);                  //修改语音模式
 }
 
 /*
@@ -116,36 +115,85 @@ int getDistance()
 //distanceRate 频率模式下障碍物提示， 0 无障碍物 1 障碍物在3~2m， 2 障碍物在2~1m ,3 障碍物<1m
 static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoice, int* distanceRate )
 {
+	
+	
 	int i = 0; 
 	int mindistace = 300 ;    //记录最近的障碍物距离
-	*distanceVoice = 0;
-	*distanceRate = 0;
+	static int8_t lateobstacle[4] = {0};      //记录最近几次测距障碍物状态，连续监测障碍物时+1，2未监测到障碍物时清零
+	
+	*distanceVoice = OBSTACLE_NO;
+	*distanceRate = OBSTACLE_NO;
+	
+	
 	for( ; i < AVER_NUM_GLASS; i++ )                  //眼镜部分数据障碍物判断
 	{
 		if( distance_glass[i] < MAX_DISTACE )           //判断头部是否有障碍物
 		{
-			*distanceVoice = 3; 
+			lateobstacle[0]++;
+			if( lateobstacle[0] > LATE_NUM )
+			{
+				lateobstacle[0] = LATE_NUM;
+			}
 		} 
-		p_debug("              %d\r\n", distance_glass[i]);
-	}
-	//判读脚下是否有障碍物
-	if( distance_walk[4]  < MAX_DISTACE || distance_walk[3] < MAX_DISTACE || distance_walk[2] < MAX_DISTACE  )  
-	{
-		if( *distanceVoice != 0 )                   //若头部也存在障碍物则直接提示前方存在障碍物
-		{
-			*distanceVoice = 2; 
-		}
 		else
 		{
-			*distanceVoice = 1; 			
+			lateobstacle[0] = 0;
 		}
+		p_debug("              %d\r\n", distance_glass[i]);
 	}
-	 //判断正前方是否有障碍物
+	
 	if( distance_walk[0]  < MAX_DISTACE || distance_walk[1] < MAX_DISTACE )  
 	{
-		*distanceVoice = 2; 
+		lateobstacle[1]++;
+		if( lateobstacle[1] > LATE_NUM )
+		{
+			lateobstacle[1] = LATE_NUM;
+		}		
 	}
+	else
+	{
+		lateobstacle[1] = 0;
+	}	
+	if( distance_walk[2]  < MAX_DISTACE || distance_walk[3] < MAX_DISTACE )  
+	{
+		lateobstacle[2]++;
+		if( lateobstacle[2] > LATE_NUM )
+		{
+			lateobstacle[2] = LATE_NUM;
+		}
+	}
+	else
+	{
+		lateobstacle[2] = 0;
+	}	
+	if( distance_walk[4]  < MAX_DISTACE  )  
+	{
+		lateobstacle[3]++;
+		if( lateobstacle[3] > LATE_NUM )
+		{
+			lateobstacle[3] = LATE_NUM;
+		}
+	}
+	else
+	{
+		lateobstacle[3] = 0;
+	}	
 
+//判断头部是否有障碍物
+	if( lateobstacle[0] == LATE_NUM )
+	{
+		*distanceVoice = OBSTACLE_HEAD;
+	}
+//判断前面是否有障碍物
+	if( lateobstacle[1] == LATE_NUM || lateobstacle[2] == LATE_NUM  )
+	{
+		*distanceVoice = OBSTACLE_AHEAD;
+	}    	
+//判断脚下是否有障碍物
+	if( lateobstacle[3] == LATE_NUM )
+	{
+		*distanceVoice = OBSTACLE_FOOT;
+	}
 //频率模式下障碍物提示,取最近障碍物距离
 	for( i = 0; i < AVER_NUM_GLASS; i++ )                
 	{
@@ -187,11 +235,6 @@ static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin)
 ****************************************************************************/
 void UltrasonicWave(int portNum)
 {
-//	static int i = 0;            //删除后会出错
-//	static int8_t tag;	
-	
-//	p_debug("&tag %d\r\n", tag);
-//	p_debug("&i %d\r\n", i);
     if( TIM_ICUserValueStructure[0].Capture_FinishFlag == 1 )  
 	{
 	    dealTIM_ICUserValueStructureData(TIM_ICUserValueStructure[0]);

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\..\Output\MPU.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\..\Output\MPU.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Jun 07 21:01:50 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Jun 07 22:38:20 2018
 <BR><P>
 <H3>Maximum Stack Usage =        420 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -884,7 +884,7 @@ Global Symbols
 <LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getEulerAngles
 </UL>
 
-<P><STRONG><a name="[be]"></a>USART_ClearFlag</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f10x_usart.o(.text), UNUSED)
+<P><STRONG><a name="[be]"></a>USART_ClearFlag</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f10x_usart.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_Send_String
 <LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getEulerAngles
 </UL>
@@ -1239,8 +1239,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[bd]"></a>USART3_Send_String</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, mp3.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ClearFlag
+<P><STRONG><a name="[bd]"></a>USART3_Send_String</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, mp3.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = USART3_Send_String
+</UL>
+<BR>[Calls]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ClearFlag
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetFlagStatus
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SendData
 </UL>
@@ -1264,8 +1266,12 @@ Global Symbols
 
 <P><STRONG><a name="[2d7]"></a>Weighting</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, mp3.o(.text), UNUSED)
 
-<P><STRONG><a name="[c1]"></a>PlayVoice</STRONG> (Thumb, 50 bytes, Stack size 8 bytes, mp3.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_Send_String
+<P><STRONG><a name="[c1]"></a>PlayVoice</STRONG> (Thumb, 50 bytes, Stack size 8 bytes, mp3.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = PlayVoice &rArr; USART3_Send_String
+</UL>
+<BR>[Calls]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_Send_String
+</UL>
+<BR>[Called By]<UL><LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
 </UL>
 
 <P><STRONG><a name="[c2]"></a>PlayRate</STRONG> (Thumb, 72 bytes, Stack size 8 bytes, mp3.o(.text), UNUSED)
@@ -2952,12 +2958,11 @@ Global Symbols
 
 <P><STRONG><a name="[30f]"></a>getDistance</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, ultrasonicwave.o(.text), UNUSED)
 
-<P><STRONG><a name="[8d]"></a>UltrasonicWave</STRONG> (Thumb, 116 bytes, Stack size 16 bytes, ultrasonicwave.o(.text))
+<P><STRONG><a name="[8d]"></a>UltrasonicWave</STRONG> (Thumb, 110 bytes, Stack size 16 bytes, ultrasonicwave.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = UltrasonicWave &rArr; dealTIM_ICUserValueStructureData &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UltrasonicWave_StartMeasure
-<LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM2_IRQHandler
 </UL>
@@ -3837,7 +3842,7 @@ Global Symbols
 <LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inv_vector_normalize
 <LI><a href="#[234]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
 <LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;acos
-<LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
+<LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
 <LI><a href="#[246]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
 </UL>
@@ -3866,7 +3871,7 @@ Global Symbols
 <LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;acos
 <LI><a href="#[210]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inv_generate_gyro_quaternion
 <LI><a href="#[1f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inv_filter_correction_angle
-<LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
+<LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
 <LI><a href="#[1ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_from_mpl
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
 <LI><a href="#[246]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
@@ -3883,7 +3888,7 @@ Global Symbols
 <LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;acos
 <LI><a href="#[210]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inv_generate_gyro_quaternion
 <LI><a href="#[1f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inv_filter_correction_angle
-<LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
+<LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
 <LI><a href="#[1ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_from_mpl
 <LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_invalid
 <LI><a href="#[246]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
@@ -3974,12 +3979,12 @@ Global Symbols
 <LI><a href="#[1ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_from_mpl
 </UL>
 
-<P><STRONG><a name="[1cf]"></a>__aeabi_ui2d</STRONG> (Thumb, 26 bytes, Stack size 16 bytes, dfltui.o(.text))
+<P><STRONG><a name="[1ce]"></a>__aeabi_ui2d</STRONG> (Thumb, 26 bytes, Stack size 16 bytes, dfltui.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = __aeabi_ui2d &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[232]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
+<BR>[Called By]<UL><LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
 </UL>
 
 <P><STRONG><a name="[dc]"></a>__aeabi_f2iz</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, ffixi.o(.text))
@@ -4019,7 +4024,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inv_vector_normalize
 <LI><a href="#[210]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inv_generate_gyro_quaternion
-<LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
+<LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
 </UL>
 
 <P><STRONG><a name="[e9]"></a>__aeabi_f2d</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, f2d.o(.text))
@@ -4178,7 +4183,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[176]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
 <LI><a href="#[172]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[173]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[1cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
+<LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
 </UL>
 
 <P><STRONG><a name="[238]"></a>_dsqrt</STRONG> (Thumb, 162 bytes, Stack size 32 bytes, dsqrt.o(.text), UNUSED)
@@ -4217,12 +4222,9 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_Queue
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UltrasonicWave
 <LI><a href="#[30]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_IRQHandler
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Deal_Data
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
-<LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Obstacle
 <LI><a href="#[1c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6050Triaxial
 <LI><a href="#[1bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAnglesFront
 </UL>
@@ -4996,24 +4998,22 @@ Local Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI_Init
 </UL>
 
-<P><STRONG><a name="[1cd]"></a>Obstacle</STRONG> (Thumb, 214 bytes, Stack size 32 bytes, ultrasonicwave.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = Obstacle &rArr; __2printf
+<P><STRONG><a name="[1cf]"></a>Obstacle</STRONG> (Thumb, 346 bytes, Stack size 20 bytes, ultrasonicwave.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = Obstacle
 </UL>
-<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-</UL>
-<BR>[Called By]<UL><LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
+<BR>[Called By]<UL><LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dealTIM_ICUserValueStructureData
 </UL>
 
-<P><STRONG><a name="[1ce]"></a>dealTIM_ICUserValueStructureData</STRONG> (Thumb, 126 bytes, Stack size 56 bytes, ultrasonicwave.o(.text))
+<P><STRONG><a name="[1cd]"></a>dealTIM_ICUserValueStructureData</STRONG> (Thumb, 124 bytes, Stack size 56 bytes, ultrasonicwave.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = dealTIM_ICUserValueStructureData &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[172]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[175]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[173]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
-<LI><a href="#[1cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
-<LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Obstacle
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayVoice
+<LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
+<LI><a href="#[1cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Obstacle
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UltrasonicWave
 </UL>
