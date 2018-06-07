@@ -22,14 +22,12 @@
 #include "UltraConfig.h"
 #include "UltrasonicWave.h"
 #include "debug.h"
+#include "bsp_mpu6050.h"
 
 LinkQueue q;
-extern int flag_FALLING;	//盲人摔倒标志 =1表示摔倒， =0表示正常
-int flag_SendText=0;	//判断是否发紧急信息（通过蓝牙）标志 =1表示发紧急信息， =0表示不发紧急信息
+extern key_four key4;
 
 
-//#define BLIND_SAFE 1
-//#define BLIND_UNSAFE 0
 /**
   * @brief  初始化函数
   * @param  无  
@@ -51,71 +49,74 @@ static void PeriphInit()
 	EXTI_Key_Config();	//中断
 }
 
-/**
-  * @brief  判断是否需要通过蓝牙发送危险信息
-  * @param  无  
-  * @retval 无
-  */
-static void blind_falled()
-{
-	if(1==flag_FALLING)	//盲人摔倒
-	{
-		while(1)	//安全键被按下或者超时时 退出
-		{
-			mdelay(20);
-			KeyPolling();	//按键
-			if(0==flag_FALLING)	//盲人无摔倒
-			{
-				printf("flag_FALLING=0");
-				break;			
-			}
-			else
-			{
-				flag_SendText=1;	//需要发送危险信号
-				printf("flag_SendText=1");
-				break;
-			}
-		}
-	}
-	else
-		return;
-}
+///**
+//<<<<<<< HEAD
+//  * @brief  判断是否需要通过蓝牙发送危险信息
+//  * @param  无  
+//  * @retval 无
+//  */
+//static void blind_falled()
+//{
+//	if(1==flag_FALLING)	//盲人摔倒
+//	{
+//		while(1)	//安全键被按下或者超时时 退出
+//		{
+//			mdelay(20);
+////			KeyPolling();	//按键
+//			if(0==flag_FALLING)	//盲人无摔倒
+//			{
+//				printf("flag_FALLING=0");
+//				break;			
+//			}
+//			else
+//			{
+//				flag_SendText=1;	//需要发送危险信号
+//				printf("flag_SendText=1");
+//				break;
+//			}
+//		}
+//	}
+//	else
+//		return;
+//}
+
+///**
+//  * @brief  按键功能模块
+//  * @param  无  
+//  * @retval 无
+//  */
+//static void key_module()
+//{
+//	int key_n;
+////	key_n=KeyPolling();	//按键模块
+//	
+//	switch(key_n)
+//	{
+//		case KEY_MODE:	//模式选择
+//			
+//			break;
+//		case KEY_BACK:	//返回上一个模式
+//			
+//			break;
+//		case KEY_ADD:	//加号
+//			
+//			break;
+//		case KEY_SUB:	//减号
+
+//			break;
+//		case KEY_SAFE:	//安全
+
+//			break;
+//		default:
+//			break;
+//	}
+//	
+//}
+
 
 /**
-  * @brief  按键功能模块
-  * @param  无  
-  * @retval 无
-  */
-static void key_module()
-{
-	int key_n;
-	key_n=KeyPolling();	//按键模块
-	
-	switch(key_n)
-	{
-		case KEY_MODE:	//模式选择
-			
-			break;
-		case KEY_BACK:	//返回上一个模式
-			
-			break;
-		case KEY_ADD:	//加号
-			
-			break;
-		case KEY_SUB:	//减号
-
-			break;
-		case KEY_SAFE:	//安全
-
-			break;
-		default:
-			break;
-	}
-	
-}
-
-
-/**
+=======
+>>>>>>> 4109c278e71f77f348e4a77a8b76cd1275b7e467
   * @brief  主函数
   * @param  无
   * @retval 无
@@ -123,6 +124,13 @@ static void key_module()
 int main(void)
 {
 	float Angle[4];
+	key4.current_mode=0;	//按键结构初始化
+	key4.key_rank[0]=0,key4.key_rank[1]=0,key4.key_rank[2]=0;
+	key4.max_mode=3;
+	key4.max_rank=4;
+	key4.min_mode=0;
+	key4.min_rank=0;
+	
 	
 	USART1_Config();	     			//初始化串口1用于蓝牙通讯
 	NVIC_Configuration();				//设置优先级
@@ -135,13 +143,12 @@ int main(void)
 	GENERAL_TIM_Init();
 	TIM2_Init();
 	
-	PeriphInit();	//外设初始化
+//	PeriphInit();	//外设初始化
 	printf("\n系统初始化完毕......\n");
-	
 
-	
 	for(;;)
 	{
+
 //		MPU6050Triaxial(Angle);	//三轴检测
 //		blind_falled();		//盲人是否摔倒
 //		key_module();		//按键模块
@@ -151,4 +158,5 @@ int main(void)
 //		mdelay(50);
 	}
 }
+
 /*********************************************END OF FILE**********************/
