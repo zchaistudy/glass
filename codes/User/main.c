@@ -145,7 +145,6 @@ int main(void)
 //		MPU6050Triaxial(Angle);	//三轴检测
 //		blind_falled();		//盲人是否摔倒
 //		key_module();		//按键模块
-
 		Deal_Data();
 		
 //		mdelay(50);
