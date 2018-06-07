@@ -237,23 +237,30 @@ void USART2_IRQHandler(void)
 
 void TIM2_IRQHandler(void)
 {
-	int num[2];
-	p_debug("tim2\r\n");
+	extern int8_t  MEASURE_FLAG;   // 0 眼镜采集数据， 1 等待拐杖采集数据
+	
+	static int portNum = 0;      //选择测距通道
+	
 	if ( TIM_GetITStatus( TIM2, TIM_IT_Update) != RESET ) 
-	{	
-		p_debug("tim2 ok\r\n");
-		UltrasonicWave(num);
+	{			
+		if( MEASURE_FLAG == 0)
+		{
+			UltrasonicWave(portNum);    //采集一个模块数据
+			portNum++;
+			if( portNum == AVER_NUM_GLASS)   //眼睛上模块数据采集完毕
+			{
+				portNum = 0;
+				//$$$$$$$$$$向拐杖发送测距请求
+				//MEASURE_FLAG = 1;           
+			}
+		}
+		
+		
+		
 		TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);  		 
 	}		
 	
 }
-
-////////调试开关//////////////
-#ifdef DEBUG_ON_OFF 
-#undef  DEBUG_ON_OFF
-#endif
-#define DEBUG_ON_OFF 0       //1打开调试。0关闭
-//////////////////////////////
 
 void TIM3_IRQHandler(void)
 {

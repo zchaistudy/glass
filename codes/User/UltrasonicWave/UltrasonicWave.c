@@ -17,6 +17,12 @@
 #include "debug.h"
 #include "mp3.h"
 
+////////调试开关//////////////
+#ifdef DEBUG_ON_OFF 
+#undef  DEBUG_ON_OFF
+#endif
+#define DEBUG_ON_OFF 1       //1打开调试。0关闭
+//////////////////////////////
 
 static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin);              
 
@@ -25,6 +31,8 @@ int UltrasonicWave_Distance_Walk[AVER_NUM_WALK] = { 500, 500, 500, 500, 500};   
 static int16_t MAX_DISTACE =150;        //最大距离
 
 int8_t  IT_TAG = 0;          //读取标志，为1时表示以读取到数据
+int8_t  MEASURE_FLAG = 0;   // 0 眼镜采集数据， 1 等待拐杖采集数据
+
 
 static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoice, int* distanceRate );
 
@@ -51,17 +59,14 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 	// 打印高电平脉宽时间
 	ftime = ((double) TIM_ICUserValueStructurex.Capture_CcrValue+1)/TIM_PscCLK;
 	UltrasonicWave_Distance[i-1] = ftime * 340 / 2  * 100;
-
+	
 	printf( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
-
 
 	
 	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
 
 //	PlayRate(distanceRate);                    //调用频率模式
-	PlayVoice(distanceVoice);                  //修改语音模式
-	p_debug("$$$$$$$$$$$$$$$$%d\r\n", distanceVoice);
-
+//	PlayVoice(distanceVoice);                  //修改语音模式
 }
 
 /*
@@ -180,10 +185,10 @@ static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin)
 * 说    明：
 * 调用方法：无 
 ****************************************************************************/
-void UltrasonicWave(int* num)
+void UltrasonicWave(int portNum)
 {
-	static int i = 0;            //删除后会出错
-	static int8_t tag;	
+//	static int i = 0;            //删除后会出错
+//	static int8_t tag;	
 	
 //	p_debug("&tag %d\r\n", tag);
 //	p_debug("&i %d\r\n", i);
@@ -198,17 +203,14 @@ void UltrasonicWave(int* num)
 		p_debug("test\r\n");
 		TIM_ICUserValueStructure[1].Capture_FinishFlag = 0;
 	}	
-	switch(tag)          //开始测距，发送一个>10us的脉冲，
+	switch(portNum)          //开始测距，发送一个>10us的脉冲，
 	{
 		case 0: UltrasonicWave_StartMeasure(TRIG_PORT1,TRIG_PIN1); break;
 		case 1: UltrasonicWave_StartMeasure(TRIG_PORT2,TRIG_PIN2); break;
-	}
-	p_debug("#tag %d\r\n", tag);	
-	tag = (tag +1) % AVER_NUM_GLASS;
-	p_debug("@tag %d\r\n", tag);	
-
-	
+	}	
 }
+
+
 
 
 /******************* (C) 1209 Lab *****END OF FILE************/
