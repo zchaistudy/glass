@@ -15,14 +15,24 @@
 
 #include "UltrasonicWave.h"
 #include "debug.h"
-
+#include "mp3.h"
 
 
 static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin);              
 
 int UltrasonicWave_Distance[AVER_NUM_GLASS];      //计算出的距离    
-static int16_t MAX_DISTACE = 300;        //最大距离
+int UltrasonicWave_Distance_Walk[AVER_NUM_WALK] = { 500, 500, 500, 500, 500};   //拐杖采集数据
+static int16_t MAX_DISTACE =150;        //最大距离
 int8_t  IT_TAG = 0;          //读取标志，为1时表示以读取到数据
+
+static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoice, int* distanceRate );
+
+////////调试开关//////////////
+#ifdef DEBUG_ON_OFF 
+#undef  DEBUG_ON_OFF
+#endif
+#define DEBUG_ON_OFF 0      //1打开调试。0关闭
+//////////////////////////////
 
 /*
  * 函数名：UltrasonicWave_Configuration
@@ -59,17 +69,23 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 
 //	uint32_t time;
 	double ftime;
+	int distanceVoice, distanceRate;
 	int i;
 	i = TIM_ICUserValueStructurex.Capture_CCx;
 	// 计算高电平时间的计数器的值
 //	time = TIM_ICUserValueStructurex.Capture_CcrValue+1;
 	// 打印高电平脉宽时间
 	ftime = ((double) TIM_ICUserValueStructurex.Capture_CcrValue+1)/TIM_PscCLK;
-	UltrasonicWave_Distance[i] = ftime * 340 / 2  * 100;
-//	printf( "\r\n time %d\r\n",time );	
-//	printf( "\r\n ftime %lf\r\n",ftime );
-	printf( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i]);
-//	printf( "\r\n：%d.%d s\r\n",time/TIM_PscCLK,time%TIM_PscCLK );	
+	UltrasonicWave_Distance[i-1] = ftime * 340 / 2  * 100;
+
+	printf( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
+
+	
+	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
+
+//	PlayRate(distanceRate);                    //调用频率模式
+	PlayVoice(distanceVoice);                  //修改语音模式
+	p_debug("$$$$$$$$$$$$$$$$%d\r\n", distanceVoice);
 }
 
 
@@ -148,6 +164,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 		{
 			*distanceVoice = 3; 
 		} 
+		p_debug("              %d\r\n", distance_glass[i]);
 	}
 	//判读脚下是否有障碍物
 	if( distance_walk[4]  < MAX_DISTACE || distance_walk[3] < MAX_DISTACE || distance_walk[2] < MAX_DISTACE  )  
@@ -181,12 +198,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
     	
 }
 
-////////调试开关//////////////
-#ifdef DEBUG_ON_OFF 
-#undef  DEBUG_ON_OFF
-#endif
-#define DEBUG_ON_OFF 0      //1打开调试。0关闭
-//////////////////////////////
+
 
 
 /****************************************************************************

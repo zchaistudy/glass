@@ -11,15 +11,7 @@
 
 int Rate=0;
 
-#define head 1
-#define hand 2
-#define foot 3
 
-#define first 		1
-#define second 		2
-#define third 		3
-#define forth 		4
-#define fifth 		5
 
 
 u8 Call[5]={0x7E,0x03,0x0E,0x0D,0xEF};//Õ£÷π÷∏¡Ó

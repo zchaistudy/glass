@@ -35,6 +35,7 @@
 #include "bsp_GeneralTim.h"
 #include "UltrasonicWave.h"
 #include "debug.h"
+#include "bsp_key.h"
 
 extern LinkQueue q;
 
@@ -231,17 +232,6 @@ void USART2_IRQHandler(void)
 } 
 
 
-void KEY1_IRQHandler(void)
-{
-  //确保是否产生了EXTI Line中断
-	if(EXTI_GetITStatus(KEY1_INT_EXTI_LINE) != RESET) 
-	{
-		printf("\nsafe!\n");
-		flag_FALLING=0;
-    //清除中断标志位
-		EXTI_ClearITPendingBit(KEY1_INT_EXTI_LINE);     
-	}  
-}
 
 
 
@@ -372,6 +362,7 @@ void TIM3_IRQHandler(void)
 	}		
 }
 
+
 /**
   * @brief  This function handles PPP interrupt request.
   * @param  None
@@ -384,6 +375,8 @@ void TIM3_IRQHandler(void)
 /**
   * @}
   */ 
+
+///////////////////////////////////////////////////////////////////////////////////
 
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

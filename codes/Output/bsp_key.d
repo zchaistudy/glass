@@ -15,3 +15,9 @@
 ..\..\output\bsp_key.o: ..\..\Libraries\FWlib\inc\misc.h
 ..\..\output\bsp_key.o: ..\..\User\./usart/bsp_usart1.h
 ..\..\output\bsp_key.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdio.h
+..\..\output\bsp_key.o: ..\..\User\./systick/bsp_SysTick.h
+..\..\output\bsp_key.o: ..\..\User\mp3\mp3.h
+..\..\output\bsp_key.o: ..\..\User\UltrasonicWave\UltrasonicWave.h
+..\..\output\bsp_key.o: ..\..\User\UltrasonicWave\bsp_delay.h
+..\..\output\bsp_key.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h
+..\..\output\bsp_key.o: ..\..\User\UltrasonicWave\UltrasonicWave.h

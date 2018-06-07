@@ -19,3 +19,4 @@
 ..\..\output\ultrasonicwave.o: ..\..\User\UltrasonicWave\bsp_GeneralTim.h
 ..\..\output\ultrasonicwave.o: ..\..\User\UltrasonicWave\UltrasonicWave.h
 ..\..\output\ultrasonicwave.o: ..\..\User\debug.h
+..\..\output\ultrasonicwave.o: ..\..\User\mp3\mp3.h

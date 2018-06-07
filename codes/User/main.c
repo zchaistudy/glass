@@ -63,7 +63,7 @@ static void blind_falled()
 		while(1)	//安全键被按下或者超时时 退出
 		{
 			mdelay(20);
-			KeyPolling();	//按键
+//			KeyPolling();	//按键
 			if(0==flag_FALLING)	//盲人无摔倒
 			{
 				printf("flag_FALLING=0");
@@ -89,7 +89,7 @@ static void blind_falled()
 static void key_module()
 {
 	int key_n;
-	key_n=KeyPolling();	//按键模块
+//	key_n=KeyPolling();	//按键模块
 	
 	switch(key_n)
 	{
@@ -135,7 +135,7 @@ int main(void)
 	GENERAL_TIM_Init();
 	TIM2_Init();
 	
-	PeriphInit();	//外设初始化
+//	PeriphInit();	//外设初始化
 	printf("\n系统初始化完毕......\n");
 	
 
