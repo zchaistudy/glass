@@ -223,6 +223,7 @@ void USART1_IRQHandler(void)
 			if(Status==DirectionFlag)											//接收数据为方位信息
 			{
 					PlayDirection(ch);
+					Status=0;
 			}
 			else if(Status==WalkingStickFlag)							//接收数据为拐杖信息
 			{
