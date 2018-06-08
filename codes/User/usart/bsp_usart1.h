@@ -38,4 +38,5 @@ int fgetc(FILE *f);
 //void USART2_Config(void);
 void Deal_Data(void);
 void USART2_Initialise( u32 bound );
+void GetWalkingStickRequire(void);      //用于发送拐杖数据请求信号
 #endif /* __USART1_H */

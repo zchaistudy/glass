@@ -15,6 +15,15 @@
 #define forth 		4
 #define fifth 		5
 
+#define InEast 					1
+#define InSouth 				2
+#define InWest 					3
+#define InNorth 				4
+#define InSouthEast 		5
+#define InSouthWest 		6
+#define InNorthWest 		7
+#define InNorthEast 		8
+
 #define            TIM6_TIM                   TIM6
 #define            TIM6_TIM_APBxClock_FUN     RCC_APB1PeriphClockCmd
 #define            TIM6_TIM_CLK               RCC_APB1Periph_TIM6
@@ -63,6 +72,7 @@ void SubVolume(void);
 int Weighting(int degree);
 void PlayVoice(int position);
 void PlayRate(int degree);
+void PlayDirection(int direction);
 
 void TIM6_TIM_NVIC_Config(void);
 void TIM6_TIM_Mode_Config(void);

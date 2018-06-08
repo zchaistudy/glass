@@ -49,78 +49,8 @@ static void PeriphInit()
 	EXTI_Key_Config();	//中断
 }
 
-///**
-//<<<<<<< HEAD
-//  * @brief  判断是否需要通过蓝牙发送危险信息
-//  * @param  无  
-//  * @retval 无
-//  */
-//static void blind_falled()
-//{
-//	if(1==flag_FALLING)	//盲人摔倒
-//	{
-//		while(1)	//安全键被按下或者超时时 退出
-//		{
-//			mdelay(20);
-////			KeyPolling();	//按键
-//			if(0==flag_FALLING)	//盲人无摔倒
-//			{
-//				printf("flag_FALLING=0");
-//				break;			
-//			}
-//			else
-//			{
-//				flag_SendText=1;	//需要发送危险信号
-//				printf("flag_SendText=1");
-//				break;
-//			}
-//		}
-//	}
-//	else
-//		return;
-//}
-
-///**
-//  * @brief  按键功能模块
-//  * @param  无  
-//  * @retval 无
-//  */
-//static void key_module()
-//{
-//	int key_n;
-////	key_n=KeyPolling();	//按键模块
-//	
-//	switch(key_n)
-//	{
-//		case KEY_MODE:	//模式选择
-//			
-//			break;
-//		case KEY_BACK:	//返回上一个模式
-//			
-//			break;
-//		case KEY_ADD:	//加号
-//			
-//			break;
-//		case KEY_SUB:	//减号
-
-//			break;
-//		case KEY_SAFE:	//安全
-
-//			break;
-//		default:
-//			break;
-//	}
-//	
-//}
 
 
-/**
-=======
->>>>>>> 4109c278e71f77f348e4a77a8b76cd1275b7e467
-  * @brief  主函数
-  * @param  无
-  * @retval 无
-  */
 int main(void)
 {
 	float Angle[4];

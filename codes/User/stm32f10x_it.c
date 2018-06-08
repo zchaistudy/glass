@@ -31,24 +31,32 @@
 #include "bsp_key.h"
 #include "./systick/bsp_SysTick.h"
 #include <stdio.h>
-#include"queue.h"
+#include "string.h"
+#include "queue.h"
 #include "UltraConfig.h"
 #include "UltrasonicWave.h"
 #include "debug.h"
 #include "bsp_key.h"
+#include "mp3.h"
+
+#define DirectionFlag '#'
+#define WalkingStickFlag '!'
 
 extern LinkQueue q;
 extern int time;
 extern int flag_FALLING;
-extern int flag_volume;
+extern int flag_volume;      
 //char Receive[10];
 //int Num;
 
 unsigned int Task_Delay[NumOfTask]={0};
+char Status=0;     																				//用于标识接收数据的状态
+int IndexWalkingStick=0;																	//用于标识当前接收到的数据位
 extern void TimingDelay_Decrement(void);
 extern void TimeStamp_Increment(void);
 extern void gyro_data_ready_cb(void);
-
+extern int UltrasonicWave_Distance_Walk[AVER_NUM_WALK];   //拐杖采集数据
+extern int8_t GET_WALK_FLAG ;       											//接收拐杖数据标志
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
@@ -205,6 +213,24 @@ void USART1_IRQHandler(void)
 //			int i;
 			ch = USART_ReceiveData(USART1);
 		  en_Queue(&q, ch);
+			if(ch==DirectionFlag||ch==WalkingStickFlag)    //判断当前的接收状态
+			{
+				Status=ch;
+				memset(UltrasonicWave_Distance_Walk, 0, sizeof(UltrasonicWave_Distance_Walk));
+				IndexWalkingStick=0;
+				return;
+			}
+			if(Status==DirectionFlag)											//接收数据为方位信息
+			{
+					PlayDirection(ch);
+			}
+			else if(Status==WalkingStickFlag)							//接收数据为拐杖信息
+			{
+				UltrasonicWave_Distance_Walk[IndexWalkingStick]=ch;
+				IndexWalkingStick++;
+				if(IndexWalkingStick == AVER_NUM_WALK)
+					GET_WALK_FLAG=1;
+			}
 //			if(ch=='s'||Receive[0]=='s')
 //				Receive[Num]=ch;
 //			else

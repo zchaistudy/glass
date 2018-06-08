@@ -206,6 +206,44 @@ void PlayRate(int degree)
 		}
 }
 
+/*
+ * 函数名：PlayDirection
+ * 描述  ：播放方位的信息。
+ * 输入  ：输入方位信息
+ * 输出  ：无	
+ */
+void PlayDirection(int direction)
+{
+		
+		switch(direction)
+		{
+				case InEast:
+					USART3_Send_String(East,sizeof(East));
+					break;
+				case InSouth:
+						USART3_Send_String(South,sizeof(South));
+						break;
+				case InWest:
+						USART3_Send_String(West,sizeof(West));
+						break;
+				case InNorth:
+						USART3_Send_String(North,sizeof(North));
+						break;
+				case InSouthEast:
+						USART3_Send_String(SouthEast,sizeof(SouthEast));
+						break;
+				case InSouthWest:
+						USART3_Send_String(SouthWest,sizeof(SouthWest));
+						break;
+				case InNorthWest:
+						USART3_Send_String(NorthWest,sizeof(NorthWest));
+						break;
+				case InNorthEast:
+						USART3_Send_String(NorthEast,sizeof(NorthEast));
+						break;					
+		}
+}
+
 // 中断优先级配置
 void TIM6_TIM_NVIC_Config(void)
 {
