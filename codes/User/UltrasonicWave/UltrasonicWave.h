@@ -2,7 +2,6 @@
 #define	__UltrasonicWave_H
 
 #include "stm32f10x.h"
-#include "bsp_delay.h"
 #include "bsp_usart1.h"
 #include "UltraConfig.h"
 
@@ -19,7 +18,7 @@
 #define OBSTACLE_FOOT            1
 #define OBSTACLE_NO              0
 
-extern int8_t  IT_TAG;
+extern int8_t  GET_WALK_FLAG;
 
 int getRange(void);
 
@@ -29,5 +28,6 @@ int addDistance(void);
 void UltrasonicWave_Configuration(void);               //对超声波模块初始化
 void UltrasonicWave(int);
 
+void HasObstacle(void);
 #endif /* __UltrasonicWave_H */
 

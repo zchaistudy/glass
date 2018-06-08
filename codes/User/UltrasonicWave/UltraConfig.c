@@ -95,6 +95,7 @@ void GENERAL_TIM_Init(void)
 	TIM3_NVIC_Config();
 	TIM3_Mode_Config();
 }
+
 void TIM2_Init()
 {
     TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;

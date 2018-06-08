@@ -29,7 +29,7 @@ static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin);
 static int UltrasonicWave_Distance[AVER_NUM_GLASS];      //计算出的距离    
 
 static int16_t MAX_DISTACE =150;        //最大距离
-int8_t  MEASURE_FLAG = 0;   // 0 眼镜采集数据， 1 等待拐杖采集数据
+int8_t  MEASURE_FLAG = 1;   // 1 眼镜采集数据， 0 等待拐杖采集数据
 
 int8_t GET_WALK_FLAG = 0;       //接收拐杖数据标志
 int UltrasonicWave_Distance_Walk[AVER_NUM_WALK] = { 500, 500, 500, 500, 500};   //拐杖采集数据
@@ -37,7 +37,15 @@ int UltrasonicWave_Distance_Walk[AVER_NUM_WALK] = { 500, 500, 500, 500, 500};   
 static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoice, int* distanceRate );
 
 
+static void ObstacleDelayUs( uint32_t t )
+{
 
+	int i;
+    for( i = 0; i < t * 10; i++ )
+ 	{
+		__NOP();
+	}	
+}
 
 /*
  * 函数名：dealTIM_ICUserValueStructureData
@@ -51,7 +59,7 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 
 //	uint32_t time;
 	double ftime;
-	int distanceVoice, distanceRate;
+//	int distanceVoice, distanceRate;
 	int i;
 	i = TIM_ICUserValueStructurex.Capture_CCx;
 	// 计算高电平时间的计数器的值
@@ -63,10 +71,10 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 	p_debug( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
 
 	
-	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
+//	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
 
-//	PlayRate(distanceRate);                    //调用频率模式
-	PlayVoice(distanceVoice);                  //修改语音模式
+////	PlayRate(distanceRate);                    //调用频率模式
+//	PlayVoice(distanceVoice);                  //修改语音模式
 }
 
 /*
@@ -208,7 +216,16 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
     	
 }
 
+//判断障碍物位置，并触发提示
+void HasObstacle()
+{
+	int distanceVoice, distanceRate;
+	
+	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
 
+//	PlayRate(distanceRate);                    //调用频率模式
+	PlayVoice(distanceVoice);                  //修改语音模式	
+}
 
 
 /*
@@ -220,7 +237,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin)
 {
   GPIO_SetBits(port,pin); 		  //送>10US的高电平RIG_PORT,TRIG_PIN这两个在define中有?
-  delayUs(11);		                      //延时20US
+  ObstacleDelayUs(11);		                      //延时20US
   GPIO_ResetBits(port,pin);
 
 }
@@ -244,7 +261,7 @@ void UltrasonicWave(int portNum)
     if( TIM_ICUserValueStructure[1].Capture_FinishFlag == 1 )  
 	{
 	    dealTIM_ICUserValueStructureData(TIM_ICUserValueStructure[1]);
-		p_debug("test\r\n");
+//		p_debug("test\r\n");
 		TIM_ICUserValueStructure[1].Capture_FinishFlag = 0;
 	}	
 	switch(portNum)          //开始测距，发送一个>10us的脉冲，

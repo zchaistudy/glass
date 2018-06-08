@@ -50,7 +50,6 @@
 "..\..\output\mpu6050.o"
 "..\..\output\bsp_mpu6050.o"
 "..\..\output\bsp_key.o"
-"..\..\output\bsp_delay.o"
 "..\..\output\ultrasonicwave.o"
 "..\..\output\ultraconfig.o"
 --library_type=microlib --strict --scatter "..\..\Output\MPU.sct"

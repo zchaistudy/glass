@@ -18,6 +18,5 @@
 ..\..\output\bsp_key.o: ..\..\User\./systick/bsp_SysTick.h
 ..\..\output\bsp_key.o: ..\..\User\mp3\mp3.h
 ..\..\output\bsp_key.o: ..\..\User\UltrasonicWave\UltrasonicWave.h
-..\..\output\bsp_key.o: ..\..\User\UltrasonicWave\bsp_delay.h
 ..\..\output\bsp_key.o: ..\..\User\UltrasonicWave\UltraConfig.h
 ..\..\output\bsp_key.o: ..\..\User\UltrasonicWave\UltrasonicWave.h

@@ -14,7 +14,6 @@
 ..\..\output\ultraconfig.o: ..\..\Libraries\FWlib\inc\stm32f10x_usart.h
 ..\..\output\ultraconfig.o: ..\..\Libraries\FWlib\inc\misc.h
 ..\..\output\ultraconfig.o: ..\..\User\UltrasonicWave\UltrasonicWave.h
-..\..\output\ultraconfig.o: ..\..\User\UltrasonicWave\bsp_delay.h
 ..\..\output\ultraconfig.o: ..\..\User\usart\bsp_usart1.h
 ..\..\output\ultraconfig.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\..\output\ultraconfig.o: ..\..\User\UltrasonicWave\UltraConfig.h

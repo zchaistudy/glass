@@ -22,16 +22,32 @@ Dialog DLL:      TARMSTM.DLL V1.66.0.0
  
 <h2>Project:</h2>
 G:\ÑÛ¾µ\work\glass\codes\Project\RVMDK£¨uv4£©\iSO-STM32.uvprojx
-Project File Date:  06/07/2018
+Project File Date:  06/08/2018
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'G:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'BLINDGLASS'
 compiling UltrasonicWave.c...
+compiling stm32f10x_it.c...
+compiling bsp_key.c...
+..\..\User\Key\bsp_key.c(586): warning:  #177-D: function "EXTI_n"  was declared but never referenced
+  static void EXTI_n(int key_n)
+..\..\User\Key\bsp_key.c(630): warning:  #177-D: function "EXTI_n_Open"  was declared but never referenced
+  static void EXTI_n_Open(int key_n)
+..\..\User\Key\bsp_key.c(676): warning:  #177-D: function "delay"  was declared but never referenced
+  static void delay(int i, int j)
+..\..\User\Key\bsp_key.c: 3 warnings, 0 errors
+compiling main.c...
+..\..\User\main.c(126): warning:  #177-D: variable "Angle"  was declared but never referenced
+  	float Angle[4];
+..\..\User\main.c(36): warning:  #177-D: function "PeriphInit"  was declared but never referenced
+  static void PeriphInit()
+..\..\User\main.c: 2 warnings, 0 errors
+compiling UltraConfig.c...
 linking...
 Program Size: Code=59136 RO-data=4752 RW-data=376 ZI-data=4976  
 FromELF: creating hex file...
-"..\..\Output\MPU.axf" - 0 Error(s), 0 Warning(s).
+"..\..\Output\MPU.axf" - 0 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -54,7 +70,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.1.1
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
