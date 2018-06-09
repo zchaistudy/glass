@@ -19,13 +19,21 @@
 #include "./exti/bsp_exti.h" 
 #include "./MPU6050/mpu6050/mpu6050.h"
 #include "bsp_key.h"
-#include "bsp_GeneralTim.h"
+#include "UltraConfig.h"
 #include "UltrasonicWave.h"
 #include "debug.h"
 #include "bsp_mpu6050.h"
 
 LinkQueue q;
 extern key_four key4;
+extern int time;
+
+//key4.current_mode=0;	//按键结构初始化
+//key4.key_rank[MODE_VOLUME]=0,key4.key_rank[MODE_FREQUENCY]=0,key4.key_rank[MODE_DISTANCE]=0;
+//key4.max_mode=3;
+//key4.max_rank=4;
+//key4.min_mode=0;
+//key4.min_rank=0;
 
 
 /**
@@ -45,29 +53,18 @@ static void PeriphInit()
 	//MPU6050初始化
 	MPU6050Config();
 	//按键初始化
-#if zhongduan
-	EXTI_Key_Config();	//中断	
+#if BREAK_EXTI_OPEN
+	EXTI_Key_Config();	//中断
 #else
-	EXTI_Key_Config();	//中断	
 	Key_GPIO_Config();	//轮询
 #endif
 }
 
-/**
-  * @brief  主函数
-  * @param  无
-  * @retval 无
-  */
+
+
 int main(void)
-{
+{	
 	float Angle[4];
-	key4.current_mode=0;	//按键结构初始化
-	key4.key_rank[0]=0,key4.key_rank[1]=0,key4.key_rank[2]=0;
-	key4.max_mode=3;
-	key4.max_rank=4;
-	key4.min_mode=0;
-	key4.min_rank=0;
-	
 	
 	USART1_Config();	     			//初始化串口1用于蓝牙通讯
 	NVIC_Configuration();				//设置优先级
@@ -75,6 +72,9 @@ int main(void)
 	USART3_Config();						//初始化串口3用于语音模块
 	
 	init_Queue(&q); 		
+	
+	TIM6_TIM_NVIC_Config();			//初始化定时器6
+	TIM6_TIM_Mode_Config();			//用于语音模块
 	
 	UltrasonicWave_Configuration();
 	GENERAL_TIM_Init();
@@ -85,10 +85,13 @@ int main(void)
 
 	for(;;)
 	{
+p_err_cym("key4.current_mode = %d\nkey4.key_rank[MODE_VOLUME] = %d\nkey4.key_rank[MODE_FREQUENCY] = %d\nkey4.key_rank[MODE_DISTANCE] = %d",
+			key4.current_mode, key4.key_rank[MODE_VOLUME], key4.key_rank[MODE_FREQUENCY], key4.key_rank[MODE_DISTANCE]);
+
 		MPU6050Triaxial(Angle);	//三轴检测
 		blind_falled();		//盲人是否摔倒		
 		
-#if zhongduan
+#if BREAK_EXTI_OPEN
 #else
 		KeyPolling();
 #endif

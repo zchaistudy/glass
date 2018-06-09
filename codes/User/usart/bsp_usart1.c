@@ -141,6 +141,17 @@ int fgetc(FILE *f)
 		return (int)USART_ReceiveData(USART2);
 }
 
+/*
+ * 函数名：GetWalkingStickRequire
+ * 描述  ：获取拐杖数据请求
+ * 输入  ：无
+ * 输出  ：无	
+ */
+void GetWalkingStickRequire(void)
+{
+	USART_SendData(USART1,1);
+}
+
 void Deal_Data(void)
 {
 	if(!is_Empty(&q))

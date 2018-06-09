@@ -1,5 +1,5 @@
-#ifndef __BSP_GENERALTIME_H
-#define __BSP_GENERALTIME_H
+#ifndef __ULTRACONFIG_H
+#define __ULTRACONFIG_H
 
 
 #include "stm32f10x.h"
@@ -47,6 +47,26 @@ void GENERAL_TIM_Init(void);
 void TIM2_Init(void);
 
 
-#endif	/* __BSP_GENERALTIME_H */
+
+
+/**************************“˝Ω≈≈‰÷√********************************/
+#define	TRIG_PORT1     			  GPIOA		//TRIG       
+#define	TRIG_PIN1      			  GPIO_Pin_4   //TRIG       
+
+#define	TRIG_PORT2     			  GPIOA		//TRIG       
+#define	TRIG_PIN2      			  GPIO_Pin_5  //TRIG  
+
+#define RCC_APB2Periph_GPIOx  RCC_APB2Periph_GPIOA
+
+
+
+
+
+
+
+
+
+
+#endif	/* __ULTRACONFIG_H */
 
 

@@ -31,23 +31,32 @@
 #include "bsp_key.h"
 #include "./systick/bsp_SysTick.h"
 #include <stdio.h>
-#include"queue.h"
-#include "bsp_GeneralTim.h"
+#include "string.h"
+#include "queue.h"
+#include "UltraConfig.h"
 #include "UltrasonicWave.h"
 #include "debug.h"
 #include "bsp_key.h"
+#include "mp3.h"
+
+#define DirectionFlag '#'
+#define WalkingStickFlag '!'
 
 extern LinkQueue q;
-
+extern int time;
 extern int flag_FALLING;
+extern int flag_volume;      
 //char Receive[10];
 //int Num;
 
 unsigned int Task_Delay[NumOfTask]={0};
+char Status=0;     																				//用于标识接收数据的状态
+int IndexWalkingStick=0;																	//用于标识当前接收到的数据位
 extern void TimingDelay_Decrement(void);
 extern void TimeStamp_Increment(void);
 extern void gyro_data_ready_cb(void);
-
+extern int UltrasonicWave_Distance_Walk[AVER_NUM_WALK];   //拐杖采集数据
+extern int8_t GET_WALK_FLAG ;       											//接收拐杖数据标志
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
@@ -204,6 +213,25 @@ void USART1_IRQHandler(void)
 //			int i;
 			ch = USART_ReceiveData(USART1);
 		  en_Queue(&q, ch);
+			if(ch==DirectionFlag||ch==WalkingStickFlag)    //判断当前的接收状态
+			{
+				Status=ch;
+				memset(UltrasonicWave_Distance_Walk, 0, sizeof(UltrasonicWave_Distance_Walk));
+				IndexWalkingStick=0;
+				return;
+			}
+			if(Status==DirectionFlag)											//接收数据为方位信息
+			{
+					PlayDirection(ch);
+					Status=0;
+			}
+			else if(Status==WalkingStickFlag)							//接收数据为拐杖信息
+			{
+				UltrasonicWave_Distance_Walk[IndexWalkingStick]=ch;
+				IndexWalkingStick++;
+				if(IndexWalkingStick == AVER_NUM_WALK)
+					GET_WALK_FLAG=1;
+			}
 //			if(ch=='s'||Receive[0]=='s')
 //				Receive[Num]=ch;
 //			else
@@ -237,23 +265,35 @@ void USART2_IRQHandler(void)
 
 void TIM2_IRQHandler(void)
 {
-	int num[2];
-	p_debug("tim2\r\n");
+	extern int8_t  MEASURE_FLAG;   // 1 眼镜采集数据， 0 等待拐杖采集数据
+	
+	static int portNum = 0;      //选择测距通道
+	
 	if ( TIM_GetITStatus( TIM2, TIM_IT_Update) != RESET ) 
-	{	
-		p_debug("tim2 ok\r\n");
-		UltrasonicWave(num);
+	{			
+		if( MEASURE_FLAG == 0)
+		{
+			UltrasonicWave(portNum);    //采集一个模块数据
+			portNum++;
+			if( portNum == AVER_NUM_GLASS)   //眼睛上模块数据采集完毕
+			{
+				portNum = 0;
+				//$$$$$$$$$$向拐杖发送测距请求
+				//MEASURE_FLAG = 1;           
+			}
+		}
+		else if( GET_WALK_FLAG )                  //接收到拐杖数据
+		{
+			GET_WALK_FLAG = 0;
+			MEASURE_FLAG = 1;
+			HasObstacle();               //判断障碍物位置并提示
+		}
+		
+		
 		TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);  		 
 	}		
 	
 }
-
-////////调试开关//////////////
-#ifdef DEBUG_ON_OFF 
-#undef  DEBUG_ON_OFF
-#endif
-#define DEBUG_ON_OFF 0       //1打开调试。0关闭
-//////////////////////////////
 
 void TIM3_IRQHandler(void)
 {
@@ -362,6 +402,18 @@ void TIM3_IRQHandler(void)
 	}		
 }
 
+void  TIM6_IRQHandler (void)
+{
+	if ( TIM_GetITStatus( TIM6, TIM_IT_Update) != RESET ) 
+	{	
+		time++;
+		if(time==2000)
+			flag_volume=0;
+		if(time==2002)
+			time=0;
+		TIM_ClearITPendingBit(TIM6 , TIM_FLAG_Update);  		 
+	}		 	
+}
 
 /**
   * @brief  This function handles PPP interrupt request.

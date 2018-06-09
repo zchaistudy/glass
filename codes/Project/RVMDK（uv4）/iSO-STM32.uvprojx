@@ -145,7 +145,7 @@
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
-            <RestoreTracepoints>0</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreSysVw>1</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
@@ -176,7 +176,7 @@
             <DriverSelection>4099</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
-          <Flash2>Segger\JL2CM3.dll</Flash2>
+          <Flash2>BIN\UL2CM3.DLL</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
@@ -363,8 +363,8 @@
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
             <useXO>0</useXO>
-            <v6Lang>1</v6Lang>
-            <v6LangP>1</v6LangP>
+            <v6Lang>0</v6Lang>
+            <v6LangP>0</v6LangP>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD, USE_STDPERIPH_DRIVER,USE_DMP,MPL_LOG_NDEBUG=1,EMPL,MPU6050,EMPL_TARGET_STM32F4</Define>
@@ -751,19 +751,14 @@
           <GroupName>ultr</GroupName>
           <Files>
             <File>
-              <FileName>bsp_delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\User\UltrasonicWave\bsp_delay.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_GeneralTim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\User\UltrasonicWave\bsp_GeneralTim.c</FilePath>
-            </File>
-            <File>
               <FileName>UltrasonicWave.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\UltrasonicWave\UltrasonicWave.c</FilePath>
+            </File>
+            <File>
+              <FileName>UltraConfig.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\UltrasonicWave\UltraConfig.c</FilePath>
             </File>
           </Files>
         </Group>
