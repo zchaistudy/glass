@@ -45,8 +45,12 @@ static void PeriphInit()
 	//MPU6050初始化
 	MPU6050Config();
 	//按键初始化
-//	Key_GPIO_Config();	//轮询
-	EXTI_Key_Config();	//中断
+#if zhongduan
+	EXTI_Key_Config();	//中断	
+#else
+	EXTI_Key_Config();	//中断	
+	Key_GPIO_Config();	//轮询
+#endif
 }
 
 /**
@@ -83,6 +87,11 @@ int main(void)
 	{
 		MPU6050Triaxial(Angle);	//三轴检测
 		blind_falled();		//盲人是否摔倒		
+		
+#if zhongduan
+#else
+		KeyPolling();
+#endif
 		
 		Deal_Data();
 		

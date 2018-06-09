@@ -25,7 +25,7 @@ typedef struct key{
 }key_four;
 
 
-
+#define zhongduan 0
 
 
 
@@ -132,10 +132,12 @@ typedef struct key{
 //#define KEY_OFF	1
 
 void EXTI_Key_Config(void);
-//void Key_GPIO_Config(void);
+void Key_GPIO_Config(void);
 uint8_t Key_Scan(GPIO_TypeDef* GPIOx,uint16_t GPIO_Pin);
-//int KeyPolling(void);
-
+#if zhongduan
+#else
+void KeyPolling(void);
+#endif
 
 #endif /* __KEY_H */
 

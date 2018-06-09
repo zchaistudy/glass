@@ -71,7 +71,7 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 	ftime = ((double) TIM_ICUserValueStructurex.Capture_CcrValue+1)/TIM_PscCLK;
 	UltrasonicWave_Distance[i] = ftime * 340 / 2  * 100;
 
-	printf( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i]);
+//	printf( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i]);
 
 	
 	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
