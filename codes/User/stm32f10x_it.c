@@ -37,6 +37,13 @@
 #include "debug.h"
 #include "bsp_key.h"
 
+////////调试开关//////////////
+#ifdef DEBUG_ON_OFF 
+#undef  DEBUG_ON_OFF
+#endif
+#define DEBUG_ON_OFF 0      //1打开调试。0关闭
+//////////////////////////////
+
 extern LinkQueue q;
 extern int time;
 extern int flag_FALLING;
@@ -241,10 +248,10 @@ void TIM2_IRQHandler(void)
 	extern int8_t  MEASURE_FLAG;   // 1 眼镜采集数据， 0 等待拐杖采集数据
 	
 	static int portNum = 0;      //选择测距通道
-	
+//	p_debug("tim2\r\n");
 	if ( TIM_GetITStatus( TIM2, TIM_IT_Update) != RESET ) 
 	{			
-		if( MEASURE_FLAG == 0)
+		if( MEASURE_FLAG)
 		{
 			UltrasonicWave(portNum);    //采集一个模块数据
 			portNum++;
@@ -252,7 +259,9 @@ void TIM2_IRQHandler(void)
 			{
 				portNum = 0;
 				//$$$$$$$$$$向拐杖发送测距请求
-				//MEASURE_FLAG = 1;           
+				//MEASURE_FLAG = 0; 
+				p_debug("obstace\r\n");
+                 HasObstacle();		 //$$$$$$$$$$$$44		
 			}
 		}
 		else if( GET_WALK_FLAG )                  //接收到拐杖数据
