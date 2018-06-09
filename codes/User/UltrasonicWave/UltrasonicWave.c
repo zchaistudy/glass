@@ -21,7 +21,7 @@
 #ifdef DEBUG_ON_OFF 
 #undef  DEBUG_ON_OFF
 #endif
-#define DEBUG_ON_OFF 0       //1打开调试。0关闭
+#define DEBUG_ON_OFF 1       //1打开调试。0关闭
 //////////////////////////////
 
 static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin);              
@@ -269,7 +269,8 @@ void UltrasonicWave(int portNum)
 	{
 		case 0: UltrasonicWave_StartMeasure(TRIG_PORT1,TRIG_PIN1); break;
 		case 1: UltrasonicWave_StartMeasure(TRIG_PORT2,TRIG_PIN2); break;
-	}	
+	}
+p_debug("ssd\r\n");	
 }
 
 
