@@ -1,15 +1,34 @@
 #ifndef __KEY_H
 #define	__KEY_H
-
-
 #include "stm32f10x.h"
 
+//短一点的，按键模块平时输出低电平
+//按下时输出高电平
 
-//按键
+//长一点的，相反，松开输出高电平
+//按下输出低电平
+
+#define KEY_DOWN 1	//按键按下表示高电平
+#define KEY_UP 0		//按键松开表示低电平
+
+#define iCOUNT 10000	//中断的延时
+#define iTick 10	//轮询的延时
+
+#define BREAK_EXTI_OPEN 0	//1为打开中断的控制方式，0为打开轮询的控制方式
+
+
+//调试
+#define DEBUG_ON_OFF_CYM 0
+#define p_debug_cym(restrict,args...)  do{if(DEBUG_ON_OFF_CYM){printf(restrict,##args);}}while(0)
+#define p_err_cym(restrict,args...)  do{if(DEBUG_ON_OFF_CYM){printf("\nfile:%s\nfunction:%s\t\tline:%d:\n",__FILE__,__func__,__LINE__);printf(restrict,##args);}}while(0)
+
+
+//--------------------------------------------------------------------------------
+//按键的三种模式
 #define MODE_VOLUME     0
 #define MODE_FREQUENCY 	1
 #define MODE_DISTANCE   2
-
+//按键的四种状态等级
 #define NO_RANK			0
 #define LOW_RANK		1
 #define MID_RANK		2
@@ -28,30 +47,7 @@ typedef struct key{
 
 
 
-
-
-
-//  引脚定义
-#define    KEY1_GPIO_CLK     RCC_APB2Periph_GPIOA
-#define    KEY1_GPIO_PORT    GPIOA			   
-#define    KEY1_GPIO_PIN		 GPIO_Pin_0
-
-#define    KEY2_GPIO_CLK     RCC_APB2Periph_GPIOB
-#define    KEY2_GPIO_PORT    GPIOB		   
-#define    KEY2_GPIO_PIN		  GPIO_Pin_1
-
-#define    KEY3_GPIO_CLK     RCC_APB2Periph_GPIOB
-#define    KEY3_GPIO_PORT    GPIOB			   
-#define    KEY3_GPIO_PIN		 GPIO_Pin_2
-
-#define    KEY4_GPIO_CLK     RCC_APB2Periph_GPIOD
-#define    KEY4_GPIO_PORT    GPIOD		   
-#define    KEY4_GPIO_PIN		 GPIO_Pin_3
-
-#define    KEY5_GPIO_CLK     RCC_APB2Periph_GPIOD
-#define    KEY5_GPIO_PORT    GPIOD			   
-#define    KEY5_GPIO_PIN		 GPIO_Pin_4
-
+#if BREAK_EXTI_OPEN
 
 //引脚定义
 #define KEY1_INT_GPIO_PORT         GPIOA
@@ -63,7 +59,6 @@ typedef struct key{
 #define KEY1_INT_EXTI_IRQ          EXTI0_IRQn
 
 #define KEY1_IRQHandler            EXTI0_IRQHandler
-
 
 
 #define KEY2_INT_GPIO_PORT         GPIOB
@@ -110,31 +105,45 @@ typedef struct key{
 #define KEY5_IRQHandler            EXTI4_IRQHandler
 
 
-
-#define KEY_NO 			0		//没有按键
-#define KEY_MODE		1		//功能键 PB1
-#define KEY_BACK		2		//返回键 PB2
-#define KEY_ADD			3		//加号键 PD3
-#define KEY_SUB			4		//减号键 PD4
-#define KEY_SAFE		5		//安全键 PA0
-
-
-
-
- /** 按键按下标置宏
-	*  按键按下为高电平，设置 KEY_ON=1， KEY_OFF=0
-	*  若按键按下为低电平，把宏设置成KEY_ON=0 ，KEY_OFF=1 即可
-	*/
-#define KEY_ON	1
-#define KEY_OFF	0
-
-//#define KEY_ON	0
-//#define KEY_OFF	1
-
 void EXTI_Key_Config(void);
-//void Key_GPIO_Config(void);
-uint8_t Key_Scan(GPIO_TypeDef* GPIOx,uint16_t GPIO_Pin);
-//int KeyPolling(void);
+	
+#else
+
+//  引脚定义
+#define    KEY1_GPIO_CLK     RCC_APB2Periph_GPIOA
+#define    KEY1_GPIO_PORT    GPIOA			   
+#define    KEY1_GPIO_PIN		 GPIO_Pin_0
+
+#define    KEY2_GPIO_CLK     RCC_APB2Periph_GPIOB
+#define    KEY2_GPIO_PORT    GPIOB		   
+#define    KEY2_GPIO_PIN		  GPIO_Pin_1
+
+#define    KEY3_GPIO_CLK     RCC_APB2Periph_GPIOB
+#define    KEY3_GPIO_PORT    GPIOB			   
+#define    KEY3_GPIO_PIN		 GPIO_Pin_2
+
+#define    KEY4_GPIO_CLK     RCC_APB2Periph_GPIOB
+#define    KEY4_GPIO_PORT    GPIOB
+#define    KEY4_GPIO_PIN		 GPIO_Pin_0
+
+#define    KEY5_GPIO_CLK     RCC_APB2Periph_GPIOA
+#define    KEY5_GPIO_PORT    GPIOA
+#define    KEY5_GPIO_PIN		 GPIO_Pin_1
+
+
+
+
+#define TRUE 1
+#define FALSE 0
+
+
+void Key_GPIO_Config(void);
+void KeyPolling(void);
+	
+
+#endif
+
+
 
 
 #endif /* __KEY_H */

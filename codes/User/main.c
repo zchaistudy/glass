@@ -28,6 +28,14 @@ LinkQueue q;
 extern key_four key4;
 extern int time;
 
+//key4.current_mode=0;	//按键结构初始化
+//key4.key_rank[MODE_VOLUME]=0,key4.key_rank[MODE_FREQUENCY]=0,key4.key_rank[MODE_DISTANCE]=0;
+//key4.max_mode=3;
+//key4.max_rank=4;
+//key4.min_mode=0;
+//key4.min_rank=0;
+
+
 /**
   * @brief  初始化函数
   * @param  无  
@@ -45,22 +53,18 @@ static void PeriphInit()
 	//MPU6050初始化
 	MPU6050Config();
 	//按键初始化
-//	Key_GPIO_Config();	//轮询
+#if BREAK_EXTI_OPEN
 	EXTI_Key_Config();	//中断
+#else
+	Key_GPIO_Config();	//轮询
+#endif
 }
 
 
 
 int main(void)
-{
+{	
 	float Angle[4];
-	key4.current_mode=0;	//按键结构初始化
-	key4.key_rank[0]=0,key4.key_rank[1]=0,key4.key_rank[2]=0;
-	key4.max_mode=3;
-	key4.max_rank=4;
-	key4.min_mode=0;
-	key4.min_rank=0;
-	
 	
 	USART1_Config();	     			//初始化串口1用于蓝牙通讯
 	NVIC_Configuration();				//设置优先级
@@ -76,16 +80,22 @@ int main(void)
 	GENERAL_TIM_Init();
 	TIM2_Init();
 	
-//	PeriphInit();	//外设初始化
+	PeriphInit();	//外设初始化
 	printf("\n系统初始化完毕......\n");
 
 	for(;;)
 	{
+p_err_cym("key4.current_mode = %d\nkey4.key_rank[MODE_VOLUME] = %d\nkey4.key_rank[MODE_FREQUENCY] = %d\nkey4.key_rank[MODE_DISTANCE] = %d",
+			key4.current_mode, key4.key_rank[MODE_VOLUME], key4.key_rank[MODE_FREQUENCY], key4.key_rank[MODE_DISTANCE]);
 
-//		MPU6050Triaxial(Angle);	//三轴检测
-//		blind_falled();		//盲人是否摔倒
-//		key_module();		//按键模块
-
+		MPU6050Triaxial(Angle);	//三轴检测
+		blind_falled();		//盲人是否摔倒		
+		
+#if BREAK_EXTI_OPEN
+#else
+		KeyPolling();
+#endif
+		
 		Deal_Data();
 		
 //		mdelay(50);

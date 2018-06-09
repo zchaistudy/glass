@@ -66,6 +66,7 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 //	time = TIM_ICUserValueStructurex.Capture_CcrValue+1;
 	// 打印高电平脉宽时间
 	ftime = ((double) TIM_ICUserValueStructurex.Capture_CcrValue+1)/TIM_PscCLK;
+
 	UltrasonicWave_Distance[i-1] = ftime * 340 / 2  * 100;
 	
 	p_debug( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
