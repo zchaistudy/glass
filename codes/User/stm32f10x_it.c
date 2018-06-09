@@ -285,7 +285,7 @@ void TIM2_IRQHandler(void)
 		else if( GET_WALK_FLAG )                  //接收到拐杖数据
 		{
 			GET_WALK_FLAG = 0;
-			MEASURE_FLAG = 1;
+			MEASURE_FLAG = 0;
 			HasObstacle();               //判断障碍物位置并提示
 		}
 		
