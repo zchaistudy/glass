@@ -25,22 +25,22 @@
 
 //--------------------------------------------------------------------------------
 //按键的三种模式
-#define MODE_VOLUME     0
-#define MODE_FREQUENCY 	1
-#define MODE_DISTANCE   2
+#define MODE_VOLUME     0	//音量模式
+#define MODE_FREQUENCY 	1 //频率模式
+#define MODE_DISTANCE   2 //距离模式
 //按键的四种状态等级
-#define NO_RANK			0
-#define LOW_RANK		1
-#define MID_RANK		2
-#define UP_RANK			3
+#define NO_RANK			0	//0等级
+#define LOW_RANK		1	//低等级
+#define MID_RANK		2 //中等级
+#define UP_RANK			3 //高等级
 
 typedef struct key{
-	int current_mode;
-	int key_rank[3];
-	int max_mode;//3:0 1 2
-	int max_rank;//4:0 1 2 3
-	int min_mode;//0
-	int min_rank;//0
+	int current_mode;//当前模式
+	int key_rank[3];//每个按键的等级
+	int max_mode;//最大模式是3。0 1 2   MODE_VOLUME MODE_FREQUENCY MODE_DISTANCE
+	int max_rank;//最大等级是4。0 1 2 3 NO_RANK LOW_RANK MID_RANK UP_RANK
+	int min_mode;//最小模式是0
+	int min_rank;//最小等级是0
 }key_four;
 
 
@@ -109,11 +109,22 @@ void EXTI_Key_Config(void);
 	
 #else
 
+#define KEY1_INT_GPIO_PORT         GPIOA
+#define KEY1_INT_GPIO_CLK          (RCC_APB2Periph_GPIOA|RCC_APB2Periph_AFIO)
+#define KEY1_INT_GPIO_PIN          GPIO_Pin_0
+#define KEY1_INT_EXTI_PORTSOURCE   GPIO_PortSourceGPIOA
+#define KEY1_INT_EXTI_PINSOURCE    GPIO_PinSource0
+#define KEY1_INT_EXTI_LINE         EXTI_Line0
+#define KEY1_INT_EXTI_IRQ          EXTI0_IRQn
+
+#define KEY1_IRQHandler            EXTI0_IRQHandler
+
+
 //  引脚定义
 #define    KEY1_GPIO_CLK     RCC_APB2Periph_GPIOA
 #define    KEY1_GPIO_PORT    GPIOA			   
 #define    KEY1_GPIO_PIN		 GPIO_Pin_0
-
+ 
 #define    KEY2_GPIO_CLK     RCC_APB2Periph_GPIOB
 #define    KEY2_GPIO_PORT    GPIOB		   
 #define    KEY2_GPIO_PIN		  GPIO_Pin_1
@@ -136,6 +147,7 @@ void EXTI_Key_Config(void);
 #define TRUE 1
 #define FALSE 0
 
+void EXTI_Key_Config(void);
 
 void Key_GPIO_Config(void);
 void KeyPolling(void);

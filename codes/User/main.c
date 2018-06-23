@@ -56,6 +56,7 @@ static void PeriphInit()
 #if BREAK_EXTI_OPEN
 	EXTI_Key_Config();	//÷–∂œ
 #else
+	EXTI_Key_Config();
 	Key_GPIO_Config();	//¬÷—Ø
 #endif
 }
@@ -85,18 +86,15 @@ int main(void)
 
 	for(;;)
 	{
-p_err_cym("key4.current_mode = %d\nkey4.key_rank[MODE_VOLUME] = %d\nkey4.key_rank[MODE_FREQUENCY] = %d\nkey4.key_rank[MODE_DISTANCE] = %d",
-			key4.current_mode, key4.key_rank[MODE_VOLUME], key4.key_rank[MODE_FREQUENCY], key4.key_rank[MODE_DISTANCE]);
+//		MPU6050Triaxial(Angle);	//»˝÷·ºÏ≤‚
+//		blind_falled();		//√§»À «∑ÒÀ§µπ		
 
-		MPU6050Triaxial(Angle);	//»˝÷·ºÏ≤‚
-		blind_falled();		//√§»À «∑ÒÀ§µπ		
-		
 #if BREAK_EXTI_OPEN
 #else
 		KeyPolling();
 #endif
 		
-		Deal_Data();
+//		Deal_Data();
 		
 //		mdelay(50);
 	}

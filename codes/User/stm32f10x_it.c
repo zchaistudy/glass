@@ -42,13 +42,6 @@
 #define DirectionFlag '#'
 #define WalkingStickFlag '!'
 
-////////调试开关//////////////
-#ifdef DEBUG_ON_OFF 
-#undef  DEBUG_ON_OFF
-#endif
-#define DEBUG_ON_OFF 0      //1打开调试。0关闭
-//////////////////////////////
-
 extern LinkQueue q;
 extern int time;
 extern int flag_FALLING;
@@ -265,7 +258,6 @@ void USART2_IRQHandler(void)
 					printf( "%c", ch );    //将接受到的数据直接返回打印
         }   
 } 
-
 
 
 

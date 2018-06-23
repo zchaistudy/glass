@@ -21,7 +21,7 @@
 #ifdef DEBUG_ON_OFF 
 #undef  DEBUG_ON_OFF
 #endif
-#define DEBUG_ON_OFF 1       //1打开调试。0关闭
+#define DEBUG_ON_OFF 0       //1打开调试。0关闭
 //////////////////////////////
 
 static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin);              
@@ -33,6 +33,11 @@ int8_t  MEASURE_FLAG = 1;   // 1 眼镜采集数据， 0 等待拐杖采集数据
 
 int8_t GET_WALK_FLAG = 0;       //接收拐杖数据标志
 int UltrasonicWave_Distance_Walk[AVER_NUM_WALK] = { 500, 500, 500, 500, 500};   //拐杖采集数据
+
+int MODE_FLAG = 1;       //1 语音 0 频率
+
+
+
 
 static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoice, int* distanceRate );
 
@@ -149,7 +154,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 		{
 			lateobstacle[0] = 0;
 		}
-		p_debug("              %d\r\n", distance_glass[i]);
+		p_debug("              %d    , %d\r\n", distance_glass[i],lateobstacle[0] );
 	}
 	
 	if( distance_walk[0]  < MAX_DISTACE || distance_walk[1] < MAX_DISTACE )  
@@ -224,8 +229,18 @@ void HasObstacle()
 	
 	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
 
-//	PlayRate(distanceRate);                    //调用频率模式
-	PlayVoice(distanceVoice);                  //修改语音模式	
+	p_debug(" $$%d\r\n", distanceVoice);
+	if( MODE_FLAG )
+	{
+		p_debug("&&&");
+		PlayVoice(distanceVoice);                  //修改语音模式	
+	}
+	else
+	{
+		PlayRate(distanceRate);                    //调用频率模式
+	}
+	
+	
 }
 
 

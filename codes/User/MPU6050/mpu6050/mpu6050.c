@@ -1044,13 +1044,15 @@ static float old_angle[3], new_angle[3];
 static int PitchFalling(float pitch1, float pitch2)
 {
 		getEulerAngles(old_angle);
-//		mdelay(20);
+	mdelay(10);
 		getEulerAngles(new_angle);
 	//俯仰检测	-90 ~ +90		向上正
+//	printf("\n%.4f, %.4f", pitch2, pitch1);
+
 	if(pitch1>0.1)
 	{
 //		if((new_angle[0]-old_angle[0])>20.0|| (new_angle[0]-old_angle[0])<-20.0)
-		if((pitch2-pitch1)>30.0|| (pitch2-pitch1)<-30.0)
+		if((pitch2-pitch1)>10.0|| (pitch2-pitch1)<-10.0)
 		{
 			// 
 //	printf("\n%.4f, %.4f", pitch2, pitch1);
@@ -1076,12 +1078,14 @@ static int RollFalling(float roll)
 //		mdelay(20);
 		getEulerAngles(new_angle);
 	//滚轮检测	-90 ~ +90		向左正
+		printf("%.4f, %.4f", new_angle[1], old_angle[1]);
+
 	if(roll>1.0)
 	{
 		if((new_angle[1]-old_angle[1])>20.0|| (new_angle[1]-old_angle[1])<-20.0)
 		{
 			// 
-//	printf("%.4f, %.4f", new_angle[1], old_angle[1]);
+	printf("%.4f, %.4f", new_angle[1], old_angle[1]);
 	//		if(roll>30.0 || roll<-30.0)
 	//			return 1;
 	//		else
@@ -1133,12 +1137,12 @@ void MPU6050Triaxial(float Angle[4])
 	
 	dmp_get_pedometer_step_count(&new_count);
 
-	if(old_count<new_count)
-	{
-		printf("\r\nhelp!!!!!!");//严重事故，连续撞击
-		flag_FALLING=1;
-	}	
-	else if(PitchFalling(pitch1, pitch2))
+//	if(old_count<new_count)
+//	{
+//		printf("\r\nhelp!!!!!!");//严重事故，连续撞击
+//		flag_FALLING=1;
+//	}	
+	if(PitchFalling(pitch1, pitch2))
 	{
 		// || RollFalling(roll)
 		printf("\r\nhelp!");//首次摔倒
