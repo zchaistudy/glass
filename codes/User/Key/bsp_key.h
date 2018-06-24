@@ -28,19 +28,30 @@
 #define MODE_VOLUME     0	//音量模式
 #define MODE_FREQUENCY 	1 //频率模式
 #define MODE_DISTANCE   2 //距离模式
+
 //按键的四种状态等级
 #define NO_RANK			0	//0等级
 #define LOW_RANK		1	//低等级
 #define MID_RANK		2 //中等级
 #define UP_RANK			3 //高等级
 
+#define MAX_MODE 2      //两种模式 音频模式  语音模式
+
+//设置参数
+#define SET_CLOSE       0//关闭设置
+#define SET_VOLUME      1//音量设置
+#define SET_FREQUENCY 	2 //频率模式
+#define SET_DISTANCE    3 //距离模式
+#define SET_MAX         4  //4种模式
+
 typedef struct key{
 	int current_mode;//当前模式
 	int key_rank[3];//每个按键的等级
-	int max_mode;//最大模式是3。0 1 2   MODE_VOLUME MODE_FREQUENCY MODE_DISTANCE
+	int max_mode;//最大模式是2。0 1 2   MODE_VOLUME MODE_FREQUENCY MODE_DISTANCE
 	int max_rank;//最大等级是4。0 1 2 3 NO_RANK LOW_RANK MID_RANK UP_RANK
 	int min_mode;//最小模式是0
 	int min_rank;//最小等级是0
+	uint8_t set_parameter; //当前设置参数
 }key_four;
 
 
