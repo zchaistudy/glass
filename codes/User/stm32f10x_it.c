@@ -261,12 +261,12 @@ void USART2_IRQHandler(void)
 
 
 
-
+//采集超声波模块数据
 void TIM2_IRQHandler(void)
 {
 	extern int8_t  MEASURE_FLAG;   // 1 眼镜采集数据， 0 等待拐杖采集数据
 	
-	static int portNum = 0;      //选择测距通道
+	static int portNum = 0;      //选择测距通道	
 //	p_debug("tim2\r\n");
 	if ( TIM_GetITStatus( TIM2, TIM_IT_Update) != RESET ) 
 	{			
@@ -277,22 +277,25 @@ void TIM2_IRQHandler(void)
 			if( portNum == AVER_NUM_GLASS)   //眼睛上模块数据采集完毕
 			{
 				portNum = 0;
-				//$$$$$$$$$$向拐杖发送测距请求
-				//MEASURE_FLAG = 0; 
-				p_debug("obstace\r\n");
-                 HasObstacle();		 //$$$$$$$$$$$$44		
+#ifdef ONLY_GLASS                //眼镜单独测试
+				HasObstacle();		 //判断障碍物 
+			}
+		}
+#else		                    //眼镜加拐杖		
+			//$$$$$$$$$$向拐杖发送测距请求
+				MEASURE_FLAG = 0;	   					
 			}
 		}
 		else if( GET_WALK_FLAG )                  //接收到拐杖数据
 		{
+			HasObstacle();               //判断障碍物位置并提示			
 			GET_WALK_FLAG = 0;
 			MEASURE_FLAG = 1;               //开始下一轮测距
-			HasObstacle();               //判断障碍物位置并提示
 		}
-		
-		
+#endif			
 		TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);  		 
-	}		
+	}	
+
 	
 }
 

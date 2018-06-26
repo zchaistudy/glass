@@ -44,6 +44,12 @@
 #define SET_DISTANCE    3 //距离模式
 #define SET_MAX         4  //4种模式
 
+
+//参数最大值
+#define MAX_RANK_VOLUME       15     //最大音量等级
+#define MAX_RANK_FREQUENCY    3      //最大频率等级
+#define MAX_RANK_DISTANCE     3      //最大距离等级
+
 typedef struct key{
 	int current_mode;//当前模式
 	int key_rank[3];//每个按键的等级

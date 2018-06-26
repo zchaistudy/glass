@@ -5,7 +5,7 @@
 #include "bsp_usart1.h"
 #include "UltraConfig.h"
 
-
+#define ONLY_GLASS            //眼镜单独测试
 
 
 #define AVER_NUM_GLASS        2              //眼睛上超声波数量

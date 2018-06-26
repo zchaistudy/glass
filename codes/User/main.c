@@ -97,6 +97,7 @@ int main(void)
 //		Deal_Data();
 		
 //		mdelay(50);
+//		printf("test");
 	}
 }
 
