@@ -224,7 +224,7 @@ void HasObstacle()
 	
 	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
 
-//	PlayRate(distanceRate);                    //调用频率模式
+	PlayRate(distanceRate);                    //调用频率模式
 	PlayVoice(distanceVoice);                  //修改语音模式	
 }
 

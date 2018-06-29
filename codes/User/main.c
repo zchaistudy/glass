@@ -82,21 +82,20 @@ int main(void)
 	
 	PeriphInit();	//外设初始化
 	printf("\n系统初始化完毕......\n");
-
 	for(;;)
-	{
-p_err_cym("key4.current_mode = %d\nkey4.key_rank[MODE_VOLUME] = %d\nkey4.key_rank[MODE_FREQUENCY] = %d\nkey4.key_rank[MODE_DISTANCE] = %d",
-			key4.current_mode, key4.key_rank[MODE_VOLUME], key4.key_rank[MODE_FREQUENCY], key4.key_rank[MODE_DISTANCE]);
+	{		
+//			p_err_cym("key4.current_mode = %d\nkey4.key_rank[MODE_VOLUME] = %d\nkey4.key_rank[MODE_FREQUENCY] = %d\nkey4.key_rank[MODE_DISTANCE] = %d",
+//			key4.current_mode, key4.key_rank[MODE_VOLUME], key4.key_rank[MODE_FREQUENCY], key4.key_rank[MODE_DISTANCE]);
 
 		MPU6050Triaxial(Angle);	//三轴检测
+
 		blind_falled();		//盲人是否摔倒		
-		
-#if BREAK_EXTI_OPEN
-#else
-		KeyPolling();
-#endif
-		
-		Deal_Data();
+//#if BREAK_EXTI_OPEN
+//#else
+//		KeyPolling();
+//#endif
+//		
+//		Deal_Data();
 		
 //		mdelay(50);
 	}

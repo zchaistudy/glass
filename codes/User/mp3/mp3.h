@@ -43,7 +43,7 @@ extern u8 rate_2[7];
 extern u8 rate_3[7];
 extern u8 rate_4[7];
 extern u8 rate_5[7];
-extern u8 CareFootay[7];
+extern u8 CareFoot[7];
 extern u8 CareHand[7];
 extern u8 CareHead[7];
 

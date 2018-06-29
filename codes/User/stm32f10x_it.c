@@ -230,7 +230,7 @@ void USART1_IRQHandler(void)
 				UltrasonicWave_Distance_Walk[IndexWalkingStick]=ch;
 				IndexWalkingStick++;
 				if(IndexWalkingStick == AVER_NUM_WALK)
-					GET_WALK_FLAG=1;
+					GET_WALK_FLAG=1;                          //已经获取了拐杖信息标志
 			}
 //			if(ch=='s'||Receive[0]=='s')
 //				Receive[Num]=ch;
@@ -271,7 +271,7 @@ void TIM2_IRQHandler(void)
 	
 	if ( TIM_GetITStatus( TIM2, TIM_IT_Update) != RESET ) 
 	{			
-		if( MEASURE_FLAG == 0)
+		if( MEASURE_FLAG)
 		{
 			UltrasonicWave(portNum);    //采集一个模块数据
 			portNum++;
@@ -279,13 +279,14 @@ void TIM2_IRQHandler(void)
 			{
 				portNum = 0;
 				//$$$$$$$$$$向拐杖发送测距请求
-				//MEASURE_FLAG = 1;           
+				//MEASURE_FLAG = 0;    
+HasObstacle();  				
 			}
 		}
 		else if( GET_WALK_FLAG )                  //接收到拐杖数据
 		{
 			GET_WALK_FLAG = 0;
-			MEASURE_FLAG = 0;
+			MEASURE_FLAG = 1;
 			HasObstacle();               //判断障碍物位置并提示
 		}
 		

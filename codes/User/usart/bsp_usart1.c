@@ -149,7 +149,7 @@ int fgetc(FILE *f)
  */
 void GetWalkingStickRequire(void)
 {
-	USART_SendData(USART1,1);
+	USART_SendData(USART1,'3');
 }
 
 void Deal_Data(void)
@@ -196,5 +196,7 @@ void Deal_Data(void)
 //		}
 //	}
 }
+
+
 
 /*********************************************END OF FILE**********************/
