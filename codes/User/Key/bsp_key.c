@@ -6,7 +6,7 @@
 #include "UltrasonicWave.h"
 
 extern int flag_FALLING;
-key_four key4 = {0, {0, 0, 0}, 3, 4, 0, 0};
+key_four key4 = {0, {1, 1, 1}, MAX_MODE, 4, 0, 1,0};
 
 static void delay(int i)
 {
@@ -475,8 +475,8 @@ static uint8_t Key_Scan_down(GPIO_TypeDef* GPIOx,uint16_t GPIO_Pin)
 			delay(10);	
 			if(GPIO_ReadInputDataBit(GPIOx,GPIO_Pin) == KEY_DOWN )  
 			{
-					while(GPIO_ReadInputDataBit(GPIOx,GPIO_Pin) == KEY_DOWN)	//等待按键放开
-							continue; 
+					while(GPIO_ReadInputDataBit(GPIOx,GPIO_Pin) == KEY_DOWN);	//等待按键放开
+				//			printf("等待按键释放\r\n"); 
 					
 					return TRUE;	 
 			}
@@ -520,44 +520,51 @@ static uint8_t Key_Scan_down2(GPIO_TypeDef* GPIOx,uint16_t GPIO_Pin)
 
 void KeyPolling(void)
 {
-		if( Key_Scan_down(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == TRUE  )
-		{
-				printf("\n按下安全键!");
-				if(0 == flag_FALLING)
-				{
-						USART_SendData(USART1, '2');		//发送一般求助信息
-						while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
-							continue;		
-						
-						printf("\t盲人不是摔倒状态，只是发送一般性的求助信息");
-				}
-				else
-					flag_FALLING=0;	//盲人安全
+//		if( Key_Scan_down2(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == TRUE  )
+//		{
+//				printf("\n按下安全键!");
+//			printf("LUNXUN\r\n");
+//				if(0 == flag_FALLING)
+//				{
+//						USART_SendData(USART1, '2');		//发送一般求助信息
+//						while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
+//							continue;		
+//						
+//						printf("\t盲人不是摔倒状态，只是发送一般性的求助信息\r\n");
+//				}
+//				else
+//					flag_FALLING=0;	//盲人安全
 
-		}		
+//		}		
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-		if( Key_Scan_down2(KEY2_GPIO_PORT,KEY2_GPIO_PIN) == TRUE  )
+		if( Key_Scan_down(KEY2_GPIO_PORT,KEY2_GPIO_PIN) == TRUE  )
 		{
 	
-				printf("\n按下功能选择键!");
-				if(MODE_VOLUME == key4.current_mode)	//当前处于音量调节模式
+				printf("\n按下功能设置键!\r\n");
+			     key4.set_parameter = (key4.set_parameter+1) % SET_MAX;    //选择下一个模式
+               if(SET_CLOSE == key4.set_parameter)	//当前处于不可调节模式
 				{
-					printf("\t当前处于音量调节中,当前音量等级为：%d", key4.key_rank[MODE_VOLUME]);
+					printf("\t退出设置\r\n");
+					//播放：退出设置
+				}		
+				else if(SET_VOLUME == key4.set_parameter)	//当前处于音量调节模式
+				{
+					printf("\t当前处于音量调节中,当前音量等级为：%d\r\n", key4.key_rank[MODE_VOLUME]);
 					//播放：当前处于音量调节模式
-				}
-				if(MODE_FREQUENCY == key4.current_mode)	//当前处于频率调节模式
+				}				
+				else if(SET_FREQUENCY == key4.set_parameter)	//当前处于频率调节模式
 				{
-					printf("\t当前处于频率调节中，当前频率等级为：%d", key4.key_rank[MODE_FREQUENCY]);			
+					printf("\t当前处于频率调节中，当前频率等级为：%d\r\n", key4.key_rank[MODE_FREQUENCY]);			
 					//播放：当前处于频率调节模式
 				}
-				if(MODE_DISTANCE == key4.current_mode)	//当前处于距离调节模式
+				else if(SET_DISTANCE == key4.set_parameter)	//当前处于距离调节模式
 				{
-					printf("\t当前处于距离调节中，当前距离等级为：%d", key4.key_rank[MODE_DISTANCE]);
+					printf("\t当前处于距离调节中，当前距离等级为：%d\r\n", key4.key_rank[MODE_DISTANCE]);
 					//播放：当前处于距离调节模式
 				}
-				if(key4.current_mode != MODE_VOLUME && key4.current_mode != MODE_FREQUENCY && key4.current_mode != MODE_DISTANCE)
+				else 
 				{
 					printf("\nKEY2 error! key4.current_mode = %d", key4.current_mode);
 				}
@@ -568,133 +575,217 @@ void KeyPolling(void)
 
 		if( Key_Scan_down(KEY3_GPIO_PORT,KEY3_GPIO_PIN) == TRUE  )
 		{
-				printf("\n按下进入下一个模式键!");
+				printf("\n按下进入下一个模式键!\r\n");
 				key4.current_mode=(++key4.current_mode)%key4.max_mode;
 				if(MODE_VOLUME == key4.current_mode)
 				{
-					printf("\t当前模式调整为：%s", "音量模式");
+					printf("\t当前模式调整为：%s", "音量模式\r\n");
+					//播放
 				}
 				if(MODE_FREQUENCY == key4.current_mode)
 				{
-					printf("\t当前模式调整为：%s", "频率模式");
+					printf("\t当前模式调整为：%s", "频率模式\r\n");
+					//播放
 				}
-				if(MODE_DISTANCE == key4.current_mode)
-				{
-					printf("\t当前模式调整为：%s", "距离模式");
-				}
+//				if(MODE_DISTANCE == key4.current_mode)
+//				{
+//					printf("\t当前模式调整为：%s", "距离模式\r\n");
+//				}
 
 		}		
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 
-		if( Key_Scan_down(KEY4_GPIO_PORT,KEY4_GPIO_PIN) == TRUE  )
+		if( Key_Scan_down(KEY4_GPIO_PORT,KEY4_GPIO_PIN) == TRUE )
 		{
-				printf("\n按下加号键!");
-				
-				if(MODE_VOLUME == key4.current_mode)	//当前处于音量调节模式
+				printf("\n按下加号键!\r\n");
+				if( SET_CLOSE == key4.set_parameter )
 				{
-						if(key4.max_rank == key4.key_rank[MODE_VOLUME]+1)
+					printf("请选择设置模式\r\n");
+				}
+				 else if(SET_VOLUME == key4.set_parameter)	//当前处于音量调节模式
+				{
+						if(MAX_RANK_VOLUME <= key4.key_rank[MODE_VOLUME])
 						{
-							printf("\t当前音量调节为等级：%d，达到最大等级不可再调大", key4.key_rank[MODE_VOLUME]);				
+							printf("\t当前音量调节为等级：%d，达到最大等级不可再调大\r\n", key4.key_rank[MODE_VOLUME]);				
 
 						}
 						else
 						{
-							//音量增加函数调用
-							key4.key_rank[MODE_VOLUME]=(++key4.key_rank[MODE_VOLUME])%key4.max_rank;					
-							printf("\t当前音量调节为等级：%d", key4.key_rank[MODE_VOLUME]);
+							AddVolume();         //音量增加函数调用
+							++key4.key_rank[MODE_VOLUME];					
+							printf("\t当前音量调节为等级：%d\r\n", key4.key_rank[MODE_VOLUME]);
 						}
 
 				}
-				else if(MODE_FREQUENCY == key4.current_mode)	//当前处于频率调节模式
+				else if(SET_FREQUENCY == key4.set_parameter)	//当前处于频率调节模式
 				{
-						if(key4.max_rank == key4.key_rank[MODE_FREQUENCY]+1)
+						if(MAX_RANK_FREQUENCY == key4.key_rank[MODE_FREQUENCY])
 						{
-							printf("\t当前频率调节为等级：%d，达到最大等级不可再调大", key4.key_rank[MODE_FREQUENCY]);			
+							printf("\t当前频率调节为等级：%d，达到最大等级不可再调大\r\n", key4.key_rank[MODE_FREQUENCY]);			
 						}
 						else
 						{
-							//频率增加函数调用
-							key4.key_rank[MODE_FREQUENCY]=(++key4.key_rank[MODE_FREQUENCY])%key4.max_rank;					
-							printf("\t当前频率调节为等级：%d", key4.key_rank[MODE_FREQUENCY]);
+							AddRate();//频率增加函数调用
+							++key4.key_rank[MODE_FREQUENCY];					
+							printf("\t当前频率调节为等级：%d\r\n", key4.key_rank[MODE_FREQUENCY]);
 						}
 
 				}
-				else if(MODE_DISTANCE == key4.current_mode)	//当前处于距离调节模式
+				else if(SET_DISTANCE == key4.set_parameter)	//当前处于距离调节模式
 				{
-						if(key4.max_rank == key4.key_rank[MODE_DISTANCE]+1)
+						if(MAX_RANK_DISTANCE == key4.key_rank[MODE_DISTANCE])
 						{			
-							printf("\t当前距离调节为等级：%d，达到最大等级不可再调大", key4.key_rank[MODE_DISTANCE]);
+							printf("\t当前距离调节为等级：%d，达到最大等级不可再调大\r\n", key4.key_rank[MODE_DISTANCE]);
 						}
 						else
 						{
-							//距离增加函数调用
-							key4.key_rank[MODE_DISTANCE]=(++key4.key_rank[MODE_DISTANCE])%key4.max_rank;					
-							printf("\t当前距离调节为等级：%d", key4.key_rank[MODE_DISTANCE]);
+							addDistance();             //距离增加函数调用
+							++key4.key_rank[MODE_DISTANCE];					
+							printf("\t当前距离调节为等级：%d\r\n", key4.key_rank[MODE_DISTANCE]);
 						}
 				}
 				else
 				{
-						printf("KEY4 error! key4.current_mode = %d", key4.current_mode);
+						printf("KEY4 error! key4.set_parameter = %d\r\n", key4.set_parameter);
 				}
 
 		}		
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		if( Key_Scan_down(KEY5_GPIO_PORT,KEY5_GPIO_PIN) == TRUE  )
+		if( Key_Scan_down(KEY5_GPIO_PORT,KEY5_GPIO_PIN) == TRUE )
 		{
-				printf("\n按下减号键!");
-		
-				if(MODE_VOLUME == key4.current_mode)	//当前处于音量调节模式
+				printf("\n按下减号键!\r\n");
+				if( SET_CLOSE == key4.set_parameter )
+				{
+					printf("请选择设置模式\r\n");
+				}		
+				else if(SET_VOLUME == key4.set_parameter)	//当前处于音量调节模式
 				{
 						if(key4.min_rank == key4.key_rank[MODE_VOLUME])
 						{
-							printf("\t当前音量调节为等级：%d，达到最小等级不可再调小", key4.key_rank[MODE_VOLUME]);
+							printf("\t当前音量调节为等级：%d，达到最小等级不可再调小\r\n", key4.key_rank[MODE_VOLUME]);
 						}
 						else
 						{
-							//音量减少函数调用
-							key4.key_rank[MODE_VOLUME]=(--key4.key_rank[MODE_VOLUME])%key4.max_rank;					
-							printf("\t当前音量调节为等级：%d", key4.key_rank[MODE_VOLUME]);
+							SubVolume();//音量减少函数调用
+							--key4.key_rank[MODE_VOLUME];					
+							printf("\t当前音量调节为等级：%d\r\n", key4.key_rank[MODE_VOLUME]);
 						}				
 				}
-				else if(MODE_FREQUENCY == key4.current_mode)	//当前处于频率调节模式
+				else if(SET_FREQUENCY == key4.set_parameter)	//当前处于频率调节模式
 				{
 						if(key4.min_rank == key4.key_rank[MODE_FREQUENCY])
 						{
-							printf("\t当前频率调节为等级：%d，达到最小等级不可再调小", key4.key_rank[MODE_FREQUENCY]);
+							printf("\t当前频率调节为等级：%d，达到最小等级不可再调小\r\n", key4.key_rank[MODE_FREQUENCY]);
 						}
 						else
 						{
-							//频率减少函数调用
-							key4.key_rank[MODE_FREQUENCY]=(--key4.key_rank[MODE_FREQUENCY])%key4.max_rank;					
-							printf("\t当前频率调节为等级：%d", key4.key_rank[MODE_FREQUENCY]);
+							SubRate();//频率减少函数调用
+							--key4.key_rank[MODE_FREQUENCY];					
+							printf("\t当前频率调节为等级：%d\r\n", key4.key_rank[MODE_FREQUENCY]);
 						}
 				}
-				else if(MODE_DISTANCE == key4.current_mode)	//当前处于距离调节模式
+				else if(SET_DISTANCE == key4.set_parameter)	//当前处于距离调节模式
 				{
 					if(key4.min_rank == key4.key_rank[MODE_DISTANCE])
 					{
-						printf("\t当前距离调节为等级：%d，达到最小等级不可再调小", key4.key_rank[MODE_DISTANCE]);			
+						printf("\t当前距离调节为等级：%d，达到最小等级不可再调小\r\n", key4.key_rank[MODE_DISTANCE]);			
 					}
 					else
 					{
-						//距离减少函数调用
-						key4.key_rank[MODE_DISTANCE]=(--key4.key_rank[MODE_DISTANCE])%key4.max_rank;					
-						printf("\t当前距离调节为等级：%d", key4.key_rank[MODE_DISTANCE]);
+						minusDistance();       //距离减少函数调用
+						--key4.key_rank[MODE_DISTANCE];					
+						printf("\t当前距离调节为等级：%d\r\n", key4.key_rank[MODE_DISTANCE]);
 					}
 				}
 				else
 				{
-					printf("KEY5 error! key4.current_mode = %d", key4.current_mode);
+					printf("KEY5 error! key4.set_parameter = %d\r\n", key4.set_parameter);
 				}
 		
 	}		
 
 }
 
+static void NVIC_Configuration2(void)
+{
+  NVIC_InitTypeDef NVIC_InitStructure;
+  
+  /* 配置NVIC为优先级组1 */
+  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
+  
+  /* 配置中断源：按键1 */
+  NVIC_InitStructure.NVIC_IRQChannel = KEY1_INT_EXTI_IRQ;
+  /* 配置抢占优先级 */
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+  /* 配置子优先级 */
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+  /* 使能中断通道 */
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  NVIC_Init(&NVIC_InitStructure);
+}
 
+void EXTI_Key_Config(void)
+{
+	GPIO_InitTypeDef GPIO_InitStructure; 
+	EXTI_InitTypeDef EXTI_InitStructure;
+
+	/*开启按键GPIO口的时钟*/
+	RCC_APB2PeriphClockCmd(KEY1_INT_GPIO_CLK,ENABLE);
+												
+	/* 配置 NVIC 中断*/
+	NVIC_Configuration2();
+	  
+/*--------------------------KEY1配置-----------------------------*/
+	/* 选择按键用到的GPIO */	
+  GPIO_InitStructure.GPIO_Pin = KEY1_INT_GPIO_PIN;
+  /* 配置为浮空输入 */	
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+  GPIO_Init(KEY1_INT_GPIO_PORT, &GPIO_InitStructure);
+
+	/* 选择EXTI的信号源 */
+  GPIO_EXTILineConfig(KEY1_INT_EXTI_PORTSOURCE, KEY1_INT_EXTI_PINSOURCE); 
+  EXTI_InitStructure.EXTI_Line = KEY1_INT_EXTI_LINE;
+	
+	/* EXTI为中断模式 */
+  EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+	/* 上升沿中断 */
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+  /* 使能中断 */	
+  EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+  EXTI_Init(&EXTI_InitStructure);
+}
+
+
+void KEY1_IRQHandler(void)
+{
+  //确保是否产生了EXTI Line中断
+	if(EXTI_GetITStatus(KEY1_INT_EXTI_LINE) != RESET) 
+	{
+//		EXTI_n(KEY1);
+		delay(10);		
+		if(GPIO_ReadInputDataBit(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == KEY_DOWN )  //消抖
+		{
+			printf("\n按下安全键! exit\r\n");
+			if(0 == flag_FALLING)
+			{
+					USART_SendData(USART1, '2');		//发送一般求助信息
+					while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
+						continue;		
+					
+					printf("\t盲人不是摔倒状态，只是发送一般性的求助信息\r\n");
+			}
+			else
+				flag_FALLING=0;	//盲人安全
+		//清除中断标志位
+			delay(iCOUNT);			
+		}			
+//		EXTI_n_Open(KEY1);
+		EXTI_ClearITPendingBit(KEY1_INT_EXTI_LINE); 
+	}  
+}
 
 
 #endif

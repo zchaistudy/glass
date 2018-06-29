@@ -56,6 +56,7 @@ static void PeriphInit()
 #if BREAK_EXTI_OPEN
 	EXTI_Key_Config();	//ÖÐ¶Ï
 #else
+	EXTI_Key_Config();
 	Key_GPIO_Config();	//ÂÖÑ¯
 #endif
 }
@@ -95,9 +96,11 @@ int main(void)
 //		KeyPolling();
 //#endif
 //		
+
 //		Deal_Data();
 		
 //		mdelay(50);
+//		printf("test");
 	}
 }
 
