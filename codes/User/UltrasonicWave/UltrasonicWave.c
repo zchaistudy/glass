@@ -21,7 +21,7 @@
 #ifdef DEBUG_ON_OFF 
 #undef  DEBUG_ON_OFF
 #endif
-#define DEBUG_ON_OFF 0       //1打开调试。0关闭
+#define DEBUG_ON_OFF 1       //1打开调试。0关闭
 //////////////////////////////
 
 static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin);              
@@ -33,7 +33,7 @@ int8_t  MEASURE_FLAG = 1;   // 1 眼镜采集数据， 0 等待拐杖采集数据
 
 int8_t GET_WALK_FLAG = 0;       //接收拐杖数据标志
 int UltrasonicWave_Distance_Walk[AVER_NUM_WALK] = { 500, 500, 500, 500, 500};   //拐杖采集数据
-
+	static int8_t lateobstacle[4] = {0,0,0,0};      //记录最近几次测距障碍物状态，连续监测障碍物时+1，2未监测到障碍物时清零
 int MODE_FLAG = 1;       //1 语音 0 频率
 
 
@@ -134,7 +134,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	
 	int i = 0; 
 	int mindistace = 300 ;    //记录最近的障碍物距离
-	static int8_t lateobstacle[4] = {0};      //记录最近几次测距障碍物状态，连续监测障碍物时+1，2未监测到障碍物时清零
+
 	
 	*distanceVoice = OBSTACLE_NO;
 	*distanceRate = OBSTACLE_NO;
@@ -149,13 +149,21 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 			{
 				lateobstacle[0] = LATE_NUM;
 			}
+			break;
 		} 
-		else
-		{
-			lateobstacle[0] = 0;
-		}
-//		p_debug("              %d    , %d\r\n", distance_glass[i],lateobstacle[0] );
 	}
+	if( i == AVER_NUM_GLASS )        //障碍物已消失
+	{
+		lateobstacle[0] = 0;
+	}
+	
+//	for( i = 0; i < 5; i++ )
+//	{
+//		printf("walk: %d\r\n", distance_walk[i]);
+//	}
+//	
+//	
+	
 	
 	if( distance_walk[0]  < MAX_DISTACE || distance_walk[1] < MAX_DISTACE )  
 	{
@@ -184,6 +192,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	if( distance_walk[4]  < MAX_DISTACE  )  
 	{
 		lateobstacle[3]++;
+		p_debug("foot:%d\r\n", distance_walk[4]);
 		if( lateobstacle[3] > LATE_NUM )
 		{
 			lateobstacle[3] = LATE_NUM;
@@ -207,6 +216,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 //判断脚下是否有障碍物
 	if( lateobstacle[3] == LATE_NUM )
 	{
+		p_debug("foot\r\n");
 		*distanceVoice = OBSTACLE_FOOT;
 	}
 //频率模式下障碍物提示,取最近障碍物距离
@@ -225,7 +235,13 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 //判断障碍物位置，并触发提示
 void HasObstacle()
 {
+//	int i;
 	int distanceVoice, distanceRate;
+
+//	for( i = 0; i < 5; i++ )
+//	{
+//		printf("UltrasonicWave_Distance_Walk: %d\r\n", UltrasonicWave_Distance_Walk[i]);
+//	}
 	
 	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
 

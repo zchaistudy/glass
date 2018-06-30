@@ -231,12 +231,12 @@ void USART1_IRQHandler(void)
 				{
 						for(i=0;i<15;)                      //直接使用for循环会出现位置错乱——逆序
 						{
-								UltrasonicWave_Distance_Walk[i]=ReceiveFromWalk[i]*100+ReceiveFromWalk[i+1]*10+ReceiveFromWalk[i+2];
-//								printf("%d ,",UltrasonicWave_Distance_Walk[i]);
+								UltrasonicWave_Distance_Walk[i/3]=ReceiveFromWalk[i]*100+ReceiveFromWalk[i+1]*10+ReceiveFromWalk[i+2];
+								printf("%d ,",UltrasonicWave_Distance_Walk[i]);
 								i=i+3;
 						}											
 						GET_WALK_FLAG=1;                          //已经获取了拐杖信息标志	
-//						printf("\r\n");
+						printf("\r\n");
 				}
 			}
 	} 
@@ -269,7 +269,7 @@ void TIM2_IRQHandler(void)
 		{
 			UltrasonicWave(portNum);    //采集一个模块数据
 			portNum++;
-			if( portNum == AVER_NUM_GLASS)   //眼睛上模块数据采集完毕
+			if( portNum == AVER_NUM_GLASS +1 )   //眼睛上模块数据采集完毕
 			{
 				portNum = 0;
 #ifdef ONLY_GLASS                //眼镜单独测试
@@ -406,9 +406,9 @@ void  TIM6_IRQHandler (void)
 	if ( TIM_GetITStatus( TIM6, TIM_IT_Update) != RESET ) 
 	{	
 		time++;
-		if(time==2800)
+		if(time==2000)
 			flag_volume=0;
-		if(time==2802)
+		if(time==2002)
 			time=0;
 		TIM_ClearITPendingBit(TIM6 , TIM_FLAG_Update);  		 
 	}		 	
