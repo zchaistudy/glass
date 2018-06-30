@@ -109,7 +109,7 @@ void NVIC_Configuration(void)
 {
 	NVIC_InitTypeDef NVIC_InitStructure; 
 	/* Configure the NVIC Preemption Priority Bits */  
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	
 	/* Enable the USARTy Interrupt */
 	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;	 
@@ -149,7 +149,8 @@ int fgetc(FILE *f)
  */
 void GetWalkingStickRequire(void)
 {
-	USART_SendData(USART1,1);
+	USART_SendData(USART1,'3');          //字符'3'为获取信息信号
+	printf("数据已发送");
 }
 
 void Deal_Data(void)
@@ -196,5 +197,7 @@ void Deal_Data(void)
 //		}
 //	}
 }
+
+
 
 /*********************************************END OF FILE**********************/

@@ -736,7 +736,7 @@ void EXTI_Key_Config(void)
 	RCC_APB2PeriphClockCmd(KEY1_INT_GPIO_CLK,ENABLE);
 												
 	/* 配置 NVIC 中断*/
-	NVIC_Configuration2();
+//	NVIC_Configuration2();
 	  
 /*--------------------------KEY1配置-----------------------------*/
 	/* 选择按键用到的GPIO */	

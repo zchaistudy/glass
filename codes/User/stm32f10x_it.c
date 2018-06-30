@@ -46,9 +46,8 @@ extern LinkQueue q;
 extern int time;
 extern int flag_FALLING;
 extern int flag_volume;      
-//char Receive[10];
+int ReceiveFromWalk[15];      //用于对拐杖数据的转化
 //int Num;
-
 unsigned int Task_Delay[NumOfTask]={0};
 char Status=0;     																				//用于标识接收数据的状态
 int IndexWalkingStick=0;																	//用于标识当前接收到的数据位
@@ -205,19 +204,18 @@ void EXTI_INT_FUNCTION (void)
 void USART1_IRQHandler(void)
 {
 	uint8_t ch;
-	
+	int i;
 	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
 	{ 	
-//	    ch = USART1->DR;
-//		  printf("sjdfj\r\n");
-//			int i;
 			ch = USART_ReceiveData(USART1);
-		  en_Queue(&q, ch);
+	//	printf("收到数据");   //不能使用，否则会出问题
+	//		printf("%d",ch);
+	//printf("%c",ch);                  //printf出来的都是字符
 			if(ch==DirectionFlag||ch==WalkingStickFlag)    //判断当前的接收状态
 			{
 				Status=ch;
-				memset(UltrasonicWave_Distance_Walk, 0, sizeof(UltrasonicWave_Distance_Walk));
-				IndexWalkingStick=0;
+				memset(UltrasonicWave_Distance_Walk, 0, sizeof(UltrasonicWave_Distance_Walk));   //对UltrasonicWave_Distance_Walk[]初始化
+				IndexWalkingStick=0;                                                             //索引初始化
 				return;
 			}
 			if(Status==DirectionFlag)											//接收数据为方位信息
@@ -227,25 +225,21 @@ void USART1_IRQHandler(void)
 			}
 			else if(Status==WalkingStickFlag)							//接收数据为拐杖信息
 			{
-				UltrasonicWave_Distance_Walk[IndexWalkingStick]=ch;
+				ReceiveFromWalk[IndexWalkingStick]=ch-'0';
 				IndexWalkingStick++;
-				if(IndexWalkingStick == AVER_NUM_WALK)
-					GET_WALK_FLAG=1;
+				if(IndexWalkingStick == AVER_NUM_WALK*3)
+				{
+						for(i=0;i<15;)                      //直接使用for循环会出现位置错乱——逆序
+						{
+								UltrasonicWave_Distance_Walk[i]=ReceiveFromWalk[i]*100+ReceiveFromWalk[i+1]*10+ReceiveFromWalk[i+2];
+//								printf("%d ,",UltrasonicWave_Distance_Walk[i]);
+								i=i+3;
+						}											
+						GET_WALK_FLAG=1;                          //已经获取了拐杖信息标志	
+//						printf("\r\n");
+				}
 			}
-//			if(ch=='s'||Receive[0]=='s')
-//				Receive[Num]=ch;
-//			else
-//				return;
-//			Num++;
-//			if(Receive[Num-1]=='e')
-//			{
-//				Num=0;
-//				printf( " ch = %s\r\n", Receive );    //将接受到的数据直接返回打
-//				for(i=0;i<10;i++)
-//					Receive[i]=' ';
-//			}
 	} 
-	 
 }
 
 void USART2_IRQHandler(void)  
@@ -255,9 +249,10 @@ void USART2_IRQHandler(void)
         {       
                     //USART_SendData(USART2, USART_ReceiveData(USART2));   
           ch = USART_ReceiveData(USART2);
-					printf( "%c", ch );    //将接受到的数据直接返回打印
+//					printf( "%c", ch );    //将接受到的数据直接返回打印
         }   
 } 
+
 
 
 
@@ -282,7 +277,7 @@ void TIM2_IRQHandler(void)
 			}
 		}
 #else		                    //眼镜加拐杖		
-			//$$$$$$$$$$向拐杖发送测距请求
+			GetWalkingStickRequire();//$$$$$$$$$$向拐杖发送测距请求
 				MEASURE_FLAG = 0;	   					
 			}
 		}
@@ -411,9 +406,9 @@ void  TIM6_IRQHandler (void)
 	if ( TIM_GetITStatus( TIM6, TIM_IT_Update) != RESET ) 
 	{	
 		time++;
-		if(time==2000)
+		if(time==2800)
 			flag_volume=0;
-		if(time==2002)
+		if(time==2802)
 			time=0;
 		TIM_ClearITPendingBit(TIM6 , TIM_FLAG_Update);  		 
 	}		 	

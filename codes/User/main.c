@@ -72,30 +72,31 @@ int main(void)
 	USART2_Initialise( 38400 );	//串口2用于调试
 	USART3_Config();						//初始化串口3用于语音模块
 	
-	init_Queue(&q); 		
+//	init_Queue(&q); 		
 	
 	TIM6_TIM_NVIC_Config();			//初始化定时器6
 	TIM6_TIM_Mode_Config();			//用于语音模块
-	
+//	
 	UltrasonicWave_Configuration();
 	GENERAL_TIM_Init();
 	TIM2_Init();
 	
 	PeriphInit();	//外设初始化
 	printf("\n系统初始化完毕......\n");
-
+	GetWalkingStickRequire();
 	for(;;)
-	{
-//		MPU6050Triaxial(Angle);	//三轴检测
-//		blind_falled();		//盲人是否摔倒		
-
-#if BREAK_EXTI_OPEN
-#else
+	{	
+			
+//			p_err_cym("key4.current_mode = %d\nkey4.key_rank[MODE_VOLUME] = %d\nkey4.key_rank[MODE_FREQUENCY] = %d\nkey4.key_rank[MODE_DISTANCE] = %d",
+//			key4.current_mode, key4.key_rank[MODE_VOLUME], key4.key_rank[MODE_FREQUENCY], key4.key_rank[MODE_DISTANCE]);
+//	MPU6050Triaxial(Angle);	//三轴检测
+//	blind_falled();		//盲人是否摔倒		
+//#if BREAK_EXTI_OPEN
+//#else
 		KeyPolling();
-#endif
-		
+//#endif
+//		
 //		Deal_Data();
-		
 //		mdelay(50);
 //		printf("test");
 	}

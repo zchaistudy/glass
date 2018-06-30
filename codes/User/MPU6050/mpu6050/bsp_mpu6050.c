@@ -20,6 +20,7 @@ void blind_falled()
 {
 	if(1==flag_FALLING)	//盲人摔倒
 	{
+
 			mdelay(10000);	//延时1秒
 			if(1==flag_FALLING){		//如果安全键还是没有被按下，那么flag_FALLING标志位还是为1，可以发送蓝牙信息
 				

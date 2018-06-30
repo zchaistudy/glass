@@ -74,7 +74,7 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 
 	UltrasonicWave_Distance[i-1] = ftime * 340 / 2  * 100;
 	
-	p_debug( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
+//	p_debug( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
 
 	
 //	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
@@ -154,7 +154,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 		{
 			lateobstacle[0] = 0;
 		}
-		p_debug("              %d    , %d\r\n", distance_glass[i],lateobstacle[0] );
+//		p_debug("              %d    , %d\r\n", distance_glass[i],lateobstacle[0] );
 	}
 	
 	if( distance_walk[0]  < MAX_DISTACE || distance_walk[1] < MAX_DISTACE )  
@@ -232,7 +232,7 @@ void HasObstacle()
 	p_debug(" $$%d\r\n", distanceVoice);
 	if( MODE_FLAG )
 	{
-		p_debug("&&&");
+//		p_debug("&&&");
 		PlayVoice(distanceVoice);                  //修改语音模式	
 	}
 	else
@@ -285,7 +285,8 @@ void UltrasonicWave(int portNum)
 		case 0: UltrasonicWave_StartMeasure(TRIG_PORT1,TRIG_PIN1); break;
 		case 1: UltrasonicWave_StartMeasure(TRIG_PORT2,TRIG_PIN2); break;
 	}
-p_debug("ssd\r\n");	
+//	 ObstacleDelayUs(6000);
+//p_debug("ssd\r\n");	
 }
 
 

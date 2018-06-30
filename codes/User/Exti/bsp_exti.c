@@ -27,7 +27,7 @@ static void NVIC_Configuration(void)
   NVIC_InitTypeDef NVIC_InitStructure;
   
   /* Configure one bit for preemption priority */
-  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
+  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
   
   /* ≈‰÷√÷–∂œ‘¥ */
   NVIC_InitStructure.NVIC_IRQChannel = EXTI_IRQ;
@@ -52,7 +52,7 @@ void EXTI_Pxy_Config(void)
 	RCC_APB2PeriphClockCmd(EXTI_GPIO_CLK,ENABLE);
 												
 	/* config the NVIC */
-	NVIC_Configuration();
+//	NVIC_Configuration();
 
 	/* EXTI line gpio config*/	
   GPIO_InitStructure.GPIO_Pin = EXTI_GPIO_PIN;       
