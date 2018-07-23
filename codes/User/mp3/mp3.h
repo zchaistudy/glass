@@ -56,6 +56,16 @@ extern u8 SouthWest[7];
 extern u8 NorthWest[7];
 extern u8 NorthEast[7];
 
+extern u8 ModeVolume[7];
+extern u8 ModeRate[7];
+extern u8 ModeDistance[7];
+extern u8 ModeExit[7];
+
+extern u8 Alarm[7];
+extern u8 AutoAlarm[7];
+
+extern u8 AdjustVolume[7];      
+extern u8 AdjustRate[7];      
 extern int Rate;
 
 

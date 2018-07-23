@@ -133,11 +133,11 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	
 	
 	int i = 0; 
-	int mindistace = 300 ;    //记录最近的障碍物距离
+	int mindistace = 200 ;    //记录最近的障碍物距离
 
 	
 	*distanceVoice = OBSTACLE_NO;
-	*distanceRate = OBSTACLE_NO;
+	*distanceRate = 0;
 	
 	
 	for( ; i < AVER_NUM_GLASS; i++ )                  //眼镜部分数据障碍物判断
@@ -253,6 +253,7 @@ void HasObstacle()
 	}
 	else
 	{
+		printf("%d\r\n",distanceRate);
 		PlayRate(distanceRate);                    //调用频率模式
 	}
 	

@@ -6,6 +6,7 @@
 #include "UltrasonicWave.h"
 
 extern int flag_FALLING;
+extern  int MODE_FLAG;       //1 语音 0 频率
 key_four key4 = {0, {1, 1, 1}, MAX_MODE, 4, 0, 1,0};
 
 static void delay(int i)
@@ -547,21 +548,25 @@ void KeyPolling(void)
                if(SET_CLOSE == key4.set_parameter)	//当前处于不可调节模式
 				{
 					printf("\t退出设置\r\n");
+					USART3_Send_String(ModeExit,sizeof(ModeExit));
 					//播放：退出设置
 				}		
 				else if(SET_VOLUME == key4.set_parameter)	//当前处于音量调节模式
 				{
 					printf("\t当前处于音量调节中,当前音量等级为：%d\r\n", key4.key_rank[MODE_VOLUME]);
+					USART3_Send_String(AdjustVolume,sizeof(AdjustVolume));
 					//播放：当前处于音量调节模式
 				}				
 				else if(SET_FREQUENCY == key4.set_parameter)	//当前处于频率调节模式
 				{
 					printf("\t当前处于频率调节中，当前频率等级为：%d\r\n", key4.key_rank[MODE_FREQUENCY]);			
+					USART3_Send_String(AdjustRate,sizeof(AdjustRate));
 					//播放：当前处于频率调节模式
 				}
 				else if(SET_DISTANCE == key4.set_parameter)	//当前处于距离调节模式
 				{
 					printf("\t当前处于距离调节中，当前距离等级为：%d\r\n", key4.key_rank[MODE_DISTANCE]);
+					USART3_Send_String(ModeDistance,sizeof(ModeDistance));
 					//播放：当前处于距离调节模式
 				}
 				else 
@@ -579,19 +584,22 @@ void KeyPolling(void)
 				key4.current_mode=(++key4.current_mode)%key4.max_mode;
 				if(MODE_VOLUME == key4.current_mode)
 				{
+					MODE_FLAG=1;
 					printf("\t当前模式调整为：%s", "音量模式\r\n");
+					USART3_Send_String(ModeVolume,sizeof(ModeVolume));
 					//播放
 				}
 				if(MODE_FREQUENCY == key4.current_mode)
 				{
+					MODE_FLAG=0;
 					printf("\t当前模式调整为：%s", "频率模式\r\n");
+					USART3_Send_String(ModeRate,sizeof(ModeRate));
 					//播放
 				}
 //				if(MODE_DISTANCE == key4.current_mode)
 //				{
 //					printf("\t当前模式调整为：%s", "距离模式\r\n");
 //				}
-
 		}		
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
@@ -713,9 +721,6 @@ static void NVIC_Configuration2(void)
 {
   NVIC_InitTypeDef NVIC_InitStructure;
   
-  /* 配置NVIC为优先级组1 */
-  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
-  
   /* 配置中断源：按键1 */
   NVIC_InitStructure.NVIC_IRQChannel = KEY1_INT_EXTI_IRQ;
   /* 配置抢占优先级 */
@@ -736,7 +741,7 @@ void EXTI_Key_Config(void)
 	RCC_APB2PeriphClockCmd(KEY1_INT_GPIO_CLK,ENABLE);
 												
 	/* 配置 NVIC 中断*/
-//	NVIC_Configuration2();
+	NVIC_Configuration2();
 	  
 /*--------------------------KEY1配置-----------------------------*/
 	/* 选择按键用到的GPIO */	
@@ -751,8 +756,8 @@ void EXTI_Key_Config(void)
 	
 	/* EXTI为中断模式 */
   EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-	/* 上升沿中断 */
-  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+	/* 沿中断 */
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
   /* 使能中断 */	
   EXTI_InitStructure.EXTI_LineCmd = ENABLE;
   EXTI_Init(&EXTI_InitStructure);
@@ -766,8 +771,8 @@ void KEY1_IRQHandler(void)
 	{
 //		EXTI_n(KEY1);
 		delay(10);		
-		if(GPIO_ReadInputDataBit(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == KEY_DOWN )  //消抖
-		{
+//		if(GPIO_ReadInputDataBit(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == KEY_DOWN )  //消抖
+//		{
 			printf("\n按下安全键! exit\r\n");
 			if(0 == flag_FALLING)
 			{
@@ -781,7 +786,7 @@ void KEY1_IRQHandler(void)
 				flag_FALLING=0;	//盲人安全
 		//清除中断标志位
 			delay(iCOUNT);			
-		}			
+//		}			
 //		EXTI_n_Open(KEY1);
 		EXTI_ClearITPendingBit(KEY1_INT_EXTI_LINE); 
 	}  

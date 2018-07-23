@@ -1133,7 +1133,7 @@ void MPU6050Triaxial(float Angle[4])
 	pitch2=Angle[0];
 
 	
-//	printf("\n%.4f	%.4f	%.4f", Angle[0],Angle[1],Angle[2]);
+	printf("\n%.4f	%.4f	%.4f", Angle[0],Angle[1],Angle[2]);
 	
 	dmp_get_pedometer_step_count(&new_count);
 
