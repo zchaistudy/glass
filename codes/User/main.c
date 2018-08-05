@@ -45,7 +45,7 @@ static void PeriphInit()
 {
 	//滴答时钟初始化
 	SysTick_Init();
-	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk;
+	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk;    //使能滴答定时器
 	//MPU6050中断引脚
 	EXTI_Pxy_Config();
 	//I2C初始化
@@ -60,8 +60,6 @@ static void PeriphInit()
 	Key_GPIO_Config();	//轮询
 #endif
 }
-
-
 
 int main(void)
 {	
@@ -80,24 +78,22 @@ int main(void)
 	UltrasonicWave_Configuration();
 	GENERAL_TIM_Init();
 	TIM2_Init();
-	
-	PeriphInit();              	//报警模块初始化
+//	
+	PeriphInit();              	//报警模块以及按钮的初始化
 	printf("\n系统初始化完毕......\n");
-	GetWalkingStickRequire();
+///	GetWalkingStickRequire();
 	for(;;)
 	{	
-//			p_err_cym("key4.current_mode = %d\nkey4.key_rank[MODE_VOLUME] = %d\nkey4.key_rank[MODE_FREQUENCY] = %d\nkey4.key_rank[MODE_DISTANCE] = %d",
-//			key4.current_mode, key4.key_rank[MODE_VOLUME], key4.key_rank[MODE_FREQUENCY], key4.key_rank[MODE_DISTANCE]);
-//	MPU6050Triaxial(Angle);	//三轴检测
-//	blind_falled();		//盲人是否摔倒		
+//		MPU6050Triaxial(Angle);		//三轴检测
+//		blind_falled();						//盲人是否摔倒		
+
 //#if BREAK_EXTI_OPEN
 //#else
 		KeyPolling();
+
 //#endif
 //		
 //		Deal_Data();
-//		mdelay(50);
-//		printf("test");
 	}
 }
 

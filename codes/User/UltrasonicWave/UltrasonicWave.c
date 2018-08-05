@@ -228,8 +228,11 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	{
 		mindistace = mindistace > distance_walk[i] ? distance_walk[i] : mindistace;
 	}
-	*distanceRate = mindistace / 100;
-    	
+	*distanceRate = 2 - mindistace / 100 ;
+  if( *distanceRate < 0 )
+	{
+		*distanceRate = 0;
+	}  	
 }
 
 //判断障碍物位置，并触发提示
@@ -248,18 +251,15 @@ void HasObstacle()
 	p_debug(" $$%d\r\n", distanceVoice);
 	if( MODE_FLAG )
 	{
-//		p_debug("&&&");
+//		p_debug("调用语音模块");
 		PlayVoice(distanceVoice);                  //修改语音模式	
 	}
 	else
 	{
-		printf("%d\r\n",distanceRate);
+		printf("频率：%d\r\n",distanceRate);
 		PlayRate(distanceRate);                    //调用频率模式
 	}
-	
-	
 }
-
 
 /*
  * 函数名：UltrasonicWave_StartMeasure

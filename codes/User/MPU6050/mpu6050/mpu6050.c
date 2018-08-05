@@ -17,6 +17,7 @@
 #include "inv_mpu.h"
 #include "log.h"
 #include "packet.h"
+#include <stdio.h>
 
 
 #define TASK_ENABLE 0
@@ -318,14 +319,15 @@ static void read_from_mpl(float Angle[4])
 					Angle[0] =	Pitch;
 					Angle[1] =	Roll;
 					Angle[2] =	Yaw;
-					
+//					printf("\n俯仰角pitch=%.4f\n", Pitch);
+//							printf("\n滚轮角roll=%.4f\n", Roll);
+//							printf("\n偏航角yaw=%.4f\n", Yaw);
 						/* 获取温度 */
 						mpu_get_temperature(data,(inv_time_t*)&timestamp); 							
 						Angle[3] =	data[0]*1.0/(1<<16);
 				
 				}	
 		}
-
 		
     if (hal.report & PRINT_ROT_MAT) {
         if (inv_get_sensor_type_rot_mat(data, &accuracy,
@@ -907,13 +909,13 @@ static void getEulerAngles(float Angle[4])
 	unsigned long sensor_timestamp;
 	int new_data = 0;
 	
-	if (USART_GetFlagStatus (DEBUG_USARTx, USART_FLAG_RXNE)) {
-			/* A byte has been received via USART. See handle_input for a list of
-			 * valid commands.
-			 */
-			USART_ClearFlag(DEBUG_USARTx, USART_FLAG_RXNE);
-			handle_input();			
-	}
+//	if (USART_GetFlagStatus (DEBUG_USARTx, USART_FLAG_RXNE)) {
+//			/* A byte has been received via USART. See handle_input for a list of
+//			 * valid commands.
+//			 */
+//			USART_ClearFlag(DEBUG_USARTx, USART_FLAG_RXNE);
+//			handle_input();			
+//	}
 	
 	get_tick_count(&timestamp);
 
@@ -931,7 +933,9 @@ static void getEulerAngles(float Angle[4])
 			inv_compass_was_turned_off();
 			inv_quaternion_sensor_was_turned_off();
 			/* Wait for the MPU interrupt. */
-			while (!hal.new_gyro) {}
+			while (!hal.new_gyro) {
+				printf("\r\n%s wait\r\n",__FILE__);
+			}
 			/* Restore the previous sensor configuration. */
 			mpu_lp_motion_interrupt(0, 0, 0);
 			hal.motion_int_mode = 0;
@@ -1043,16 +1047,16 @@ static float old_angle[3], new_angle[3];
 
 static int PitchFalling(float pitch1, float pitch2)
 {
-		getEulerAngles(old_angle);
-	mdelay(10);
-		getEulerAngles(new_angle);
+////		getEulerAngles(old_angle);
+////	mdelay(10);
+////		getEulerAngles(new_angle);
 	//俯仰检测	-90 ~ +90		向上正
 //	printf("\n%.4f, %.4f", pitch2, pitch1);
 
 	if(pitch1>0.1)
 	{
 //		if((new_angle[0]-old_angle[0])>20.0|| (new_angle[0]-old_angle[0])<-20.0)
-		if((pitch2-pitch1)>10.0|| (pitch2-pitch1)<-10.0)
+		if((pitch2-pitch1)>20.0|| (pitch2-pitch1)<-20.0)
 		{
 			// 
 //	printf("\n%.4f, %.4f", pitch2, pitch1);
@@ -1127,13 +1131,12 @@ void MPU6050Triaxial(float Angle[4])
 	getEulerAngles(Angle);
 	pitch1=Angle[0];
 	roll=Angle[1];
-	
-	mdelay(50);	//延时
+	mdelay(10);	//延时
 	getEulerAngles(Angle);
 	pitch2=Angle[0];
 
 	
-	printf("\n%.4f	%.4f	%.4f", Angle[0],Angle[1],Angle[2]);
+	//printf("\r\n%.4f	%.4f	%.4f\r\n", Angle[0],Angle[1],Angle[2]);
 	
 	dmp_get_pedometer_step_count(&new_count);
 
@@ -1144,8 +1147,7 @@ void MPU6050Triaxial(float Angle[4])
 //	}	
 	if(PitchFalling(pitch1, pitch2))
 	{
-		// || RollFalling(roll)
-		printf("\r\nhelp!");//首次摔倒
+		printf("\r\nhelp!\n");//首次摔倒
 		flag_FALLING=1;
 	}
 	

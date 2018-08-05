@@ -20,7 +20,6 @@ void blind_falled()
 {
 	if(1==flag_FALLING)	//盲人摔倒
 	{
-
 			mdelay(10000);	//延时1秒
 			if(1==flag_FALLING){		//如果安全键还是没有被按下，那么flag_FALLING标志位还是为1，可以发送蓝牙信息
 				
@@ -30,9 +29,7 @@ void blind_falled()
 				
 				printf("\n摔倒一段时间后安全键未被按下，已发送信息1给拐杖蓝牙模块");
 				flag_FALLING=0;
-				
 			}
-			
 			else	//盲人无摔倒
 			{
 				printf("盲人摔倒后安全键已经被按下，无安全隐患");		

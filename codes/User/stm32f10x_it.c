@@ -47,7 +47,7 @@ extern int time;
 extern int flag_FALLING;
 extern int flag_volume;      
 int ReceiveFromWalk[15];      //用于对拐杖数据的转化
-//int Num;
+int time_wait=0;
 unsigned int Task_Delay[NumOfTask]={0};
 char Status=0;     																				//用于标识接收数据的状态
 int IndexWalkingStick=0;																	//用于标识当前接收到的数据位
@@ -221,6 +221,7 @@ void USART1_IRQHandler(void)
 			if(Status==DirectionFlag)											//接收数据为方位信息
 			{
 					PlayDirection(ch);
+					printf("拐杖已经将报警行发送到服务端");
 					Status=0;
 			}
 			else if(Status==WalkingStickFlag)							//接收数据为拐杖信息
@@ -232,7 +233,8 @@ void USART1_IRQHandler(void)
 						for(i=0;i<15;)                      //直接使用for循环会出现位置错乱——逆序
 						{
 								UltrasonicWave_Distance_Walk[i/3]=ReceiveFromWalk[i]*100+ReceiveFromWalk[i+1]*10+ReceiveFromWalk[i+2];
-								printf("%d ,",UltrasonicWave_Distance_Walk[i]);
+				//				printf("%d %d %d\r\n ,",ReceiveFromWalk[i],ReceiveFromWalk[i+1],ReceiveFromWalk[i+2]);
+								printf("%d ,",UltrasonicWave_Distance_Walk[i/3]);
 								i=i+3;
 						}											
 						GET_WALK_FLAG=1;                          //已经获取了拐杖信息标志	
@@ -255,7 +257,6 @@ void USART2_IRQHandler(void)
 
 
 
-
 //采集超声波模块数据
 void TIM2_IRQHandler(void)
 {
@@ -272,13 +273,16 @@ void TIM2_IRQHandler(void)
 			if( portNum == AVER_NUM_GLASS +1 )   //眼睛上模块数据采集完毕
 			{
 				portNum = 0;
+/************************/				
 #ifdef ONLY_GLASS                //眼镜单独测试
 				HasObstacle();		 //判断障碍物 
 			}
 		}
 #else		                    //眼镜加拐杖		
+/************************/		
 			GetWalkingStickRequire();//$$$$$$$$$$向拐杖发送测距请求
-				MEASURE_FLAG = 0;	   					
+				MEASURE_FLAG = 0;	 
+				time_wait=0;		
 			}
 		}
 		else if( GET_WALK_FLAG )                  //接收到拐杖数据
@@ -287,11 +291,11 @@ void TIM2_IRQHandler(void)
 			GET_WALK_FLAG = 0;
 			MEASURE_FLAG = 1;               //开始下一轮测距
 		}
+		if(time_wait>3000)								//在三秒内如果还没收到拐杖反馈的信息，进入下一步的轮询
+			MEASURE_FLAG = 1;               //开始下一轮测距
 #endif			
 		TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);  		 
 	}	
-
-	
 }
 
 void TIM3_IRQHandler(void)
@@ -401,15 +405,27 @@ void TIM3_IRQHandler(void)
 	}		
 }
 
+
+/*******************************************************
+*
+* Function name ：TIM6_IRQHandler
+* Description   ：用于语音模块的计时
+* Parameter     ：无
+* Return        ：无
+*
+**********************************************************/
 void  TIM6_IRQHandler (void)
 {
 	if ( TIM_GetITStatus( TIM6, TIM_IT_Update) != RESET ) 
 	{	
 		time++;
-		if(time==2000)
+		time_wait++;
+		if(time==2000)			//每隔两秒钟，flag_volume重置为0，开启播放语音模块的权限
 			flag_volume=0;
 		if(time==2002)
 			time=0;
+		if(time_wait==10000)
+			time_wait=0;
 		TIM_ClearITPendingBit(TIM6 , TIM_FLAG_Update);  		 
 	}		 	
 }

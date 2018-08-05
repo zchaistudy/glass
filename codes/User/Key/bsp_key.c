@@ -542,7 +542,6 @@ void KeyPolling(void)
 
 		if( Key_Scan_down(KEY2_GPIO_PORT,KEY2_GPIO_PIN) == TRUE  )
 		{
-	
 				printf("\n按下功能设置键!\r\n");
 			     key4.set_parameter = (key4.set_parameter+1) % SET_MAX;    //选择下一个模式
                if(SET_CLOSE == key4.set_parameter)	//当前处于不可调节模式
@@ -616,7 +615,7 @@ void KeyPolling(void)
 						if(MAX_RANK_VOLUME <= key4.key_rank[MODE_VOLUME])
 						{
 							printf("\t当前音量调节为等级：%d，达到最大等级不可再调大\r\n", key4.key_rank[MODE_VOLUME]);				
-
+								AddVolume();         //音量增加函数调用
 						}
 						else
 						{
@@ -674,6 +673,7 @@ void KeyPolling(void)
 						if(key4.min_rank == key4.key_rank[MODE_VOLUME])
 						{
 							printf("\t当前音量调节为等级：%d，达到最小等级不可再调小\r\n", key4.key_rank[MODE_VOLUME]);
+							SubVolume();//音量减少函数调用
 						}
 						else
 						{
@@ -780,7 +780,7 @@ void KEY1_IRQHandler(void)
 					while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
 						continue;		
 					
-					printf("\t盲人不是摔倒状态，只是发送一般性的求助信息\r\n");
+					printf("\t盲人不是摔倒状态，是发送一般性的求助信息\r\n");
 			}
 			else
 				flag_FALLING=0;	//盲人安全
