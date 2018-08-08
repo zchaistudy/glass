@@ -174,6 +174,7 @@ void PlayVoice(int position)
 			time=0;
 			switch(position)
 			{
+				
 				case head:
 					USART3_Send_String(CareHead,sizeof(CareHead));
 					break;
@@ -267,7 +268,7 @@ void TIM6_TIM_NVIC_Config(void)
 {
     NVIC_InitTypeDef NVIC_InitStructure; 
     // 设置中断组为0
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);		
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);		
 		// 设置中断来源
     NVIC_InitStructure.NVIC_IRQChannel = TIM6_IRQn ;	
 		// 设置主优先级为 0

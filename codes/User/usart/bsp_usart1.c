@@ -63,7 +63,7 @@ void USART1_Config(void)
 void USART2_Initialise( u32 bound )
 {
     GPIO_InitTypeDef GPIO_InitStructure;
-    NVIC_InitTypeDef NVIC_InitStructure;
+//    NVIC_InitTypeDef NVIC_InitStructure;
     USART_InitTypeDef USART_InitStructure;
     
     /* Enable the USART2 Pins Software Remapping */
@@ -82,11 +82,11 @@ void USART2_Initialise( u32 bound )
     GPIO_Init(GPIOA, &GPIO_InitStructure);
     
     /* Enable the USART2 Interrupt */
-    NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);    
+//    NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
+//    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;
+//    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
+//    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//    NVIC_Init(&NVIC_InitStructure);    
     
     USART_InitStructure.USART_BaudRate = bound;                
     USART_InitStructure.USART_WordLength = USART_WordLength_8b;

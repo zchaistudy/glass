@@ -133,7 +133,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	
 	
 	int i = 0; 
-	int mindistace = 200 ;    //记录最近的障碍物距离
+	int mindistace = 300 ;    //记录最近的障碍物距离
 
 	
 	*distanceVoice = OBSTACLE_NO;
@@ -251,8 +251,8 @@ void HasObstacle()
 	p_debug(" $$%d\r\n", distanceVoice);
 	if( MODE_FLAG )
 	{
-//		p_debug("调用语音模块");
-		PlayVoice(distanceVoice);                  //修改语音模式	
+		if(distanceVoice)
+			PlayVoice(distanceVoice);                  //修改语音模式	
 	}
 	else
 	{

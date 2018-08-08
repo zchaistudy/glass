@@ -3,7 +3,7 @@
 
 
 #include "stm32f10x.h"
-
+#include <stdio.h>
 
 #define head 3
 #define hand 2

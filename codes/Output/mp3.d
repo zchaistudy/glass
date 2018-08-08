@@ -13,3 +13,4 @@
 ..\..\output\mp3.o: ..\..\Libraries\FWlib\inc\stm32f10x_tim.h
 ..\..\output\mp3.o: ..\..\Libraries\FWlib\inc\stm32f10x_usart.h
 ..\..\output\mp3.o: ..\..\Libraries\FWlib\inc\misc.h
+..\..\output\mp3.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdio.h

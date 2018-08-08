@@ -72,10 +72,10 @@ int main(void)
 	
 //	init_Queue(&q); 		
 	
-	TIM6_TIM_NVIC_Config();			//初始化定时器6
-	TIM6_TIM_Mode_Config();			//用于语音模块
+	TIM6_TIM_Mode_Config();			//初始化定时器6
+	TIM6_TIM_NVIC_Config();			//配置定时器6的优先级
 	
-	UltrasonicWave_Configuration();
+ 	UltrasonicWave_Configuration();
 	GENERAL_TIM_Init();
 	TIM2_Init();
 //	

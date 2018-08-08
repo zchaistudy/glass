@@ -263,7 +263,7 @@ void TIM2_IRQHandler(void)
 	extern int8_t  MEASURE_FLAG;   // 1 眼镜采集数据， 0 等待拐杖采集数据
 	
 	static int portNum = 0;      //选择测距通道	
-//	p_debug("tim2\r\n");
+//	printf("tim2\r\n");
 	if ( TIM_GetITStatus( TIM2, TIM_IT_Update) != RESET ) 
 	{			
 		if( MEASURE_FLAG)
@@ -420,10 +420,12 @@ void  TIM6_IRQHandler (void)
 	{	
 		time++;
 		time_wait++;
-		if(time==2000)			//每隔两秒钟，flag_volume重置为0，开启播放语音模块的权限
+		if(time==3400)			//每隔两秒钟，flag_volume重置为0，开启播放语音模块的权限
+		{
+//			printf("2\r\n");
 			flag_volume=0;
-		if(time==2002)
 			time=0;
+		}
 		if(time_wait==10000)
 			time_wait=0;
 		TIM_ClearITPendingBit(TIM6 , TIM_FLAG_Update);  		 
