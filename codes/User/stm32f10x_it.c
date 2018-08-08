@@ -263,9 +263,10 @@ void TIM2_IRQHandler(void)
 	extern int8_t  MEASURE_FLAG;   // 1 眼镜采集数据， 0 等待拐杖采集数据
 	
 	static int portNum = 0;      //选择测距通道	
-//	printf("tim2\r\n");
 	if ( TIM_GetITStatus( TIM2, TIM_IT_Update) != RESET ) 
 	{			
+//		printf("tim2\r\n");
+		
 		if( MEASURE_FLAG)
 		{
 			UltrasonicWave(portNum);    //采集一个模块数据

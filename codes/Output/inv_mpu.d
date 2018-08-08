@@ -1,9 +1,9 @@
 ..\..\output\inv_mpu.o: ..\..\User\MPU6050\driver\eMPL\inv_mpu.c
-..\..\output\inv_mpu.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdio.h
-..\..\output\inv_mpu.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdint.h
-..\..\output\inv_mpu.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdlib.h
-..\..\output\inv_mpu.o: G:\software\keil5\ARM\ARMCC\bin\..\include\string.h
-..\..\output\inv_mpu.o: G:\software\keil5\ARM\ARMCC\bin\..\include\math.h
+..\..\output\inv_mpu.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\..\output\inv_mpu.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\..\output\inv_mpu.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\inv_mpu.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\..\output\inv_mpu.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\..\output\inv_mpu.o: ..\..\User\MPU6050\driver\eMPL\inv_mpu.h
 ..\..\output\inv_mpu.o: ..\..\User\./i2c/bsp_i2c.h
 ..\..\output\inv_mpu.o: ..\..\Libraries\CMSIS\stm32f10x.h
@@ -21,4 +21,4 @@
 ..\..\output\inv_mpu.o: ..\..\User\./usart/bsp_usart1.h
 ..\..\output\inv_mpu.o: ..\..\User\./systick/bsp_SysTick.h
 ..\..\output\inv_mpu.o: ..\..\User\MPU6050\driver\include\log.h
-..\..\output\inv_mpu.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdarg.h
+..\..\output\inv_mpu.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h

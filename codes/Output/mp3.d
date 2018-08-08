@@ -2,7 +2,7 @@
 ..\..\output\mp3.o: ..\..\User\mp3\mp3.h
 ..\..\output\mp3.o: ..\..\Libraries\CMSIS\stm32f10x.h
 ..\..\output\mp3.o: ..\..\Libraries\CMSIS\core_cm3.h
-..\..\output\mp3.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdint.h
+..\..\output\mp3.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\..\output\mp3.o: ..\..\Libraries\CMSIS\system_stm32f10x.h
 ..\..\output\mp3.o: ..\..\User\stm32f10x_conf.h
 ..\..\output\mp3.o: ..\..\Libraries\FWlib\inc\stm32f10x_exti.h
@@ -13,4 +13,4 @@
 ..\..\output\mp3.o: ..\..\Libraries\FWlib\inc\stm32f10x_tim.h
 ..\..\output\mp3.o: ..\..\Libraries\FWlib\inc\stm32f10x_usart.h
 ..\..\output\mp3.o: ..\..\Libraries\FWlib\inc\misc.h
-..\..\output\mp3.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdio.h
+..\..\output\mp3.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
