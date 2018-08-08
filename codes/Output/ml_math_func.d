@@ -1,11 +1,11 @@
 ..\..\output\ml_math_func.o: ..\..\User\MPU6050\mllite\ml_math_func.c
 ..\..\output\ml_math_func.o: ..\..\User\MPU6050\driver\include\mlmath.h
-..\..\output\ml_math_func.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\..\output\ml_math_func.o: G:\software\keil5\ARM\ARMCC\bin\..\include\math.h
 ..\..\output\ml_math_func.o: ..\..\User\MPU6050\mllite\ml_math_func.h
 ..\..\output\ml_math_func.o: ..\..\User\MPU6050\driver\include\mltypes.h
 ..\..\output\ml_math_func.o: ..\..\User\MPU6050\driver\include\stdint_invensense.h
-..\..\output\ml_math_func.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\..\output\ml_math_func.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-..\..\output\ml_math_func.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\errno.h
-..\..\output\ml_math_func.o: G:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+..\..\output\ml_math_func.o: G:\software\keil5\ARM\ARMCC\bin\..\include\stdint.h
+..\..\output\ml_math_func.o: G:\software\keil5\ARM\ARMCC\bin\..\include\string.h
+..\..\output\ml_math_func.o: G:\software\keil5\ARM\ARMCC\bin\..\include\errno.h
+..\..\output\ml_math_func.o: G:\software\keil5\ARM\ARMCC\bin\..\include\limits.h
 ..\..\output\ml_math_func.o: ..\..\User\MPU6050\driver\include\mlinclude.h
