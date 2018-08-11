@@ -74,7 +74,8 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 
 	UltrasonicWave_Distance[i-1] = ftime * 340 / 2  * 100;
 	
-//	p_debug( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
+//
+	p_debug( "%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
 
 	
 //	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
@@ -150,7 +151,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 				lateobstacle[0] = LATE_NUM;
 			}
 			break;
-		} 
+		}
 	}
 	if( i == AVER_NUM_GLASS )        //障碍物已消失
 	{
@@ -168,6 +169,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	if( distance_walk[0]  < MAX_DISTACE || distance_walk[1] < MAX_DISTACE )  
 	{
 		lateobstacle[1]++;
+//		p_debug("     lateobstacle: %d\r\n", lateobstacle[1]);
 		if( lateobstacle[1] > LATE_NUM )
 		{
 			lateobstacle[1] = LATE_NUM;
@@ -177,9 +179,11 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	{
 		lateobstacle[1] = 0;
 	}	
+	
 	if( distance_walk[2]  < MAX_DISTACE || distance_walk[3] < MAX_DISTACE )  
 	{
 		lateobstacle[2]++;
+//		p_debug("     lateobstacle: %d\r\n", lateobstacle[2]);
 		if( lateobstacle[2] > LATE_NUM )
 		{
 			lateobstacle[2] = LATE_NUM;
@@ -189,10 +193,11 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	{
 		lateobstacle[2] = 0;
 	}	
+	
 	if( distance_walk[4]  < MAX_DISTACE  )  
 	{
 		lateobstacle[3]++;
-		p_debug("foot:%d\r\n", distance_walk[4]);
+//   	p_debug("foot:%d\r\n", distance_walk[4]);
 		if( lateobstacle[3] > LATE_NUM )
 		{
 			lateobstacle[3] = LATE_NUM;
@@ -208,18 +213,19 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	{
 		*distanceVoice = OBSTACLE_HEAD;
 	}
-//判断脚下是否有障碍物
-	if( lateobstacle[3] == LATE_NUM )
-	{
-		p_debug("foot\r\n");
-		*distanceVoice = OBSTACLE_FOOT;
-	}	
 //判断前面是否有障碍物
-	if( lateobstacle[1] == LATE_NUM || lateobstacle[2] == LATE_NUM  )
+	if( lateobstacle[1] == LATE_NUM  )
 	{
 		*distanceVoice = OBSTACLE_AHEAD;
 	}    	
-
+//判断脚下是否有障碍物
+	else if( lateobstacle[3] == LATE_NUM || lateobstacle[2] == LATE_NUM )
+	{
+		p_debug("foot\r\n");
+		*distanceVoice = OBSTACLE_FOOT;
+	}
+	
+/***************频率模式***********************/	
 //频率模式下障碍物提示,取最近障碍物距离
 	for( i = 0; i < AVER_NUM_GLASS; i++ )                
 	{
@@ -233,7 +239,17 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
   if( *distanceRate < 0 )
 	{
 		*distanceRate = 0;
-	}  	
+	}  
+
+/**********************重置数组，避免干扰*******************************/
+	for( i = 0; i < AVER_NUM_GLASS; i++ )
+	{
+		distance_glass[i] = INT16_MAX;
+	}
+	for( i = 0; i < AVER_NUM_WALK; i++ )
+	{
+		distance_walk[i] = INT16_MAX;
+	}	
 }
 
 //判断障碍物位置，并触发提示

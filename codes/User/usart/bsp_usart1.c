@@ -150,7 +150,7 @@ int fgetc(FILE *f)
 void GetWalkingStickRequire(void)
 {
 	USART_SendData(USART1,'3');          //字符'3'为获取信息信号
-	printf("数据已发送\r\n");
+//	printf("数据已发送");
 }
 
 void Deal_Data(void)
