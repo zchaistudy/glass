@@ -78,10 +78,10 @@ int main(void)
  	UltrasonicWave_Configuration();
 	GENERAL_TIM_Init();
 	TIM2_Init();
-//	
+	
 	PeriphInit();              	//报警模块以及按钮的初始化
 	printf("\n系统初始化完毕......\n");
-///	GetWalkingStickRequire();
+
 	for(;;)
 	{	
 //		MPU6050Triaxial(Angle);		//三轴检测

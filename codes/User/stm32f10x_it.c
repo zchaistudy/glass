@@ -255,6 +255,17 @@ void USART2_IRQHandler(void)
         }   
 } 
 
+void USART3_IRQHandler(void)  
+{  
+	uint8_t ch;
+     if(USART_GetFlagStatus(USART2, USART_FLAG_RXNE) == SET)  
+        {       
+                    //USART_SendData(USART2, USART_ReceiveData(USART2));   
+          ch = USART_ReceiveData(USART2);
+					printf( "%c", ch );    //将接受到的数据直接返回打印
+        }   
+} 
+
 
 
 //采集超声波模块数据

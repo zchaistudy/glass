@@ -79,10 +79,16 @@ void USART3_Config(void)
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 	USART_Init(USART3, &USART_InitStructure);
 	
-	
+	USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);
 	USART_Cmd(USART3, ENABLE);
 }
 
+/*
+ * 函数名：USART3_Send_String
+ * 描述  ：发送AT指令
+ * 输入  ：无
+ * 输出  ：无	
+ */
 void USART3_Send_String(u8 *p,u8 cnt)
 {   
 		 while(cnt>0)
