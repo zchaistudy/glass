@@ -208,17 +208,18 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	{
 		*distanceVoice = OBSTACLE_HEAD;
 	}
-//判断前面是否有障碍物
-	if( lateobstacle[1] == LATE_NUM || lateobstacle[2] == LATE_NUM  )
-	{
-		*distanceVoice = OBSTACLE_AHEAD;
-	}    	
 //判断脚下是否有障碍物
 	if( lateobstacle[3] == LATE_NUM )
 	{
 		p_debug("foot\r\n");
 		*distanceVoice = OBSTACLE_FOOT;
-	}
+	}	
+//判断前面是否有障碍物
+	if( lateobstacle[1] == LATE_NUM || lateobstacle[2] == LATE_NUM  )
+	{
+		*distanceVoice = OBSTACLE_AHEAD;
+	}    	
+
 //频率模式下障碍物提示,取最近障碍物距离
 	for( i = 0; i < AVER_NUM_GLASS; i++ )                
 	{
