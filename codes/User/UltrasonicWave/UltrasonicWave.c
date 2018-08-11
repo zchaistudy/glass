@@ -21,7 +21,7 @@
 #ifdef DEBUG_ON_OFF 
 #undef  DEBUG_ON_OFF
 #endif
-#define DEBUG_ON_OFF 0       //1打开调试。0关闭
+#define DEBUG_ON_OFF 1       //1打开调试。0关闭
 //////////////////////////////
 
 static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin);              
@@ -74,6 +74,7 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 
 	UltrasonicWave_Distance[i-1] = ftime * 340 / 2  * 100;
 	
+//
 	p_debug( "%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
 
 	
@@ -168,6 +169,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	if( distance_walk[0]  < MAX_DISTACE || distance_walk[1] < MAX_DISTACE )  
 	{
 		lateobstacle[1]++;
+//		p_debug("     lateobstacle: %d\r\n", lateobstacle[1]);
 		if( lateobstacle[1] > LATE_NUM )
 		{
 			lateobstacle[1] = LATE_NUM;
@@ -177,9 +179,11 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	{
 		lateobstacle[1] = 0;
 	}	
+	
 	if( distance_walk[2]  < MAX_DISTACE || distance_walk[3] < MAX_DISTACE )  
 	{
 		lateobstacle[2]++;
+//		p_debug("     lateobstacle: %d\r\n", lateobstacle[2]);
 		if( lateobstacle[2] > LATE_NUM )
 		{
 			lateobstacle[2] = LATE_NUM;
@@ -189,10 +193,11 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	{
 		lateobstacle[2] = 0;
 	}	
+	
 	if( distance_walk[4]  < MAX_DISTACE  )  
 	{
 		lateobstacle[3]++;
-		p_debug("foot:%d\r\n", distance_walk[4]);
+//   	p_debug("foot:%d\r\n", distance_walk[4]);
 		if( lateobstacle[3] > LATE_NUM )
 		{
 			lateobstacle[3] = LATE_NUM;
@@ -209,12 +214,12 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 		*distanceVoice = OBSTACLE_HEAD;
 	}
 //判断前面是否有障碍物
-	if( lateobstacle[1] == LATE_NUM || lateobstacle[2] == LATE_NUM  )
+	if( lateobstacle[1] == LATE_NUM  )
 	{
 		*distanceVoice = OBSTACLE_AHEAD;
 	}    	
 //判断脚下是否有障碍物
-	if( lateobstacle[3] == LATE_NUM )
+	else if( lateobstacle[3] == LATE_NUM || lateobstacle[2] == LATE_NUM )
 	{
 		p_debug("foot\r\n");
 		*distanceVoice = OBSTACLE_FOOT;
