@@ -21,3 +21,4 @@
 ..\..\output\bsp_mpu6050.o: ..\..\User\./exti/bsp_exti.h
 ..\..\output\bsp_mpu6050.o: ..\..\User\./MPU6050/mpu6050/mpu6050.h
 ..\..\output\bsp_mpu6050.o: ..\..\User\Key\bsp_key.h
+..\..\output\bsp_mpu6050.o: ..\..\User\mp3\mp3.h

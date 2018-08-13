@@ -4,7 +4,7 @@
 #include "./systick/bsp_SysTick.h"
 #include "mp3.h"
 #include "UltrasonicWave.h"
-
+extern int flag_volume;  
 extern int flag_FALLING;
 extern  int MODE_FLAG;       //1 语音 0 频率
 key_four key4 = {0, {1, 1, 1}, MAX_MODE, 4, 0, 1,0};
@@ -542,6 +542,7 @@ void KeyPolling(void)
 
 		if( Key_Scan_down(KEY2_GPIO_PORT,KEY2_GPIO_PIN) == TRUE  )
 		{
+									flag_volume=0;
 				printf("\n按下功能设置键!\r\n");
 			     key4.set_parameter = (key4.set_parameter+1) % SET_MAX;    //选择下一个模式
                if(SET_CLOSE == key4.set_parameter)	//当前处于不可调节模式
@@ -579,6 +580,7 @@ void KeyPolling(void)
 
 		if( Key_Scan_down(KEY3_GPIO_PORT,KEY3_GPIO_PIN) == TRUE  )
 		{
+			flag_volume=0;
 				printf("\n按下进入下一个模式键!\r\n");
 				key4.current_mode=(++key4.current_mode)%key4.max_mode;
 				if(MODE_VOLUME == key4.current_mode)
@@ -605,6 +607,7 @@ void KeyPolling(void)
 
 		if( Key_Scan_down(KEY4_GPIO_PORT,KEY4_GPIO_PIN) == TRUE )
 		{
+			flag_volume=0;
 				printf("\n按下加号键!\r\n");
 				if( SET_CLOSE == key4.set_parameter )
 				{
@@ -663,6 +666,7 @@ void KeyPolling(void)
 		
 		if( Key_Scan_down(KEY5_GPIO_PORT,KEY5_GPIO_PIN) == TRUE )
 		{
+			flag_volume=0;
 				printf("\n按下减号键!\r\n");
 				if( SET_CLOSE == key4.set_parameter )
 				{
@@ -773,17 +777,23 @@ void KEY1_IRQHandler(void)
 		delay(10);		
 //		if(GPIO_ReadInputDataBit(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == KEY_DOWN )  //消抖
 //		{
-			printf("\n按下安全键! exit\r\n");
 			if(0 == flag_FALLING)
 			{
 					USART_SendData(USART1, '2');		//发送一般求助信息
 					while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
 						continue;		
-					
-					printf("\t盲人不是摔倒状态，是发送一般性的求助信息\r\n");
+					flag_volume=0;
+					USART3_Send_String(Alarm,sizeof(Alarm));
+					printf("\t 播放：求救信息已发出r\n");
 			}
 			else
-				flag_FALLING=0;	//盲人安全
+			{
+					flag_FALLING=0;	//盲人安全
+					flag_volume=0;
+					USART3_Send_String(QuitAlarm,sizeof(QuitAlarm));
+					printf("\t 已退出自动报警模式，请注意安全r\n");
+			}
+
 		//清除中断标志位
 			delay(iCOUNT);			
 //		}			

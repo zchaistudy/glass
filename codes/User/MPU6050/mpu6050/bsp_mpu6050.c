@@ -7,6 +7,7 @@
 #include "./exti/bsp_exti.h" 
 #include "./MPU6050/mpu6050/mpu6050.h"
 #include "bsp_key.h"
+#include "mp3.h"
 
 
 extern int flag_FALLING;	//盲人摔倒标志 =1表示摔倒， =0表示正常
@@ -18,25 +19,31 @@ extern int flag_FALLING;	//盲人摔倒标志 =1表示摔倒， =0表示正常
   */
 void blind_falled()
 {
+	int i;
 	if(1==flag_FALLING)	//盲人摔倒
 	{
-			mdelay(10000);	//延时1秒
+			for(i=9;i>0;i--)   //延时10秒
+			{
+				mdelay(1000);	
+				USART3_Send_String(AutoAlarm,sizeof(AutoAlarm));
+				printf("播放：是否需要发送求救信息\r\n");
+				if(flag_FALLING == 0)
+					return ;
+			}	
+	}
+}
+
+void SendHelp(void)
+{
 			if(1==flag_FALLING){		//如果安全键还是没有被按下，那么flag_FALLING标志位还是为1，可以发送蓝牙信息
 				
-				USART_SendData(USART1, '1');		//发送危险信息
-				while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
-					continue;		
-				
-				printf("\n摔倒一段时间后安全键未被按下，已发送信息1给拐杖蓝牙模块");
-				flag_FALLING=0;
-			}
-			else	//盲人无摔倒
-			{
-				printf("盲人摔倒后安全键已经被按下，无安全隐患");		
-			}
-	}
-	else
-		return;
+			USART_SendData(USART1, '1');		//发送危险信息
+			while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
+				continue;		
+			USART3_Send_String(Alarm,sizeof(Alarm));
+			printf("\n摔倒一段时间后安全键未被按下，已发送信息1给拐杖蓝牙模块");
+			flag_FALLING=0;
+		}
 }
 
 /**

@@ -6,6 +6,6 @@
 
 void blind_falled(void);
 void key_module(void);
-
+void SendHelp(void);
 
 #endif /* __BSP_MPU6050_H */

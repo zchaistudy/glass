@@ -898,7 +898,6 @@ static void getAnglesFront(void)
     dmp_set_fifo_rate(DEFAULT_MPU_HZ);
     mpu_set_dmp_state(1);//状态开启
     hal.dmp_on = 1;
-	
 }
 
 static void getEulerAngles(float Angle[4])
@@ -1136,10 +1135,13 @@ void MPU6050Triaxial(float Angle[4])
 	pitch2=Angle[0];
 
 	
-	//printf("\r\n%.4f	%.4f	%.4f\r\n", Angle[0],Angle[1],Angle[2]);
+//	printf("\r\n%.4f	%.4f	%.4f\r\n", Angle[0],Angle[1],Angle[2]);
 	
 	dmp_get_pedometer_step_count(&new_count);
-
+	if(pitch1-pitch2 != 0)
+	{
+		printf("变化 == %.4f \r\n",pitch1-pitch2);
+	}
 //	if(old_count<new_count)
 //	{
 //		printf("\r\nhelp!!!!!!");//严重事故，连续撞击

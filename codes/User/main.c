@@ -84,9 +84,9 @@ int main(void)
 
 	for(;;)
 	{	
-//		MPU6050Triaxial(Angle);		//三轴检测
-//		blind_falled();						//盲人是否摔倒		
-
+		MPU6050Triaxial(Angle);		//三轴检测
+		blind_falled();						//盲人是否摔倒		
+		SendHelp();
 //#if BREAK_EXTI_OPEN
 //#else
 		KeyPolling();

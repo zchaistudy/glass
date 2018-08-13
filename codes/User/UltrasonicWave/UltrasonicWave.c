@@ -36,7 +36,7 @@ int UltrasonicWave_Distance_Walk[AVER_NUM_WALK] = { 500, 500, 500, 500, 500};   
 	static int8_t lateobstacle[4] = {0,0,0,0};      //记录最近几次测距障碍物状态，连续监测障碍物时+1，2未监测到障碍物时清零
 int MODE_FLAG = 1;       //1 语音 0 频率
 
-
+extern int flag_FALLING;
 
 
 static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoice, int* distanceRate );
@@ -75,7 +75,7 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 	UltrasonicWave_Distance[i-1] = ftime * 340 / 2  * 100;
 	
 //
-	p_debug( "%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
+//	p_debug( "%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
 
 	
 //	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
@@ -265,11 +265,13 @@ void HasObstacle()
 	
 	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
 
-	p_debug(" $$%d\r\n", distanceVoice);
+	if(flag_FALLING==1)   //如果盲人处于摔倒状态，则一直播放提醒功能，不在播放障碍物提示功能
+			return ;
+//	p_debug(" $$%d\r\n", distanceVoice);
 	if( MODE_FLAG )
 	{
-		if(distanceVoice)
-			PlayVoice(distanceVoice);                  //修改语音模式	
+//		if(distanceVoice)
+//			PlayVoice(distanceVoice);                  //修改语音模式	
 	}
 	else
 	{

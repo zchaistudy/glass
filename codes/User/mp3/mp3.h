@@ -15,14 +15,14 @@
 #define forth 		4
 #define fifth 		5
 
-#define InEast 					1
-#define InSouth 				2
-#define InWest 					3
-#define InNorth 				4
-#define InSouthEast 		5
-#define InSouthWest 		6
-#define InNorthWest 		7
-#define InNorthEast 		8
+#define InEast 					'6'
+#define InSouth 				'0'
+#define InWest 					'2'
+#define InNorth 				'4'
+#define InSouthEast 		'7'
+#define InSouthWest 		'1'
+#define InNorthWest 		'3'
+#define InNorthEast 		'5'
 
 #define            TIM6_TIM                   TIM6
 #define            TIM6_TIM_APBxClock_FUN     RCC_APB1PeriphClockCmd
@@ -43,9 +43,12 @@ extern u8 rate_2[7];
 extern u8 rate_3[7];
 extern u8 rate_4[7];
 extern u8 rate_5[7];
-extern u8 CareFoot[7];
-extern u8 CareHand[7];
-extern u8 CareHead[7];
+extern u8 CareFootLeft[7];
+extern u8 CareHandLeft[7];
+extern u8 CareHeadLeft[7];
+extern u8 CareFootRight[7];
+extern u8 CareHandRight[7];
+extern u8 CareHeadRight[7];
 
 extern u8 East[7];
 extern u8 South[7];
@@ -63,6 +66,8 @@ extern u8 ModeExit[7];
 
 extern u8 Alarm[7];
 extern u8 AutoAlarm[7];
+extern u8 SendSucceed[7];
+extern u8 QuitAlarm[7];
 
 extern u8 AdjustVolume[7];      
 extern u8 AdjustRate[7];      
@@ -80,9 +85,9 @@ void AddVolume(void);
 void SubVolume(void);
 
 int Weighting(int degree);
-void PlayVoice(int position);
+void PlayVoice(int position,int left_right);
 void PlayRate(int degree);
-void PlayDirection(int direction);
+void PlayDirection(char direction);
 
 void TIM6_TIM_NVIC_Config(void);
 void TIM6_TIM_Mode_Config(void);

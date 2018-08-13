@@ -220,8 +220,9 @@ void USART1_IRQHandler(void)
 			}
 			if(Status==DirectionFlag)											//接收数据为方位信息
 			{
+					printf(" 外 收到的方位为：%c\r\n",ch);
 					PlayDirection(ch);
-					printf("拐杖已经将报警行发送到服务端");
+					printf("收到报告方位");
 					Status=0;
 			}
 			else if(Status==WalkingStickFlag)							//接收数据为拐杖信息
@@ -258,11 +259,17 @@ void USART2_IRQHandler(void)
 void USART3_IRQHandler(void)  
 {  
 	uint8_t ch;
-     if(USART_GetFlagStatus(USART2, USART_FLAG_RXNE) == SET)  
+     if(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == SET)  
         {       
                     //USART_SendData(USART2, USART_ReceiveData(USART2));   
-          ch = USART_ReceiveData(USART2);
-					printf( "%c", ch );    //将接受到的数据直接返回打印
+          ch = USART_ReceiveData(USART3);
+//					printf("%c\r\n",ch);
+//					if(ch == 'S')
+//					{
+//						flag_volume=0;
+//						printf("完成\r\n"); 
+//					}
+   
         }   
 } 
 
@@ -430,14 +437,14 @@ void  TIM6_IRQHandler (void)
 {
 	if ( TIM_GetITStatus( TIM6, TIM_IT_Update) != RESET ) 
 	{	
-		time++;
+	//	time++;
 		time_wait++;
-		if(time==3400)			//每隔两秒钟，flag_volume重置为0，开启播放语音模块的权限
-		{
-//			printf("2\r\n");
-			flag_volume=0;
-			time=0;
-		}
+//		if(time==3400)			//每隔两秒钟，flag_volume重置为0，开启播放语音模块的权限
+//		{
+////			printf("2\r\n");
+//			flag_volume=0;
+//			time=0;
+//		}
 		if(time_wait==10000)
 			time_wait=0;
 		TIM_ClearITPendingBit(TIM6 , TIM_FLAG_Update);  		 

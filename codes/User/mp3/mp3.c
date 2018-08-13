@@ -8,7 +8,7 @@
   ******************************************************************************
   */ 
 #include "mp3.h"
-
+#include <stdio.h>
 int Rate=0;
 int time=0;
 int flag_volume=0;
@@ -28,9 +28,13 @@ u8 rate_3[7]=      {0x7E,0x05,0x41,0x00,0x01,0x45,0xEF};      //慢频率
 u8 rate_4[7]=      {0x7E,0x05,0x41,0x00,0x02,0x46,0xEF};      //中频率
 u8 rate_5[7]=      {0x7E,0x05,0x41,0x00,0x03,0x47,0xEF};      //快频率
 
-u8 CareFoot[7]=    {0x7E,0x05,0x41,0x00,0x04,0x40,0xEF};      //脚下
-u8 CareHand[7]=    {0x7E,0x05,0x41,0x00,0x05,0x41,0xEF};      //手腕
-u8 CareHead[7]=    {0x7E,0x05,0x41,0x00,0x06,0x42,0xEF};      //头部
+u8 CareFootLeft[7]=    {0x7E,0x05,0x41,0x00,0x04,0x40,0xEF};      //脚下
+u8 CareHandLeft[7]=    {0x7E,0x05,0x41,0x00,0x05,0x41,0xEF};      //手腕 
+u8 CareHeadLeft[7]=    {0x7E,0x05,0x41,0x00,0x06,0x42,0xEF};      //头部
+u8 CareFootRight[7]=    {0x7E,0x05,0x41,0x00,0x18,0x5C,0xEF};      //脚下
+u8 CareHandRight[7]=    {0x7E,0x05,0x41,0x00,0x19,0x5D,0xEF};      //手腕 
+u8 CareHeadRight[7]=    {0x7E,0x05,0x41,0x00,0x1A,0x5E,0xEF};      //头部
+
 u8 East[7]=        {0x7E,0x05,0x41,0x00,0x07,0x43,0xEF};      //东
 u8 South[7]=       {0x7E,0x05,0x41,0x00,0x08,0x4C,0xEF};      //南
 u8 West[7]=        {0x7E,0x05,0x41,0x00,0x09,0x4D,0xEF};      //西
@@ -47,9 +51,10 @@ u8 AdjustRate[7]=  {0x7E,0x05,0x41,0x00,0x11,0x55,0xEF};      //频率调节模式
 u8 ModeDistance[7]={0x7E,0x05,0x41,0x00,0x12,0x56,0xEF};      //距离调节
 u8 ModeExit[7]=    {0x7E,0x05,0x41,0x00,0x17,0x53,0xEF};      //退出设置
 
-u8 Alarm[7]=       {0x7E,0x05,0x41,0x00,0x13,0x57,0xEF};      //报警信号已发出
+u8 Alarm[7]=       {0x7E,0x05,0x41,0x00,0x13,0x57,0xEF};      //求救信号已发出
 u8 AutoAlarm[7]=   {0x7E,0x05,0x41,0x00,0x14,0x50,0xEF};      //是否需要自动报警
-
+u8 SendSucceed[7]= {0x7E,0x05,0x41,0x00,0x1B,0x5F,0xEF};      //报警信息已发送
+u8 QuitAlarm[7]=   {0x7E,0x05,0x41,0x00,0x1C,0x58,0xEF};      //退出自动报警
 
 void USART3_Config(void)
 {
@@ -91,6 +96,11 @@ void USART3_Config(void)
  */
 void USART3_Send_String(u8 *p,u8 cnt)
 {   
+		if(flag_volume==1)
+			return;
+		else
+		{
+			flag_volume=1;
 		 while(cnt>0)
 		 {	 
 		     USART_ClearFlag(USART3, USART_FLAG_TC);
@@ -101,6 +111,7 @@ void USART3_Send_String(u8 *p,u8 cnt)
 		     }
 				 cnt--;
 		 }
+	 }
 }
 
 /*
@@ -170,28 +181,39 @@ int Weighting(int degree)
  * 输入  ：输入即将碰撞的部位
  * 输出  ：无	
  */
-void PlayVoice(int position)
+void PlayVoice(int position,int left_right)
 {
-		if(flag_volume==1)
-			return;
-		else
-		{
-			flag_volume=1;
-			time=0;
-			switch(position)
+			if(left_right)
 			{
-				
-				case head:
-					USART3_Send_String(CareHead,sizeof(CareHead));
-					break;
-				case hand:
-					USART3_Send_String(CareHand,sizeof(CareHand));
-					break;
-				case foot:
-					USART3_Send_String(CareFoot,sizeof(CareFoot));
-					break;
+				switch(position)
+				{
+					case head:
+						USART3_Send_String(CareHeadRight,sizeof(CareHeadRight));
+						break;
+					case hand:
+						USART3_Send_String(CareHandRight,sizeof(CareHandRight));
+						break;
+					case foot:
+						USART3_Send_String(CareFootRight,sizeof(CareFootRight));
+						break;
+				}
 			}
-		}
+			else
+			{
+				switch(position)
+				{
+					case head:
+						USART3_Send_String(CareHeadLeft,sizeof(CareHeadLeft));
+						break;
+					case hand:
+						USART3_Send_String(CareHandLeft,sizeof(CareHandLeft));
+						break;
+					case foot:
+						USART3_Send_String(CareFootLeft,sizeof(CareFootLeft));
+						break;
+				}
+			}
+		
 }
 
 
@@ -237,9 +259,10 @@ void PlayRate(int degree)
  * 输入  ：输入方位信息
  * 输出  ：无	
  */
-void PlayDirection(int direction)
+void PlayDirection(char direction)
 {
-		
+		flag_volume=0;
+		printf("内  收到的方位为：%c\r\n",direction);
 		switch(direction)
 		{
 				case InEast:
