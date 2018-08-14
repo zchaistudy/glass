@@ -7,7 +7,7 @@
 extern int flag_volume;  
 extern int flag_FALLING;
 extern  int MODE_FLAG;       //1 语音 0 频率
-key_four key4 = {0, {1, 1, 1}, MAX_MODE, 4, 0, 1,0};
+key_four key4 = {0, {1, 1, 1}, MAX_MODE, 4, 0, 0,0};
 
 static void delay(int i)
 {
@@ -761,7 +761,7 @@ void EXTI_Key_Config(void)
 	/* EXTI为中断模式 */
   EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
 	/* 沿中断 */
-  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
   /* 使能中断 */	
   EXTI_InitStructure.EXTI_LineCmd = ENABLE;
   EXTI_Init(&EXTI_InitStructure);
@@ -775,8 +775,8 @@ void KEY1_IRQHandler(void)
 	{
 //		EXTI_n(KEY1);
 		delay(10);		
-//		if(GPIO_ReadInputDataBit(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == KEY_DOWN )  //消抖
-//		{
+		if(GPIO_ReadInputDataBit(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == KEY_DOWN )  //消抖
+		{
 			if(0 == flag_FALLING)
 			{
 					USART_SendData(USART1, '2');		//发送一般求助信息
@@ -796,7 +796,7 @@ void KEY1_IRQHandler(void)
 
 		//清除中断标志位
 			delay(iCOUNT);			
-//		}			
+		}			
 //		EXTI_n_Open(KEY1);
 		EXTI_ClearITPendingBit(KEY1_INT_EXTI_LINE); 
 	}  

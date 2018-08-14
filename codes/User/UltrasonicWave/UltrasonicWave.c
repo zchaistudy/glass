@@ -27,8 +27,8 @@
 //障碍物检测次数判断，若distance>MAX_DISTACE，则obstacleNum++，obstacleNum最大值为LATE_NUM
 #define    HAS_OBSTACLE_NUM(distance,obstacleNum)  do\
 			 {if(distance<MAX_DISTACE)\
-			 {if(obstacleNum<LATE_NUM){obstacleNum++;}\
-			  else{obstacleNum=0;}}}while(0)
+			    {if(obstacleNum<LATE_NUM){obstacleNum++;}}\
+			  else{obstacleNum=0;}}while(0)
 
 			  
 		
@@ -170,12 +170,12 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	if( lateobstacle[0] == LATE_NUM)
 	{
 		*distanceVoice = OBSTACLE_HEAD;
-		*sides = OBSTACLE_LEFT_SIDE;
+		*sides = OBSTACLE_RIGHT_SIDE;
 	}
 	if( lateobstacle[1] == LATE_NUM)
 	{
 		*distanceVoice = OBSTACLE_HEAD;
-		*sides = OBSTACLE_RIGHT_SIDE;
+		*sides = OBSTACLE_LEFT_SIDE;
 	}	
 //判断前面是否有障碍物
 	if( lateobstacle[2] == LATE_NUM  )
@@ -192,12 +192,12 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	else if( lateobstacle[4] == LATE_NUM )
 	{
 		*distanceVoice = OBSTACLE_FOOT;
-		*sides = OBSTACLE_LEFT_SIDE;
+		*sides = OBSTACLE_RIGHT_SIDE;
 	}
 	else if( lateobstacle[5] == LATE_NUM || lateobstacle[6] == LATE_NUM )
 	{
 		*distanceVoice = OBSTACLE_FOOT;
-		*sides = OBSTACLE_RIGHT_SIDE;
+		*sides = OBSTACLE_LEFT_SIDE;
 	}	
 /***************频率模式***********************/	
 //频率模式下障碍物提示,取最近障碍物距离
