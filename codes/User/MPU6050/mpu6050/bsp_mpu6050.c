@@ -22,7 +22,7 @@ void blind_falled(float Angle[4])
 	if(1==flag_FALLING)	//盲人摔倒
 	{ 
 		flag_volume=0;
-			for(i=9;i>0;i--)   //延时10秒
+			for(i=15;i>0;i--)   //延时10秒
 			{
 				mdelay(1000);	
 				USART3_Send_String(AutoAlarm,sizeof(AutoAlarm));
@@ -41,7 +41,7 @@ void SendHelp(void)
 {
 			if(1==flag_FALLING){		//如果安全键还是没有被按下，那么flag_FALLING标志位还是为1，可以发送蓝牙信息
 				
-			USART_SendData(USART1, '1');		//发送危险信息
+			USART_SendData(USART1, '2');		//发送危险信息
 			while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
 				continue;	
 			flag_volume=0;

@@ -27,8 +27,8 @@
 //障碍物检测次数判断，若distance>MAX_DISTACE，则obstacleNum++，obstacleNum最大值为LATE_NUM
 #define    HAS_OBSTACLE_NUM(distance,obstacleNum)  do\
 			 {if(distance<MAX_DISTACE)\
-			 {if(obstacleNum<LATE_NUM){obstacleNum++;}\
-			  else{obstacleNum=0;}}}while(0)
+			    {if(obstacleNum<LATE_NUM){obstacleNum++;}}\
+			  else{obstacleNum=0;}}while(0)
 
 			  
 		
@@ -162,20 +162,20 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	HAS_OBSTACLE_NUM(distance_walk[3],lateobstacle[5]);		
 	HAS_OBSTACLE_NUM(distance_walk[4],lateobstacle[6]);	
 	
-	p_debug("distance  \r\n");
+//	p_debug("distance  \r\n");
 	for( i = 0; i < 5;i++ )
-	p_debug("%d ",distance_walk[i]);
-  p_debug("macx: %d", MAX_DISTACE);
+//	p_debug("%d ",distance_walk[i]);
+ // p_debug("macx: %d", MAX_DISTACE);
 //判断头部是否有障碍物
 	if( lateobstacle[0] == LATE_NUM)
 	{
 		*distanceVoice = OBSTACLE_HEAD;
-		*sides = OBSTACLE_LEFT_SIDE;
+		*sides = OBSTACLE_RIGHT_SIDE;
 	}
 	if( lateobstacle[1] == LATE_NUM)
 	{
 		*distanceVoice = OBSTACLE_HEAD;
-		*sides = OBSTACLE_RIGHT_SIDE;
+		*sides = OBSTACLE_LEFT_SIDE;
 	}	
 //判断前面是否有障碍物
 	if( lateobstacle[2] == LATE_NUM  )
@@ -192,12 +192,12 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	else if( lateobstacle[4] == LATE_NUM )
 	{
 		*distanceVoice = OBSTACLE_FOOT;
-		*sides = OBSTACLE_LEFT_SIDE;
+		*sides = OBSTACLE_RIGHT_SIDE;
 	}
 	else if( lateobstacle[5] == LATE_NUM || lateobstacle[6] == LATE_NUM )
 	{
 		*distanceVoice = OBSTACLE_FOOT;
-		*sides = OBSTACLE_RIGHT_SIDE;
+		*sides = OBSTACLE_LEFT_SIDE;
 	}	
 /***************频率模式***********************/	
 //频率模式下障碍物提示,取最近障碍物距离
@@ -236,19 +236,19 @@ void HasObstacle()
 
 	if(flag_FALLING==1)   //如果盲人处于摔倒状态，则一直播放提醒功能，不在播放障碍物提示功能
 			return ;
-//	p_debug(" $$%d\r\n", distanceVoice);
+	p_debug(" $$%d\r\n", distanceVoice);
 
 	if( MODE_FLAG )
 	{
 		if(distanceVoice)
 		{
-			p_debug("distanceVoice:%d  , %d\r\n", distanceVoice,side);
+//			p_debug("distanceVoice:%d  , %d\r\n", distanceVoice,side);
 			PlayVoice(distanceVoice,side);                  //修改语音模式	
 		}		
 	}
 	else
 	{
-//		printf("频率：%d\r\n",distanceRate);
+		printf("频率：%d\r\n",distanceRate);
 		PlayRate(distanceRate);                    //调用频率模式
 	}
 }
