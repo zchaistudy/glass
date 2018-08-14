@@ -41,7 +41,7 @@ void SendHelp(void)
 {
 			if(1==flag_FALLING){		//如果安全键还是没有被按下，那么flag_FALLING标志位还是为1，可以发送蓝牙信息
 				
-			USART_SendData(USART1, '1');		//发送危险信息
+			USART_SendData(USART1, '2');		//发送危险信息
 			while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
 				continue;	
 			flag_volume=0;
