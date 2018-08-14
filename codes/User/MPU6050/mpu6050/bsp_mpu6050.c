@@ -9,26 +9,30 @@
 #include "bsp_key.h"
 #include "mp3.h"
 
-
 extern int flag_FALLING;	//盲人摔倒标志 =1表示摔倒， =0表示正常
-
+extern int flag_volume; 
 /**
   * @brief  判断是否需要通过蓝牙发送危险信息
   * @param  无  
   * @retval 无
   */
-void blind_falled()
+void blind_falled(float Angle[4])
 {
 	int i;
 	if(1==flag_FALLING)	//盲人摔倒
-	{
+	{ 
+		flag_volume=0;
 			for(i=9;i>0;i--)   //延时10秒
 			{
 				mdelay(1000);	
 				USART3_Send_String(AutoAlarm,sizeof(AutoAlarm));
-				printf("播放：是否需要发送求救信息\r\n");
+				printf("播放：是否需要发送求救信息,i == %d\r\n",i);
 				if(flag_FALLING == 0)
-					return ;
+				{
+						Filter(Angle);
+						return ;
+				}
+					
 			}	
 	}
 }
@@ -39,9 +43,10 @@ void SendHelp(void)
 				
 			USART_SendData(USART1, '1');		//发送危险信息
 			while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
-				continue;		
+				continue;	
+			flag_volume=0;
 			USART3_Send_String(Alarm,sizeof(Alarm));
-			printf("\n摔倒一段时间后安全键未被按下，已发送信息1给拐杖蓝牙模块");
+			printf("已启动自动报警功能\r\n");
 			flag_FALLING=0;
 		}
 }

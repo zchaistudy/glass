@@ -24,22 +24,30 @@
 #define DEBUG_ON_OFF 1       //1打开调试。0关闭
 //////////////////////////////
 
+//障碍物检测次数判断，若distance>MAX_DISTACE，则obstacleNum++，obstacleNum最大值为LATE_NUM
+#define    HAS_OBSTACLE_NUM(distance,obstacleNum)  do\
+			 {if(distance<MAX_DISTACE)\
+			 {if(obstacleNum<LATE_NUM){obstacleNum++;}\
+			  else{obstacleNum=0;}}}while(0)
+
+			  
+		
+#define    OBSTACLE_LEFT_SIDE      1     //障碍物在左边
+#define    OBSTACLE_RIGHT_SIDE     0     //障碍物在右边
+
 static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin);              
-
 static int UltrasonicWave_Distance[AVER_NUM_GLASS];      //计算出的距离    
-
 static int16_t MAX_DISTACE =150;        //最大距离
-int8_t  MEASURE_FLAG = 1;   // 1 眼镜采集数据， 0 等待拐杖采集数据
+static int8_t lateobstacle[AVER_NUM_WALK+AVER_NUM_GLASS] = {0};      //记录最近几次测距障碍物状态，连续监测障碍物时+1，2未监测到障碍物时清零
 
-int8_t GET_WALK_FLAG = 0;       //接收拐杖数据标志
 int UltrasonicWave_Distance_Walk[AVER_NUM_WALK] = { 500, 500, 500, 500, 500};   //拐杖采集数据
-	static int8_t lateobstacle[4] = {0,0,0,0};      //记录最近几次测距障碍物状态，连续监测障碍物时+1，2未监测到障碍物时清零
 int MODE_FLAG = 1;       //1 语音 0 频率
+int8_t  MEASURE_FLAG = 1;   // 1 眼镜采集数据， 0 等待拐杖采集数据
+int8_t GET_WALK_FLAG = 0;       //接收拐杖数据标志
 
 extern int flag_FALLING;
 
 
-static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoice, int* distanceRate );
 
 
 static void ObstacleDelayUs( uint32_t t )
@@ -125,11 +133,14 @@ int getDistance()
 }
 
 
-//障碍物判断
-//distance 采集的距离数据
-//distanceVoice 语音模式下障碍物提示， 0 无障碍物 1 障碍物在脚下 2 障碍物在正前方 3障碍物在头部位置
-//distanceRate 频率模式下障碍物提示， 0 无障碍物 1 障碍物在3~2m， 2 障碍物在2~1m ,3 障碍物<1m
-static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoice, int* distanceRate )
+/**
+*障碍物判断
+*distance 采集的距离数据
+*distanceVoice 语音模式下障碍物提示， 0 无障碍物 1 障碍物在脚下 2 障碍物在正前方 3障碍物在头部位置
+*sides         语音模式下，OBSTACLE_LEFT_SIDE：障碍物在右边， OBSTACLE_RIGHT_SIDE:障碍物在左边
+*distanceRate 频率模式下障碍物提示， 0 无障碍物 1 障碍物在3~2m， 2 障碍物在2~1m ,3 障碍物<1m
+*/
+static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoice,int *sides, int* distanceRate )
 {
 	
 	
@@ -139,92 +150,55 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	
 	*distanceVoice = OBSTACLE_NO;
 	*distanceRate = 0;
+	*sides = 0;
 	
+//头部障碍物次数统计	
+	HAS_OBSTACLE_NUM(distance_glass[0],lateobstacle[0]);	
+	HAS_OBSTACLE_NUM(distance_glass[1],lateobstacle[1]);	
+//拐杖障碍物次数统计
+	HAS_OBSTACLE_NUM(distance_walk[0],lateobstacle[2]);	
+	HAS_OBSTACLE_NUM(distance_walk[1],lateobstacle[3]);	
+	HAS_OBSTACLE_NUM(distance_walk[2],lateobstacle[4]);	
+	HAS_OBSTACLE_NUM(distance_walk[3],lateobstacle[5]);		
+	HAS_OBSTACLE_NUM(distance_walk[4],lateobstacle[6]);	
 	
-	for( ; i < AVER_NUM_GLASS; i++ )                  //眼镜部分数据障碍物判断
-	{
-		if( distance_glass[i] < MAX_DISTACE )           //判断头部是否有障碍物
-		{
-			lateobstacle[0]++;
-			if( lateobstacle[0] > LATE_NUM )
-			{
-				lateobstacle[0] = LATE_NUM;
-			}
-			break;
-		}
-	}
-	if( i == AVER_NUM_GLASS )        //障碍物已消失
-	{
-		lateobstacle[0] = 0;
-	}
-	
-//	for( i = 0; i < 5; i++ )
-//	{
-//		printf("walk: %d\r\n", distance_walk[i]);
-//	}
-//	
-//	
-	
-	
-	if( distance_walk[0]  < MAX_DISTACE || distance_walk[1] < MAX_DISTACE )  
-	{
-		lateobstacle[1]++;
-//		p_debug("     lateobstacle: %d\r\n", lateobstacle[1]);
-		if( lateobstacle[1] > LATE_NUM )
-		{
-			lateobstacle[1] = LATE_NUM;
-		}		
-	}
-	else
-	{
-		lateobstacle[1] = 0;
-	}	
-	
-	if( distance_walk[2]  < MAX_DISTACE || distance_walk[3] < MAX_DISTACE )  
-	{
-		lateobstacle[2]++;
-//		p_debug("     lateobstacle: %d\r\n", lateobstacle[2]);
-		if( lateobstacle[2] > LATE_NUM )
-		{
-			lateobstacle[2] = LATE_NUM;
-		}
-	}
-	else
-	{
-		lateobstacle[2] = 0;
-	}	
-	
-	if( distance_walk[4]  < MAX_DISTACE  )  
-	{
-		lateobstacle[3]++;
-//   	p_debug("foot:%d\r\n", distance_walk[4]);
-		if( lateobstacle[3] > LATE_NUM )
-		{
-			lateobstacle[3] = LATE_NUM;
-		}
-	}
-	else
-	{
-		lateobstacle[3] = 0;
-	}	
-
+	p_debug("distance  \r\n");
+	for( i = 0; i < 5;i++ )
+	p_debug("%d ",distance_walk[i]);
+  p_debug("macx: %d", MAX_DISTACE);
 //判断头部是否有障碍物
-	if( lateobstacle[0] == LATE_NUM )
+	if( lateobstacle[0] == LATE_NUM)
 	{
 		*distanceVoice = OBSTACLE_HEAD;
+		*sides = OBSTACLE_LEFT_SIDE;
 	}
+	if( lateobstacle[1] == LATE_NUM)
+	{
+		*distanceVoice = OBSTACLE_HEAD;
+		*sides = OBSTACLE_RIGHT_SIDE;
+	}	
 //判断前面是否有障碍物
-	if( lateobstacle[1] == LATE_NUM  )
+	if( lateobstacle[2] == LATE_NUM  )
 	{
 		*distanceVoice = OBSTACLE_AHEAD;
+		*sides = OBSTACLE_LEFT_SIDE;
 	}    	
-//判断脚下是否有障碍物
-	else if( lateobstacle[3] == LATE_NUM || lateobstacle[2] == LATE_NUM )
+	if( lateobstacle[3] == LATE_NUM  )
 	{
-		p_debug("foot\r\n");
+		*distanceVoice = OBSTACLE_AHEAD;
+		*sides = OBSTACLE_RIGHT_SIDE;
+	}  	
+//判断脚下是否有障碍物
+	else if( lateobstacle[4] == LATE_NUM )
+	{
 		*distanceVoice = OBSTACLE_FOOT;
+		*sides = OBSTACLE_LEFT_SIDE;
 	}
-	
+	else if( lateobstacle[5] == LATE_NUM || lateobstacle[6] == LATE_NUM )
+	{
+		*distanceVoice = OBSTACLE_FOOT;
+		*sides = OBSTACLE_RIGHT_SIDE;
+	}	
 /***************频率模式***********************/	
 //频率模式下障碍物提示,取最近障碍物距离
 	for( i = 0; i < AVER_NUM_GLASS; i++ )                
@@ -255,27 +229,26 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 //判断障碍物位置，并触发提示
 void HasObstacle()
 {
-//	int i;
-	int distanceVoice, distanceRate;
+	int distanceVoice, distanceRate,side;
 
-//	for( i = 0; i < 5; i++ )
-//	{
-//		printf("UltrasonicWave_Distance_Walk: %d\r\n", UltrasonicWave_Distance_Walk[i]);
-//	}
-	
-	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
+	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,
+	    &distanceVoice,&side, &distanceRate );      //分析障碍物信息
 
 	if(flag_FALLING==1)   //如果盲人处于摔倒状态，则一直播放提醒功能，不在播放障碍物提示功能
 			return ;
-	p_debug(" $$%d\r\n", distanceVoice);
+//	p_debug(" $$%d\r\n", distanceVoice);
+
 	if( MODE_FLAG )
 	{
-//		if(distanceVoice)
-//			PlayVoice(distanceVoice);                  //修改语音模式	
+		if(distanceVoice)
+		{
+			p_debug("distanceVoice:%d  , %d\r\n", distanceVoice,side);
+			PlayVoice(distanceVoice,side);                  //修改语音模式	
+		}		
 	}
 	else
 	{
-		printf("频率：%d\r\n",distanceRate);
+//		printf("频率：%d\r\n",distanceRate);
 		PlayRate(distanceRate);                    //调用频率模式
 	}
 }

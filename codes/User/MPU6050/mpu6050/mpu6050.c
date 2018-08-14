@@ -1048,7 +1048,7 @@ static int PitchFalling(float pitch1, float pitch2)
 {
 	if(pitch1>0.1)
 	{
-		if((pitch2-pitch1)>3.0|| (pitch2-pitch1)<-3.0)
+		if((pitch2-pitch1)>15.0|| (pitch2-pitch1)<-15.0)
 		{			
 			return 1;
 		}
@@ -1061,75 +1061,44 @@ static int PitchFalling(float pitch1, float pitch2)
 		return 0;
 }
 
-static int RollFalling(float roll)
-{
-		getEulerAngles(old_angle);
-		getEulerAngles(new_angle);
-	//滚轮检测	-90 ~ +90		向左正
-		printf("%.4f, %.4f", new_angle[1], old_angle[1]);
-
-	if(roll>1.0)
-	{
-		if((new_angle[1]-old_angle[1])>20.0|| (new_angle[1]-old_angle[1])<-20.0)
-		{
-			// 
-	printf("%.4f, %.4f", new_angle[1], old_angle[1]);
-	//		if(roll>30.0 || roll<-30.0)
-	//			return 1;
-	//		else
-	//			return 0;
-
-			return 1;
-		}
-		else
-		{
-			return 0;
-		}	
-	}
-	else
-		return 0;
-}
-
-//static int YawFalling(float yaw)
-//{
-//	//偏航检测	-180 ~ +180		向左正
-//	if(yaw)
-//	{
-//		return 1;
-//	}
-//	else
-//	{
-//		return 0;
-//	}
-//}
 
 
 
 
 void MPU6050Triaxial(float Angle[4])
 {
-	unsigned long new_count;
-	static unsigned long old_count;
-	float pitch1, pitch2, roll;
-	
+	float pitch1, pitch2;
 	getEulerAngles(Angle);
 	pitch1=Angle[0];
-	roll=Angle[1];
 	mdelay(10);	//延时
 	getEulerAngles(Angle);
 	pitch2=Angle[0];
-	if(pitch1-pitch2 != 0)
-		printf("差为：%f\r\n",pitch1-pitch2);
+//	if(pitch1-pitch2 != 0)
+//		printf("pitch1 == %f ,pitch2 == %f , 差为：%f\r\n",pitch1,pitch2,pitch1-pitch2);
 	if(PitchFalling(pitch1, pitch2))
 	{
 		printf("\r\nhelp!\n");//首次摔倒
 		flag_FALLING=1;
 	}
 	
-
 }
 
-
+void Filter(float Angle[4])
+{
+	if(flag_FALLING == 1)
+	{
+//			float pitch1, pitch2;
+			getEulerAngles(Angle);
+//			pitch1=Angle[0];
+			mdelay(10);	//延时
+		getEulerAngles(Angle);
+					mdelay(10);	//延时
+		getEulerAngles(Angle);
+//		pitch2=Angle[0];
+//			printf("已对信息进行过滤\r\n");
+//			printf("pitch1 == %f ,pitch2 == %f , 差为：%f\r\n",pitch1,pitch2,pitch1-pitch2);
+	}
+}
 
 #ifdef HHH
 //MPU6050姿态角检测测试代码

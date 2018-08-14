@@ -8,5 +8,5 @@ void MPU6050Config(void);
 
 void MPU6050Triaxial(float Angle[4]);
 
-
+void Filter(float Angle[4]);
 #endif /* __MPU6050_H */

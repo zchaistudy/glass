@@ -96,22 +96,37 @@ void USART3_Config(void)
  */
 void USART3_Send_String(u8 *p,u8 cnt)
 {   
+//		printf("flag_volume == %d\r\n",flag_volume);
 		if(flag_volume==1)
 			return;
 		else
 		{
 			flag_volume=1;
-		 while(cnt>0)
-		 {	 
-		     USART_ClearFlag(USART3, USART_FLAG_TC);
-		     USART_SendData(USART3,*p++);			 
-		     while(USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET)
-		     {
-		   	     ;
-		     }
-				 cnt--;
-		 }
+			 while(cnt>0)
+			 {	 
+					 USART_ClearFlag(USART3, USART_FLAG_TC);
+					 USART_SendData(USART3,*p++);			 
+					 while(USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET)
+					 {
+							 ;
+					 }
+					 cnt--;
+			 }
 	 }
+}
+
+void USART3_Send_String_Key(u8 *p,u8 cnt)
+{   
+			 while(cnt>0)
+			 {	 
+					 USART_ClearFlag(USART3, USART_FLAG_TC);
+					 USART_SendData(USART3,*p++);			 
+					 while(USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET)
+					 {
+							 ;
+					 }
+					 cnt--;
+			 }
 }
 
 /*
@@ -147,7 +162,7 @@ void SubRate()
  */
 void AddVolume()
 {
-	USART3_Send_String(Add,sizeof(Add));  //增加音量
+	USART3_Send_String_Key(Add,sizeof(Add));  //增加音量
 }
 
 /*
@@ -158,7 +173,7 @@ void AddVolume()
  */
 void SubVolume()
 {
-		USART3_Send_String(Sub,sizeof(Sub));  //减少音量
+		USART3_Send_String_Key(Sub,sizeof(Sub));  //减少音量
 }
 	
 /*

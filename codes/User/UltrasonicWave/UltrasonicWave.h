@@ -5,13 +5,13 @@
 #include "bsp_usart1.h"
 #include "UltraConfig.h"
 
-#define ONLY_GLASS            //眼镜单独测试
+//#define ONLY_GLASS            //眼镜单独测试
 
 
 #define AVER_NUM_GLASS        2              //眼睛上超声波数量
 #define AVER_NUM_WALK         5              //拐杖上超声波数量
 #define AVER_NUM_ALL   AVER_NUM +AVER_NUM_WALK    //超声波总数量
-#define LATE_NUM              2               //保留最近？次数据
+#define LATE_NUM              3               //保留最近？次数据
 
 #define OBSTACLE_HEAD            3
 #define OBSTACLE_AHEAD           2

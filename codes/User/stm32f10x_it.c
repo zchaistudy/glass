@@ -263,11 +263,11 @@ void USART3_IRQHandler(void)
         {       
          
           ch = USART_ReceiveData(USART3);
-					printf("%c\r\n",ch);
+//					printf("%c\r\n",ch);
 					if(ch == 'S')
 					{
 						flag_volume=0;
-						printf("完成\r\n"); 
+//						printf("完成\r\n"); 
 					}
    
         }   
