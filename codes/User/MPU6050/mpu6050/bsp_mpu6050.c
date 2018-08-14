@@ -22,7 +22,7 @@ void blind_falled(float Angle[4])
 	if(1==flag_FALLING)	//√§»ÀÀ§µπ
 	{ 
 		flag_volume=0;
-			for(i=9;i>0;i--)   //—” ±10√Î
+			for(i=15;i>0;i--)   //—” ±10√Î
 			{
 				mdelay(1000);	
 				USART3_Send_String(AutoAlarm,sizeof(AutoAlarm));

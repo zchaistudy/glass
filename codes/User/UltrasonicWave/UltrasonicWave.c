@@ -162,10 +162,10 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	HAS_OBSTACLE_NUM(distance_walk[3],lateobstacle[5]);		
 	HAS_OBSTACLE_NUM(distance_walk[4],lateobstacle[6]);	
 	
-	p_debug("distance  \r\n");
+//	p_debug("distance  \r\n");
 	for( i = 0; i < 5;i++ )
-	p_debug("%d ",distance_walk[i]);
-  p_debug("macx: %d", MAX_DISTACE);
+//	p_debug("%d ",distance_walk[i]);
+ // p_debug("macx: %d", MAX_DISTACE);
 //判断头部是否有障碍物
 	if( lateobstacle[0] == LATE_NUM)
 	{
@@ -236,19 +236,19 @@ void HasObstacle()
 
 	if(flag_FALLING==1)   //如果盲人处于摔倒状态，则一直播放提醒功能，不在播放障碍物提示功能
 			return ;
-//	p_debug(" $$%d\r\n", distanceVoice);
+	p_debug(" $$%d\r\n", distanceVoice);
 
 	if( MODE_FLAG )
 	{
 		if(distanceVoice)
 		{
-			p_debug("distanceVoice:%d  , %d\r\n", distanceVoice,side);
+//			p_debug("distanceVoice:%d  , %d\r\n", distanceVoice,side);
 			PlayVoice(distanceVoice,side);                  //修改语音模式	
 		}		
 	}
 	else
 	{
-//		printf("频率：%d\r\n",distanceRate);
+		printf("频率：%d\r\n",distanceRate);
 		PlayRate(distanceRate);                    //调用频率模式
 	}
 }
