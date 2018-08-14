@@ -261,14 +261,14 @@ void USART3_IRQHandler(void)
 	uint8_t ch;
      if(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == SET)  
         {       
-                    //USART_SendData(USART2, USART_ReceiveData(USART2));   
+         
           ch = USART_ReceiveData(USART3);
-//					printf("%c\r\n",ch);
-//					if(ch == 'S')
-//					{
-//						flag_volume=0;
-//						printf("完成\r\n"); 
-//					}
+					printf("%c\r\n",ch);
+					if(ch == 'S')
+					{
+						flag_volume=0;
+						printf("完成\r\n"); 
+					}
    
         }   
 } 

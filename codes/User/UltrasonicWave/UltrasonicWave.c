@@ -267,7 +267,7 @@ void HasObstacle()
 
 	if(flag_FALLING==1)   //如果盲人处于摔倒状态，则一直播放提醒功能，不在播放障碍物提示功能
 			return ;
-//	p_debug(" $$%d\r\n", distanceVoice);
+	p_debug(" $$%d\r\n", distanceVoice);
 	if( MODE_FLAG )
 	{
 //		if(distanceVoice)

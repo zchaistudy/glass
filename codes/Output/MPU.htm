@@ -3,9 +3,9 @@
 <title>Static Call Graph - [..\..\Output\MPU.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\..\Output\MPU.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5040049: Last Updated: Mon Aug 13 20:46:14 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5040049: Last Updated: Mon Aug 13 22:30:50 2018
 <BR><P>
-<H3>Maximum Stack Usage =        624 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        616 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 main &rArr; MPU6050Triaxial &rArr; getEulerAngles &rArr; read_from_mpl &rArr; _MLPrintLog &rArr; vsprintf
 <P>
@@ -907,7 +907,7 @@ Global Symbols
 <P><STRONG><a name="[2db]"></a>USART_ClearITPendingBit</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, stm32f10x_usart.o(.text), UNUSED)
 
 <P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 74 bytes, Stack size 24 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 624<LI>Call Chain = main &rArr; MPU6050Triaxial &rArr; getEulerAngles &rArr; read_from_mpl &rArr; _MLPrintLog &rArr; vsprintf
+<BR><BR>[Stack]<UL><LI>Max Depth = 616<LI>Call Chain = main &rArr; MPU6050Triaxial &rArr; getEulerAngles &rArr; read_from_mpl &rArr; _MLPrintLog &rArr; vsprintf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;blind_falled
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UltrasonicWave_Configuration
@@ -987,11 +987,12 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(RESET)
 </UL>
-<P><STRONG><a name="[31]"></a>USART3_IRQHandler</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, stm32f10x_it.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = USART3_IRQHandler
+<P><STRONG><a name="[31]"></a>USART3_IRQHandler</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, stm32f10x_it.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = USART3_IRQHandler &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetFlagStatus
 <LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ReceiveData
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(RESET)
 </UL>
@@ -1072,8 +1073,9 @@ Global Symbols
 <LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ReceiveData
 </UL>
 
-<P><STRONG><a name="[a3]"></a>GetWalkingStickRequire</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, bsp_usart1.o(.text), UNUSED)
+<P><STRONG><a name="[a3]"></a>GetWalkingStickRequire</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, bsp_usart1.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SendData
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 
 <P><STRONG><a name="[a4]"></a>Deal_Data</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, bsp_usart1.o(.text), UNUSED)
@@ -1865,8 +1867,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu_read_mem
 </UL>
-<BR>[Called By]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6050Triaxial
-<LI><a href="#[1bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_from_mpl
+<BR>[Called By]<UL><LI><a href="#[1bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_from_mpl
 </UL>
 
 <P><STRONG><a name="[11b]"></a>dmp_set_pedometer_step_count</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, inv_mpu_dmp_motion_driver.o(.text), UNUSED)
@@ -3146,11 +3147,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PeriphInit
 </UL>
 
-<P><STRONG><a name="[84]"></a>MPU6050Triaxial</STRONG> (Thumb, 114 bytes, Stack size 40 bytes, mpu6050.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 600<LI>Call Chain = MPU6050Triaxial &rArr; getEulerAngles &rArr; read_from_mpl &rArr; _MLPrintLog &rArr; vsprintf
+<P><STRONG><a name="[84]"></a>MPU6050Triaxial</STRONG> (Thumb, 102 bytes, Stack size 32 bytes, mpu6050.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 592<LI>Call Chain = MPU6050Triaxial &rArr; getEulerAngles &rArr; read_from_mpl &rArr; _MLPrintLog &rArr; vsprintf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dmp_get_pedometer_step_count
-<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
+<BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 <LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfcmpeq
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mdelay
@@ -3244,7 +3244,7 @@ Global Symbols
 
 <P><STRONG><a name="[314]"></a>getDistance</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, ultrasonicwave.o(.text), UNUSED)
 
-<P><STRONG><a name="[94]"></a>HasObstacle</STRONG> (Thumb, 48 bytes, Stack size 16 bytes, ultrasonicwave.o(.text))
+<P><STRONG><a name="[94]"></a>HasObstacle</STRONG> (Thumb, 60 bytes, Stack size 16 bytes, ultrasonicwave.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = HasObstacle &rArr; Obstacle &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayRate
@@ -4542,8 +4542,10 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_Queue
 <LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Deal_Data
+<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetWalkingStickRequire
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayDirection
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HasObstacle
+<LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_IRQHandler
 <LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_IRQHandler
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;blind_falled
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SendHelp
