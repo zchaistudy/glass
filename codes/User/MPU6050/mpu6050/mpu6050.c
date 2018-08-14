@@ -1140,7 +1140,7 @@ void MPU6050Triaxial(float Angle[4])
 	dmp_get_pedometer_step_count(&new_count);
 	if(pitch1-pitch2 != 0)
 	{
-		printf("变化 == %.4f \r\n",pitch1-pitch2);
+//		printf("变化 == %.4f \r\n",pitch1-pitch2);
 	}
 //	if(old_count<new_count)
 //	{
