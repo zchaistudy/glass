@@ -21,7 +21,7 @@
 #ifdef DEBUG_ON_OFF 
 #undef  DEBUG_ON_OFF
 #endif
-#define DEBUG_ON_OFF 1       //1打开调试。0关闭
+#define DEBUG_ON_OFF 0       //1打开调试。0关闭
 //////////////////////////////
 
 //障碍物检测次数判断，若distance>MAX_DISTACE，则obstacleNum++，obstacleNum最大值为LATE_NUM
@@ -243,6 +243,7 @@ void HasObstacle()
 	{
 		if(distanceVoice)
 		{
+			printf("调用语音模快\r\n");
 			p_debug("\r\ndistanceVoice:%d  , %d\r\n", distanceVoice,side);
 			PlayVoice(distanceVoice,side);                  //修改语音模式	
 		}		

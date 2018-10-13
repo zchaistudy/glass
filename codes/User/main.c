@@ -3,7 +3,7 @@
   * @file    main.c
   * @author  chzh
   * @version V1.0
-  * @date    2018-05-19
+  * @date    2018-10-12
   * @brief   智能避障眼镜
   ******************************************************************************
   */ 
@@ -11,7 +11,6 @@
  
 #include "stm32f10x.h"
 #include "bsp_usart1.h"
-#include "queue.h"
 #include "mp3.h"
 #include "stm32f10x_it.h"
 #include "./systick/bsp_SysTick.h"
@@ -24,7 +23,6 @@
 #include "debug.h"
 #include "bsp_mpu6050.h"
 
-LinkQueue q;
 extern key_four key4;
 extern int time;
 
@@ -63,17 +61,14 @@ static void PeriphInit()
 
 int main(void)
 {	
-	float Angle[4];
+//	float Angle[4];             //用于3轴数据的传输
 	
-	USART1_Config();	     			//初始化串口1用于蓝牙通讯
-	NVIC_Configuration();				//设置优先级
-	USART2_Initialise( 38400 );	//串口2用于调试
-	USART3_Config();						//初始化串口3用于语音模块
+	USART_Config();	     			   //初始化串口,串口1用于蓝牙通讯、串口2用于调试、初始化串口3用于语音模块
+
+	NVIC_Configuration();				//设置串口优先级，优先级分组使用NVIC_PriorityGroup_2
 	
-//	init_Queue(&q); 		
-	
-	TIM6_TIM_Mode_Config();			//初始化定时器6
-	TIM6_TIM_NVIC_Config();			//配置定时器6的优先级
+	TIM6_Config();              //初始化定时器6,优先级分组使用NVIC_PriorityGroup_2
+
 	
  	UltrasonicWave_Configuration();
 	GENERAL_TIM_Init();
@@ -84,10 +79,10 @@ int main(void)
 
 	for(;;)
 	{	
-		MPU6050Triaxial(Angle);		//三轴检测
-		blind_falled(Angle);						//盲人是否摔倒		
-		Filter(Angle);
-		SendHelp();
+//		MPU6050Triaxial(Angle);		//三轴检测
+//		blind_falled(Angle);						//盲人是否摔倒		
+//		Filter(Angle);
+//		SendHelp();
 //#if BREAK_EXTI_OPEN
 //#else
 		KeyPolling();

@@ -90,6 +90,7 @@ void PlayVoice(int position,int left_right);
 void PlayRate(int degree);
 void PlayDirection(char direction);
 
+void TIM6_Config(void);
 void TIM6_TIM_NVIC_Config(void);
 void TIM6_TIM_Mode_Config(void);
 #endif /* __MP3_H */

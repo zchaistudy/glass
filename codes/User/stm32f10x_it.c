@@ -32,7 +32,6 @@
 #include "./systick/bsp_SysTick.h"
 #include <stdio.h>
 #include "string.h"
-#include "queue.h"
 #include "UltraConfig.h"
 #include "UltrasonicWave.h"
 #include "debug.h"
@@ -42,7 +41,6 @@
 #define DirectionFlag '#'
 #define WalkingStickFlag '!'
 
-extern LinkQueue q;
 extern int time;
 extern int flag_FALLING;
 extern int flag_volume;      
@@ -220,54 +218,41 @@ void USART1_IRQHandler(void)
 			}
 			if(Status==DirectionFlag)											//接收数据为方位信息
 			{
-					printf(" 外 收到的方位为：%c\r\n",ch);
+					p_debug("收到的方位为：%c\r\n",ch);
 					PlayDirection(ch);
-					printf("收到报告方位");
 					Status=0;
 			}
 			else if(Status==WalkingStickFlag)							//接收数据为拐杖信息
 			{
 				ReceiveFromWalk[IndexWalkingStick]=ch-'0';
 				IndexWalkingStick++;
-				if(IndexWalkingStick == AVER_NUM_WALK*3)
+				if(IndexWalkingStick == AVER_NUM_WALK*3)    //当15个数据单位全部收集齐时，进行数据解析
 				{
-						for(i=0;i<15;)                      //直接使用for循环会出现位置错乱——逆序
+						for(i=0;i<15;)                         //直接使用for循环会出现位置错乱——逆序
 						{
 								UltrasonicWave_Distance_Walk[i/3]=ReceiveFromWalk[i]*100+ReceiveFromWalk[i+1]*10+ReceiveFromWalk[i+2];
-				//				printf("%d %d %d\r\n ,",ReceiveFromWalk[i],ReceiveFromWalk[i+1],ReceiveFromWalk[i+2]);
-//								printf("%d ,",UltrasonicWave_Distance_Walk[i/3]);
+				//				p_debug("%d %d %d\r\n ,",ReceiveFromWalk[i],ReceiveFromWalk[i+1],ReceiveFromWalk[i+2]);
+//								p_debug("%d ,",UltrasonicWave_Distance_Walk[i/3]);    //检测解析是否正确
 								i=i+3;
 						}											
 						GET_WALK_FLAG=1;                          //已经获取了拐杖信息标志	
-//						printf("\r\n");
 				}
 			}
 	} 
 }
 
-void USART2_IRQHandler(void)  
-{  
-	uint8_t ch;
-     if(USART_GetFlagStatus(USART2, USART_FLAG_RXNE) == SET)  
-        {       
-                    //USART_SendData(USART2, USART_ReceiveData(USART2));   
-          ch = USART_ReceiveData(USART2);
-//					printf( "%c", ch );    //将接受到的数据直接返回打印
-        }   
-} 
 
 void USART3_IRQHandler(void)  
 {  
 	uint8_t ch;
-     if(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == SET)  
+     if(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == SET)   //语音播放完成后，flag_volume置0，允许下一次的语音播放
         {       
-         
           ch = USART_ReceiveData(USART3);
-					printf("%c\r\n",ch);
+					p_debug("%c\r\n",ch);
 					if(ch == 'S')
 					{
 						flag_volume=0;
-						printf("完成\r\n"); 
+						p_debug("完成\r\n"); 
 					}
    
         }   
@@ -283,7 +268,7 @@ void TIM2_IRQHandler(void)
 	static int portNum = 0;      //选择测距通道	
 	if ( TIM_GetITStatus( TIM2, TIM_IT_Update) != RESET ) 
 	{			
-//		printf("tim2\r\n");
+//		p_debug("tim2\r\n");
 		
 		if( MEASURE_FLAG)
 		{
@@ -301,10 +286,10 @@ void TIM2_IRQHandler(void)
 /************************/		
 			GetWalkingStickRequire();//$$$$$$$$$$向拐杖发送测距请求
 				MEASURE_FLAG = 0;	 
-				time_wait=0;		
+				time_wait=0;		               //time_wait是个全局变量，用来计时，当开始等待拐杖数据时置0
 			}
 		}
-		else if( GET_WALK_FLAG )                  //接收到拐杖数据
+		else if( GET_WALK_FLAG )       //如果接收到拐杖数据则进行提示，否则继续等待，超过3秒重新发送
 		{
 			HasObstacle();               //判断障碍物位置并提示			
 			GET_WALK_FLAG = 0;
@@ -424,7 +409,6 @@ void TIM3_IRQHandler(void)
 	}		
 }
 
-
 /*******************************************************
 *
 * Function name ：TIM6_IRQHandler
@@ -437,15 +421,8 @@ void  TIM6_IRQHandler (void)
 {
 	if ( TIM_GetITStatus( TIM6, TIM_IT_Update) != RESET ) 
 	{	
-	//	time++;
 		time_wait++;
-//		if(time==3400)			//每隔两秒钟，flag_volume重置为0，开启播放语音模块的权限
-//		{
-////			printf("2\r\n");
-//			flag_volume=0;
-//			time=0;
-//		}
-		if(time_wait==10000)
+		if(time_wait==10000)   //防止数据溢出
 			time_wait=0;
 		TIM_ClearITPendingBit(TIM6 , TIM_FLAG_Update);  		 
 	}		 	

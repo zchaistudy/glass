@@ -56,48 +56,16 @@ u8 AutoAlarm[7]=   {0x7E,0x05,0x41,0x00,0x14,0x50,0xEF};      //是否需要自动报警
 u8 SendSucceed[7]= {0x7E,0x05,0x41,0x00,0x1B,0x5F,0xEF};      //报警信息已发送
 u8 QuitAlarm[7]=   {0x7E,0x05,0x41,0x00,0x1C,0x58,0xEF};      //退出自动报警
 
-void USART3_Config(void)
-{
-	GPIO_InitTypeDef GPIO_InitStructure;
-	USART_InitTypeDef USART_InitStructure;
-	
-	/* config USART3 clock */
-	 RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB , ENABLE); //使能UART3所在GPIOB的时钟    
-   RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
-	
-
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOB, &GPIO_InitStructure);    
-
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	GPIO_Init(GPIOB, &GPIO_InitStructure);
-	
-	/* USART1 mode config */
-	USART_InitStructure.USART_BaudRate = 9600;
-	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-	USART_InitStructure.USART_StopBits = USART_StopBits_1;
-	USART_InitStructure.USART_Parity = USART_Parity_No ;
-	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-	USART_Init(USART3, &USART_InitStructure);
-	
-	USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);
-	USART_Cmd(USART3, ENABLE);
-}
 
 /*
  * 函数名：USART3_Send_String
- * 描述  ：发送AT指令
+ * 描述  ：发送语音播放指令
  * 输入  ：无
  * 输出  ：无	
  */
 void USART3_Send_String(u8 *p,u8 cnt)
 {   
-//		printf("flag_volume == %d\r\n",flag_volume);
-		if(flag_volume==1)
+		if(flag_volume==1)                           //flag_volume==1说明目前正在播放语音
 			return;
 		else
 		{
@@ -228,7 +196,6 @@ void PlayVoice(int position,int left_right)
 						break;
 				}
 			}
-		
 }
 
 
@@ -240,32 +207,30 @@ void PlayVoice(int position,int left_right)
  */
 void PlayRate(int degree)
 {
-		if(flag_volume==1)
-			return;
-		else
-		{
-			flag_volume=1;
-			time=0;
-			degree=Rate+degree;
+	static int last_degree = 0 ;
+	if(last_degree == degree)
+		return;	
+	last_degree = degree;
+//			degree=Rate+degree;
 			switch(degree)
 			{
-				case first:
-					USART3_Send_String(rate_5,sizeof(rate_5));				//频率1
+				case 0:
+					USART3_Send_String_Key(Call,sizeof(Call));				//频率1
 					break;
-				case second:
-					USART3_Send_String(rate_4,sizeof(rate_4));				//频率2
+				case 1:
+					USART3_Send_String_Key(rate_4,sizeof(rate_4));				//频率2
 					break;
-				case third:
-					USART3_Send_String(rate_3,sizeof(rate_3));				//频率3
+				case 2:
+					USART3_Send_String_Key(rate_5,sizeof(rate_5));				//频率3
 					break;
-				case forth:
-					USART3_Send_String(rate_2,sizeof(rate_2));				//频率4
-					break;
-				case fifth:
-					USART3_Send_String(rate_1,sizeof(rate_1));				//频率5
-					break;
+//				case forth:
+//					USART3_Send_String(rate_2,sizeof(rate_2));				//频率4
+//					break;
+//				case fifth:
+//					USART3_Send_String(rate_1,sizeof(rate_1));				//频率5
+//					break;
 			}
-		}
+
 }
 
 /*
@@ -307,7 +272,12 @@ void PlayDirection(char direction)
 		}
 }
 
-// 中断优先级配置
+/*
+ * 函数名：TIM6_TIM_NVIC_Config
+ * 描述  ：配置定时器6的优先级，优先级分组使用NVIC_PriorityGroup_2
+ * 输入  ：无
+ * 输出  ：无	
+ */
 void TIM6_TIM_NVIC_Config(void)
 {
     NVIC_InitTypeDef NVIC_InitStructure; 
@@ -338,7 +308,12 @@ void TIM6_TIM_NVIC_Config(void)
  *-----------------------------------------------------------------------------
  */
 
-
+/*
+ * 函数名：TIM6_TIM_Mode_Config
+ * 描述  ：初始化定时器6
+ * 输入  ：无
+ * 输出  ：无	
+ */
 void TIM6_TIM_Mode_Config(void)
 {
     TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
@@ -364,4 +339,14 @@ void TIM6_TIM_Mode_Config(void)
 		// 使能计数器
     TIM_Cmd(TIM6_TIM, ENABLE);	
 }
-
+/*
+ * 函数名：TIM6_Config
+ * 描述  ：初始化定时器6,用于语音播放的计时
+ * 输入  ：无
+ * 输出  ：无	
+ */
+void TIM6_Config(void)
+{
+	TIM6_TIM_NVIC_Config();
+	TIM6_TIM_Mode_Config();
+}

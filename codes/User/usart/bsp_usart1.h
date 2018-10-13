@@ -28,15 +28,10 @@
 #define  DEBUG_USART_IRQ                USART1_IRQn
 #define  DEBUG_USART_IRQHandler         USART1_IRQHandler
 
-
-
-void USART1_Config(void);
+void USART_Config(void);
 void NVIC_Configuration(void);
 int fputc(int ch, FILE *f);
 int fgetc(FILE *f);
-//void NVIC_Configuration_2(void);
-//void USART2_Config(void);
 void Deal_Data(void);
-void USART2_Initialise( u32 bound );
 void GetWalkingStickRequire(void);      //用于发送拐杖数据请求信号
 #endif /* __USART1_H */
