@@ -1,5 +1,6 @@
 
 #include "UltraConfig.h"
+#include "Kalman.h"
 
 // 定时器输入捕获用户自定义变量结构体定义
 TIM_ICUserValueTypeDef TIM_ICUserValueStructure[AVER_NUM_GLASS];
@@ -134,7 +135,7 @@ void TIM2_Init()
  * 输入  ：无
  * 输出  ：无	
  */
-void UltrasonicWave_Configuration(void)
+void UltrasonicWave_Config(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;	
 	
@@ -148,3 +149,22 @@ void UltrasonicWave_Configuration(void)
 	GPIO_InitStructure.GPIO_Pin = TRIG_PIN2;					
 	GPIO_Init(TRIG_PORT2, &GPIO_InitStructure);		
 }
+
+
+/*
+ * 函数名：UltrasonicWave_Configuration
+ * 描述  ：初始化测距功能
+ * 输入  ：无
+ * 输出  ：无	
+ */
+void UltrasonicWave_Init(void)
+{
+	Init_Kalman();
+	UltrasonicWave_Config();
+	GENERAL_TIM_Init();
+	TIM2_Init();
+}
+
+
+
+

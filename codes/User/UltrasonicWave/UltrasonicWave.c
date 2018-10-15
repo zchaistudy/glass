@@ -16,6 +16,7 @@
 #include "UltrasonicWave.h"
 #include "debug.h"
 #include "mp3.h"
+#include "Kalman.h"
 
 ////////调试开关//////////////
 #ifdef DEBUG_ON_OFF 
@@ -35,21 +36,23 @@
 #define    OBSTACLE_LEFT_SIDE      1     //障碍物在左边
 #define    OBSTACLE_RIGHT_SIDE     0     //障碍物在右边
 
-static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin);              
+int UltrasonicWave_Distance_Walk[AVER_NUM_WALK] = { 500, 500, 500, 500, 500};   //拐杖采集数据
+int MODE_FLAG = 1;       //1 语音 0 频率 2 震动
+int8_t  MEASURE_FLAG = 1;   // 1 眼镜采集数据， 0 等待拐杖采集数据
+int8_t GET_WALK_FLAG = 0;       //接收拐杖数据标志
+
+extern int flag_FALLING;             
 static int UltrasonicWave_Distance[AVER_NUM_GLASS];      //计算出的距离    
 static int16_t MAX_DISTACE =150;        //最大距离
 static int8_t lateobstacle[AVER_NUM_WALK+AVER_NUM_GLASS] = {0};      //记录最近几次测距障碍物状态，连续监测障碍物时+1，2未监测到障碍物时清零
 
-int UltrasonicWave_Distance_Walk[AVER_NUM_WALK] = { 500, 500, 500, 500, 500};   //拐杖采集数据
-int MODE_FLAG = 1;       //1 语音 0 频率
-int8_t  MEASURE_FLAG = 1;   // 1 眼镜采集数据， 0 等待拐杖采集数据
-int8_t GET_WALK_FLAG = 0;       //接收拐杖数据标志
-
-extern int flag_FALLING;
+static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin); 
 
 
 
 
+
+//延时函数
 static void ObstacleDelayUs( uint32_t t )
 {
 
@@ -58,38 +61,6 @@ static void ObstacleDelayUs( uint32_t t )
  	{
 		__NOP();
 	}	
-}
-
-/*
- * 函数名：dealTIM_ICUserValueStructureData
- * 描述  ：将捕捉到的时间数据转化为距离
- * 输入  ：TIM_ICUserValueStructurex ：TIM_ICUserValueStructure1-6
-			i：对应超声波序号
- * 输出  ：无	
- */
-static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserValueStructurex)
-{
-
-//	uint32_t time;
-	double ftime;
-//	int distanceVoice, distanceRate;
-	int i;
-	i = TIM_ICUserValueStructurex.Capture_CCx;
-	// 计算高电平时间的计数器的值
-//	time = TIM_ICUserValueStructurex.Capture_CcrValue+1;
-	// 打印高电平脉宽时间
-	ftime = ((double) TIM_ICUserValueStructurex.Capture_CcrValue+1)/TIM_PscCLK;
-
-	UltrasonicWave_Distance[i-1] = ftime * 340 / 2  * 100;
-	
-//
-	p_debug( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
-
-	
-//	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
-
-////	PlayRate(distanceRate);                    //调用频率模式
-//	PlayVoice(distanceVoice);                  //修改语音模式
 }
 
 /*
@@ -105,7 +76,6 @@ int addDistance()
 		MAX_DISTACE = 300;
 	return MAX_DISTACE;
 }
-
 
 /*
  * 函数名：addDistance
@@ -132,6 +102,25 @@ int getDistance()
 	return MAX_DISTACE;
 }
 
+/*
+ * 函数名：dealTIM_ICUserValueStructureData
+ * 描述  ：将捕捉到的时间数据转化为距离
+ * 输入  ：TIM_ICUserValueStructurex ：TIM_ICUserValueStructure1-6
+			i：对应超声波序号
+ * 输出  ：无	
+ */
+static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserValueStructurex)
+{
+
+	double ftime;
+	int i;
+	
+	i = TIM_ICUserValueStructurex.Capture_CCx -1;
+	ftime = ((double) TIM_ICUserValueStructurex.Capture_CcrValue+1)/TIM_PscCLK;
+	UltrasonicWave_Distance[i] = ftime * 340 / 2  * 100;
+	UltrasonicWave_Distance[i] = KalmanFilter(i, UltrasonicWave_Distance[i]); //滤波
+	p_debug( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i]);
+}
 
 /**
 *障碍物判断
@@ -271,7 +260,7 @@ static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin)
 
 
 /****************************************************************************
-* 名    称：void UltrasonicWave(void *arg)
+* 名    称：void UltrasonicWave（)
 * 功    能：超声波测距线程
 * 入口参数：无
 * 出口参数：无
@@ -288,19 +277,13 @@ void UltrasonicWave(int portNum)
     if( TIM_ICUserValueStructure[1].Capture_FinishFlag == 1 )  
 	{
 	    dealTIM_ICUserValueStructureData(TIM_ICUserValueStructure[1]);
-//		p_debug("test\r\n");
 		TIM_ICUserValueStructure[1].Capture_FinishFlag = 0;
 	}	
-	switch(portNum)          //开始测距，发送一个>10us的脉冲，
-	{
-		case 0: UltrasonicWave_StartMeasure(TRIG_PORT1,TRIG_PIN1); break;
-		case 1: UltrasonicWave_StartMeasure(TRIG_PORT2,TRIG_PIN2); break;
-	}
-//	 ObstacleDelayUs(6000);
-//p_debug("ssd\r\n");	
+//开始测距，发送一个>10us的脉冲，
+	UltrasonicWave_StartMeasure(TRIG_PORT1,TRIG_PIN1); 
+	UltrasonicWave_StartMeasure(TRIG_PORT2,TRIG_PIN2);
 }
 
-
-
+	
 
 /******************* (C) 1209 Lab *****END OF FILE************/

@@ -45,7 +45,7 @@ extern TIM_ICUserValueTypeDef TIM_ICUserValueStructure[];
 /**************************º¯ÊýÉùÃ÷********************************/
 void GENERAL_TIM_Init(void);
 void TIM2_Init(void);
-
+void UltrasonicWave_Init(void);
 
 
 
