@@ -729,6 +729,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\User\UltrasonicWave\UltraConfig.c</FilePath>
             </File>
+            <File>
+              <FileName>Kalman.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\UltrasonicWave\Kalman.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

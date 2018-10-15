@@ -75,9 +75,7 @@ int main(void)
 	TIM6_TIM_Mode_Config();			//初始化定时器6
 	TIM6_TIM_NVIC_Config();			//配置定时器6的优先级
 	
- 	UltrasonicWave_Configuration();
-	GENERAL_TIM_Init();
-	TIM2_Init();
+    UltrasonicWave_Init();          //初始化测距
 	
 	PeriphInit();              	//报警模块以及按钮的初始化
 	printf("\n系统初始化完毕......\n");
