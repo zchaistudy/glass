@@ -41,11 +41,11 @@ void SendHelp(void)
 {
 			if(1==flag_FALLING){		//如果安全键还是没有被按下，那么flag_FALLING标志位还是为1，可以发送蓝牙信息
 				
-			USART_SendData(USART1, '2');		//发送危险信息
+			USART_SendData(USART1, '!');		//发送危险信息
 			while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
 				continue;	
 			flag_volume=0;
-			USART3_Send_String(Alarm,sizeof(Alarm));
+			USART3_Send_String(Alarm,sizeof(Alarm));           //播放相关语音信息
 			printf("已启动自动报警功能\r\n");
 			flag_FALLING=0;
 		}

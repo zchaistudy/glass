@@ -130,10 +130,14 @@ int fgetc(FILE *f)
 
 void GetWalkingStickRequire(void)
 {
-	USART_SendData(USART1,'3');          //字符'3'为获取信息信号
+	USART_SendData(USART1,'#');          //字符'3'为获取信息信号
 		printf("数据已发送\r\n");
 }
 
-
+void AdjustVibrationFrequencyGlasses(char degree)
+{
+	degree=degree+'0';
+	USART_SendData(USART1,degree);          //字符'3'为获取信息信号
+}
 
 /*********************************************END OF FILE**********************/

@@ -83,7 +83,7 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 	UltrasonicWave_Distance[i-1] = ftime * 340 / 2  * 100;
 	
 //
-//	p_debug( "%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
+	p_debug( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i-1]);
 
 	
 //	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,&distanceVoice, &distanceRate );      //分析障碍物信息
@@ -162,7 +162,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	HAS_OBSTACLE_NUM(distance_walk[3],lateobstacle[5]);		
 	HAS_OBSTACLE_NUM(distance_walk[4],lateobstacle[6]);	
 	
-	p_debug("\r\ndistance  \r\n");
+	p_debug("\r\ndistance  ");
 	for( i = 0; i < 5;i++ )
 	p_debug("%d ",distance_walk[i]);
     p_debug("macx: %d", MAX_DISTACE);
