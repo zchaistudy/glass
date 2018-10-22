@@ -224,11 +224,11 @@ void HasObstacle()
 	Obstacle(UltrasonicWave_Distance, UltrasonicWave_Distance_Walk,
 	    &distanceVoice,&side, &distanceRate );      //分析障碍物信息
 
-	if(flag_FALLING==1)   //如果盲人处于摔倒状态，则一直播放提醒功能，不在播放障碍物提示功能
+	if(flag_FALLING==1)   																//如果盲人处于摔倒状态，则一直播放提醒功能，不在播放障碍物提示功能
 			return ;
 //	p_debug(" $$%d\r\n", distanceVoice);
 
-	if( MODE_FLAG )
+	if( MODE_FLAG == 1)																			//判断当前处于那种模式下
 	{
 		if(distanceVoice)
 		{
@@ -237,10 +237,15 @@ void HasObstacle()
 			PlayVoice(distanceVoice,side);                  //修改语音模式	
 		}		
 	}
-	else
+	else if(MODE_FLAG == 0)
 	{
 		printf("频率：%d\r\n",distanceRate);
 		PlayRate(distanceRate);                    //调用频率模式
+	}
+	else if(MODE_FLAG == 2)
+	{
+		printf("震动等级：%d\r\n",distanceRate);
+		AdjustVibrationFrequencyGlasses(distanceRate);   //震动模式
 	}
 }
 

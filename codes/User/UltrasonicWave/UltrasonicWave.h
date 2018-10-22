@@ -5,7 +5,7 @@
 #include "bsp_usart1.h"
 #include "UltraConfig.h"
 
-//#define ONLY_GLASS            //—€æµµ•∂¿≤‚ ‘
+#define ONLY_GLASS            //—€æµµ•∂¿≤‚ ‘
 
 
 #define AVER_NUM_GLASS        2              //—€æ¶…œ≥¨…˘≤® ˝¡ø

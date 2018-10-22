@@ -22,6 +22,7 @@
 #include "UltrasonicWave.h"
 #include "debug.h"
 #include "bsp_mpu6050.h"
+#include "mpu6050.h"
 
 extern key_four key4;
 extern int time;
@@ -61,8 +62,7 @@ static void PeriphInit()
 
 int main(void)
 {	
-//	float Angle[4];             //用于3轴数据的传输
-	
+
 	USART_Config();	     			   //初始化串口,串口1用于无线通讯、串口2用于调试、初始化串口3用于语音模块
 
 	NVIC_Configuration();				//设置串口优先级，优先级分组使用NVIC_PriorityGroup_2
@@ -74,8 +74,11 @@ int main(void)
 
 	for(;;)
 	{	
+
+		
 //		MPU6050Triaxial(Angle);		//三轴检测
-//		blind_falled(Angle);						//盲人是否摔倒		
+		
+		blind_falled();						//盲人是否摔倒		
 //		Filter(Angle);
 //		SendHelp();
 //#if BREAK_EXTI_OPEN

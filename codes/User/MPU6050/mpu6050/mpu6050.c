@@ -22,6 +22,8 @@
 
 #define TASK_ENABLE 0
 extern unsigned int Task_Delay[NumOfTask];
+extern int flag_FALLING;	//盲人摔倒标志 =1表示摔倒， =0表示正常
+extern int flag_volume; 
 
 int flag_FALLING=0;
 
@@ -398,38 +400,38 @@ void send_status_compass() {
 }
 #endif
 
-/* Handle sensor on/off combinations. */
-static void setup_gyro(void)
-{
-    unsigned char mask = 0, lp_accel_was_on = 0;
+///* Handle sensor on/off combinations. */
+//static void setup_gyro(void)
+//{
+//    unsigned char mask = 0, lp_accel_was_on = 0;
 
-    MPU_DEBUG_FUNC();
-    if (hal.sensors & ACCEL_ON)
-        mask |= INV_XYZ_ACCEL;
-    if (hal.sensors & GYRO_ON) {
-        mask |= INV_XYZ_GYRO;
-        lp_accel_was_on |= hal.lp_accel_mode;
-    }
-#ifdef COMPASS_ENABLED
-    if (hal.sensors & COMPASS_ON) {
-        mask |= INV_XYZ_COMPASS;
-        lp_accel_was_on |= hal.lp_accel_mode;
-    }
-#endif
-    /* If you need a power transition, this function should be called with a
-     * mask of the sensors still enabled. The driver turns off any sensors
-     * excluded from this mask.
-     */
-    mpu_set_sensors(mask);
-    mpu_configure_fifo(mask);
-    if (lp_accel_was_on) {
-        unsigned short rate;
-        hal.lp_accel_mode = 0;
-        /* Switching out of LP accel, notify MPL of new accel sampling rate. */
-        mpu_get_sample_rate(&rate);
-        inv_set_accel_sample_rate(1000000L / rate);
-    }
-}
+//    MPU_DEBUG_FUNC();
+//    if (hal.sensors & ACCEL_ON)
+//        mask |= INV_XYZ_ACCEL;
+//    if (hal.sensors & GYRO_ON) {
+//        mask |= INV_XYZ_GYRO;
+//        lp_accel_was_on |= hal.lp_accel_mode;
+//    }
+//#ifdef COMPASS_ENABLED
+//    if (hal.sensors & COMPASS_ON) {
+//        mask |= INV_XYZ_COMPASS;
+//        lp_accel_was_on |= hal.lp_accel_mode;
+//    }
+//#endif
+//    /* If you need a power transition, this function should be called with a
+//     * mask of the sensors still enabled. The driver turns off any sensors
+//     * excluded from this mask.
+//     */
+//    mpu_set_sensors(mask);
+//    mpu_configure_fifo(mask);
+//    if (lp_accel_was_on) {
+//        unsigned short rate;
+//        hal.lp_accel_mode = 0;
+//        /* Switching out of LP accel, notify MPL of new accel sampling rate. */
+//        mpu_get_sample_rate(&rate);
+//        inv_set_accel_sample_rate(1000000L / rate);
+//    }
+//}
 
 static void tap_cb(unsigned char direction, unsigned char count)
 {
@@ -482,319 +484,319 @@ static void android_orient_cb(unsigned char orientation)
 }
 
 
-static inline void run_self_test(void)
-{
-    int result;
-    long gyro[3], accel[3];
-    MPU_DEBUG_FUNC();
-#if defined (MPU6500) || defined (MPU9250)
-    result = mpu_run_6500_self_test(gyro, accel, 0);
-#elif defined (MPU6050) || defined (MPU9150)
-    result = mpu_run_self_test(gyro, accel);
-#endif
-    if (result == 0x7) {
-	MPL_LOGI("Passed!\n");
-        MPL_LOGI("accel: %7.4f %7.4f %7.4f\n",
-                    accel[0]/65536.f,
-                    accel[1]/65536.f,
-                    accel[2]/65536.f);
-        MPL_LOGI("gyro: %7.4f %7.4f %7.4f\n",
-                    gyro[0]/65536.f,
-                    gyro[1]/65536.f,
-                    gyro[2]/65536.f);
-        /* Test passed. We can trust the gyro data here, so now we need to update calibrated data*/
+//static inline void run_self_test(void)
+//{
+//    int result;
+//    long gyro[3], accel[3];
+//    MPU_DEBUG_FUNC();
+//#if defined (MPU6500) || defined (MPU9250)
+//    result = mpu_run_6500_self_test(gyro, accel, 0);
+//#elif defined (MPU6050) || defined (MPU9150)
+//    result = mpu_run_self_test(gyro, accel);
+//#endif
+//    if (result == 0x7) {
+//	MPL_LOGI("Passed!\n");
+//        MPL_LOGI("accel: %7.4f %7.4f %7.4f\n",
+//                    accel[0]/65536.f,
+//                    accel[1]/65536.f,
+//                    accel[2]/65536.f);
+//        MPL_LOGI("gyro: %7.4f %7.4f %7.4f\n",
+//                    gyro[0]/65536.f,
+//                    gyro[1]/65536.f,
+//                    gyro[2]/65536.f);
+//        /* Test passed. We can trust the gyro data here, so now we need to update calibrated data*/
 
-#ifdef USE_CAL_HW_REGISTERS
-        /*
-         * This portion of the code uses the HW offset registers that are in the MPUxxxx devices
-         * instead of pushing the cal data to the MPL software library
-         */
-        unsigned char i = 0;
+//#ifdef USE_CAL_HW_REGISTERS
+//        /*
+//         * This portion of the code uses the HW offset registers that are in the MPUxxxx devices
+//         * instead of pushing the cal data to the MPL software library
+//         */
+//        unsigned char i = 0;
 
-        for(i = 0; i<3; i++) {
-        	gyro[i] = (long)(gyro[i] * 32.8f); //convert to +-1000dps
-        	accel[i] *= 2048.f; //convert to +-16G
-        	accel[i] = accel[i] >> 16;
-        	gyro[i] = (long)(gyro[i] >> 16);
-        }
+//        for(i = 0; i<3; i++) {
+//        	gyro[i] = (long)(gyro[i] * 32.8f); //convert to +-1000dps
+//        	accel[i] *= 2048.f; //convert to +-16G
+//        	accel[i] = accel[i] >> 16;
+//        	gyro[i] = (long)(gyro[i] >> 16);
+//        }
 
-        mpu_set_gyro_bias_reg(gyro);
+//        mpu_set_gyro_bias_reg(gyro);
 
-#if defined (MPU6500) || defined (MPU9250)
-        mpu_set_accel_bias_6500_reg(accel);
-#elif defined (MPU6050) || defined (MPU9150)
-        mpu_set_accel_bias_6050_reg(accel);
-#endif
-#else
-        /* Push the calibrated data to the MPL library.
-         *
-         * MPL expects biases in hardware units << 16, but self test returns
-		 * biases in g's << 16.
-		 */
-    	unsigned short accel_sens;
-    	float gyro_sens;
+//#if defined (MPU6500) || defined (MPU9250)
+//        mpu_set_accel_bias_6500_reg(accel);
+//#elif defined (MPU6050) || defined (MPU9150)
+//        mpu_set_accel_bias_6050_reg(accel);
+//#endif
+//#else
+//        /* Push the calibrated data to the MPL library.
+//         *
+//         * MPL expects biases in hardware units << 16, but self test returns
+//		 * biases in g's << 16.
+//		 */
+//    	unsigned short accel_sens;
+//    	float gyro_sens;
 
-		mpu_get_accel_sens(&accel_sens);
-		accel[0] *= accel_sens;
-		accel[1] *= accel_sens;
-		accel[2] *= accel_sens;
-		inv_set_accel_bias(accel, 3);
-		mpu_get_gyro_sens(&gyro_sens);
-		gyro[0] = (long) (gyro[0] * gyro_sens);
-		gyro[1] = (long) (gyro[1] * gyro_sens);
-		gyro[2] = (long) (gyro[2] * gyro_sens);
-		inv_set_gyro_bias(gyro, 3);
-#endif
-    }
-    else {
-            if (!(result & 0x1))
-                MPL_LOGE("Gyro failed.\n");
-            if (!(result & 0x2))
-                MPL_LOGE("Accel failed.\n");
-            if (!(result & 0x4))
-                MPL_LOGE("Compass failed.\n");
-     }
+//		mpu_get_accel_sens(&accel_sens);
+//		accel[0] *= accel_sens;
+//		accel[1] *= accel_sens;
+//		accel[2] *= accel_sens;
+//		inv_set_accel_bias(accel, 3);
+//		mpu_get_gyro_sens(&gyro_sens);
+//		gyro[0] = (long) (gyro[0] * gyro_sens);
+//		gyro[1] = (long) (gyro[1] * gyro_sens);
+//		gyro[2] = (long) (gyro[2] * gyro_sens);
+//		inv_set_gyro_bias(gyro, 3);
+//#endif
+//    }
+//    else {
+//            if (!(result & 0x1))
+//                MPL_LOGE("Gyro failed.\n");
+//            if (!(result & 0x2))
+//                MPL_LOGE("Accel failed.\n");
+//            if (!(result & 0x4))
+//                MPL_LOGE("Compass failed.\n");
+//     }
 
-}
+//}
 
-static void handle_input(void)
-{
-  
-    char c = USART_ReceiveData(DEBUG_USARTx);
-    MPU_DEBUG_FUNC();
-    switch (c) {
-    /* These commands turn off individual sensors. */
-    case '8':
-        hal.sensors ^= ACCEL_ON;
-        setup_gyro();
-        if (!(hal.sensors & ACCEL_ON))
-            inv_accel_was_turned_off();
-        break;
-    case '9':
-        hal.sensors ^= GYRO_ON;
-        setup_gyro();
-        if (!(hal.sensors & GYRO_ON))
-            inv_gyro_was_turned_off();
-        break;
-#ifdef COMPASS_ENABLED
-    case '0':
-        hal.sensors ^= COMPASS_ON;
-        setup_gyro();
-        if (!(hal.sensors & COMPASS_ON))
-            inv_compass_was_turned_off();
-        break;
-#endif
-    /* The commands send individual sensor data or fused data to the PC. */
-    case 'a':
-        hal.report ^= PRINT_ACCEL;
-        break;
-    case 'g':
-        hal.report ^= PRINT_GYRO;
-        break;
-#ifdef COMPASS_ENABLED
-    case 'c':
-        hal.report ^= PRINT_COMPASS;
-        break;
-#endif
-    case 'e':
-        hal.report ^= PRINT_EULER;
-        break;
-    case 'r':
-        hal.report ^= PRINT_ROT_MAT;
-        break;
-    case 'q':
-        hal.report ^= PRINT_QUAT;
-        break;
-    case 'h':
-        hal.report ^= PRINT_HEADING;
-        break;
-    case 'i':
-        hal.report ^= PRINT_LINEAR_ACCEL;
-        break;
-    case 'o':
-        hal.report ^= PRINT_GRAVITY_VECTOR;
-        break;
-#ifdef COMPASS_ENABLED
-	case 'w':
-		send_status_compass();
-		break;
-#endif
-    /* This command prints out the value of each gyro register for debugging.
-     * If logging is disabled, this function has no effect.
-     */
-    case 'd':
-        mpu_reg_dump();
-        break;
-    /* Test out low-power accel mode. */
-    case 'p':
-        if (hal.dmp_on)
-            /* LP accel is not compatible with the DMP. */
-            break;
-        mpu_lp_accel_mode(20);
-        /* When LP accel mode is enabled, the driver automatically configures
-         * the hardware for latched interrupts. However, the MCU sometimes
-         * misses the rising/falling edge, and the hal.new_gyro flag is never
-         * set. To avoid getting locked in this state, we're overriding the
-         * driver's configuration and sticking to unlatched interrupt mode.
-         *
-         * TODO: The MCU supports level-triggered interrupts.
-         */
-        mpu_set_int_latched(0);
-        hal.sensors &= ~(GYRO_ON|COMPASS_ON);
-        hal.sensors |= ACCEL_ON;
-        hal.lp_accel_mode = 1;
-        inv_gyro_was_turned_off();
-        inv_compass_was_turned_off();
-        break;
-    /* The hardware self test can be run without any interaction with the
-     * MPL since it's completely localized in the gyro driver. Logging is
-     * assumed to be enabled; otherwise, a couple LEDs could probably be used
-     * here to display the test results.
-     */
-    case 't':
-        run_self_test();
-        /* Let MPL know that contiguity was broken. */
-        inv_accel_was_turned_off();
-        inv_gyro_was_turned_off();
-        inv_compass_was_turned_off();
-        break;
-    /* Depending on your application, sensor data may be needed at a faster or
-     * slower rate. These commands can speed up or slow down the rate at which
-     * the sensor data is pushed to the MPL.
-     *
-     * In this example, the compass rate is never changed.
-     */
-    case '1':
-        if (hal.dmp_on) {
-            dmp_set_fifo_rate(10);
-            inv_set_quat_sample_rate(100000L);
-        } else
-            mpu_set_sample_rate(10);
-        inv_set_gyro_sample_rate(100000L);
-        inv_set_accel_sample_rate(100000L);
-        break;
-    case '2':
-        if (hal.dmp_on) {
-            dmp_set_fifo_rate(20);
-            inv_set_quat_sample_rate(50000L);
-        } else
-            mpu_set_sample_rate(20);
-        inv_set_gyro_sample_rate(50000L);
-        inv_set_accel_sample_rate(50000L);
-        break;
-    case '3':
-        if (hal.dmp_on) {
-            dmp_set_fifo_rate(40);
-            inv_set_quat_sample_rate(25000L);
-        } else
-            mpu_set_sample_rate(40);
-        inv_set_gyro_sample_rate(25000L);
-        inv_set_accel_sample_rate(25000L);
-        break;
-    case '4':
-        if (hal.dmp_on) {
-            dmp_set_fifo_rate(50);
-            inv_set_quat_sample_rate(20000L);
-        } else
-            mpu_set_sample_rate(50);
-        inv_set_gyro_sample_rate(20000L);
-        inv_set_accel_sample_rate(20000L);
-        break;
-    case '5':
-        if (hal.dmp_on) {
-            dmp_set_fifo_rate(100);
-            inv_set_quat_sample_rate(10000L);
-        } else
-            mpu_set_sample_rate(100);
-        inv_set_gyro_sample_rate(10000L);
-        inv_set_accel_sample_rate(10000L);
-        break;
-	case ',':
-        /* Set hardware to interrupt on gesture event only. This feature is
-         * useful for keeping the MCU asleep until the DMP detects as a tap or
-         * orientation event.
-         */
-        dmp_set_interrupt_mode(DMP_INT_GESTURE);
-        break;
-    case '.':
-        /* Set hardware to interrupt periodically. */
-        dmp_set_interrupt_mode(DMP_INT_CONTINUOUS);
-        break;
-    case '6':
-        /* Toggle pedometer display. */
-        hal.report ^= PRINT_PEDO;
-        break;
-    case '7':
-        /* Reset pedometer. */
-        dmp_set_pedometer_step_count(0);
-        dmp_set_pedometer_walk_time(0);
-        break;
-    case 'f':
-        if (hal.lp_accel_mode)
-            /* LP accel is not compatible with the DMP. */
-            return;
-        /* Toggle DMP. */
-        if (hal.dmp_on) {
-            unsigned short dmp_rate;
-            unsigned char mask = 0;
-            hal.dmp_on = 0;
-            mpu_set_dmp_state(0);
-            /* Restore FIFO settings. */
-            if (hal.sensors & ACCEL_ON)
-                mask |= INV_XYZ_ACCEL;
-            if (hal.sensors & GYRO_ON)
-                mask |= INV_XYZ_GYRO;
-            if (hal.sensors & COMPASS_ON)
-                mask |= INV_XYZ_COMPASS;
-            mpu_configure_fifo(mask);
-            /* When the DMP is used, the hardware sampling rate is fixed at
-             * 200Hz, and the DMP is configured to downsample the FIFO output
-             * using the function dmp_set_fifo_rate. However, when the DMP is
-             * turned off, the sampling rate remains at 200Hz. This could be
-             * handled in inv_mpu.c, but it would need to know that
-             * inv_mpu_dmp_motion_driver.c exists. To avoid this, we'll just
-             * put the extra logic in the application layer.
-             */
-            dmp_get_fifo_rate(&dmp_rate);
-            mpu_set_sample_rate(dmp_rate);
-            inv_quaternion_sensor_was_turned_off();
-            MPL_LOGI("DMP disabled.\n");
-        } else {
-            unsigned short sample_rate;
-            hal.dmp_on = 1;
-            /* Preserve current FIFO rate. */
-            mpu_get_sample_rate(&sample_rate);
-            dmp_set_fifo_rate(sample_rate);
-            inv_set_quat_sample_rate(1000000L / sample_rate);
-            mpu_set_dmp_state(1);
-            MPL_LOGI("DMP enabled.\n");
-        }
-        break;
-    case 'm':
-        /* Test the motion interrupt hardware feature. */
-	#ifndef MPU6050 // not enabled for 6050 product
-	hal.motion_int_mode = 1;
-	#endif 
-        break;
+//static void handle_input(void)
+//{
+//  
+//    char c = USART_ReceiveData(DEBUG_USARTx);
+//    MPU_DEBUG_FUNC();
+//    switch (c) {
+//    /* These commands turn off individual sensors. */
+//    case '8':
+//        hal.sensors ^= ACCEL_ON;
+//        setup_gyro();
+//        if (!(hal.sensors & ACCEL_ON))
+//            inv_accel_was_turned_off();
+//        break;
+//    case '9':
+//        hal.sensors ^= GYRO_ON;
+//        setup_gyro();
+//        if (!(hal.sensors & GYRO_ON))
+//            inv_gyro_was_turned_off();
+//        break;
+//#ifdef COMPASS_ENABLED
+//    case '0':
+//        hal.sensors ^= COMPASS_ON;
+//        setup_gyro();
+//        if (!(hal.sensors & COMPASS_ON))
+//            inv_compass_was_turned_off();
+//        break;
+//#endif
+//    /* The commands send individual sensor data or fused data to the PC. */
+//    case 'a':
+//        hal.report ^= PRINT_ACCEL;
+//        break;
+//    case 'g':
+//        hal.report ^= PRINT_GYRO;
+//        break;
+//#ifdef COMPASS_ENABLED
+//    case 'c':
+//        hal.report ^= PRINT_COMPASS;
+//        break;
+//#endif
+//    case 'e':
+//        hal.report ^= PRINT_EULER;
+//        break;
+//    case 'r':
+//        hal.report ^= PRINT_ROT_MAT;
+//        break;
+//    case 'q':
+//        hal.report ^= PRINT_QUAT;
+//        break;
+//    case 'h':
+//        hal.report ^= PRINT_HEADING;
+//        break;
+//    case 'i':
+//        hal.report ^= PRINT_LINEAR_ACCEL;
+//        break;
+//    case 'o':
+//        hal.report ^= PRINT_GRAVITY_VECTOR;
+//        break;
+//#ifdef COMPASS_ENABLED
+//	case 'w':
+//		send_status_compass();
+//		break;
+//#endif
+//    /* This command prints out the value of each gyro register for debugging.
+//     * If logging is disabled, this function has no effect.
+//     */
+//    case 'd':
+//        mpu_reg_dump();
+//        break;
+//    /* Test out low-power accel mode. */
+//    case 'p':
+//        if (hal.dmp_on)
+//            /* LP accel is not compatible with the DMP. */
+//            break;
+//        mpu_lp_accel_mode(20);
+//        /* When LP accel mode is enabled, the driver automatically configures
+//         * the hardware for latched interrupts. However, the MCU sometimes
+//         * misses the rising/falling edge, and the hal.new_gyro flag is never
+//         * set. To avoid getting locked in this state, we're overriding the
+//         * driver's configuration and sticking to unlatched interrupt mode.
+//         *
+//         * TODO: The MCU supports level-triggered interrupts.
+//         */
+//        mpu_set_int_latched(0);
+//        hal.sensors &= ~(GYRO_ON|COMPASS_ON);
+//        hal.sensors |= ACCEL_ON;
+//        hal.lp_accel_mode = 1;
+//        inv_gyro_was_turned_off();
+//        inv_compass_was_turned_off();
+//        break;
+//    /* The hardware self test can be run without any interaction with the
+//     * MPL since it's completely localized in the gyro driver. Logging is
+//     * assumed to be enabled; otherwise, a couple LEDs could probably be used
+//     * here to display the test results.
+//     */
+//    case 't':
+//        run_self_test();
+//        /* Let MPL know that contiguity was broken. */
+//        inv_accel_was_turned_off();
+//        inv_gyro_was_turned_off();
+//        inv_compass_was_turned_off();
+//        break;
+//    /* Depending on your application, sensor data may be needed at a faster or
+//     * slower rate. These commands can speed up or slow down the rate at which
+//     * the sensor data is pushed to the MPL.
+//     *
+//     * In this example, the compass rate is never changed.
+//     */
+//    case '1':
+//        if (hal.dmp_on) {
+//            dmp_set_fifo_rate(10);
+//            inv_set_quat_sample_rate(100000L);
+//        } else
+//            mpu_set_sample_rate(10);
+//        inv_set_gyro_sample_rate(100000L);
+//        inv_set_accel_sample_rate(100000L);
+//        break;
+//    case '2':
+//        if (hal.dmp_on) {
+//            dmp_set_fifo_rate(20);
+//            inv_set_quat_sample_rate(50000L);
+//        } else
+//            mpu_set_sample_rate(20);
+//        inv_set_gyro_sample_rate(50000L);
+//        inv_set_accel_sample_rate(50000L);
+//        break;
+//    case '3':
+//        if (hal.dmp_on) {
+//            dmp_set_fifo_rate(40);
+//            inv_set_quat_sample_rate(25000L);
+//        } else
+//            mpu_set_sample_rate(40);
+//        inv_set_gyro_sample_rate(25000L);
+//        inv_set_accel_sample_rate(25000L);
+//        break;
+//    case '4':
+//        if (hal.dmp_on) {
+//            dmp_set_fifo_rate(50);
+//            inv_set_quat_sample_rate(20000L);
+//        } else
+//            mpu_set_sample_rate(50);
+//        inv_set_gyro_sample_rate(20000L);
+//        inv_set_accel_sample_rate(20000L);
+//        break;
+//    case '5':
+//        if (hal.dmp_on) {
+//            dmp_set_fifo_rate(100);
+//            inv_set_quat_sample_rate(10000L);
+//        } else
+//            mpu_set_sample_rate(100);
+//        inv_set_gyro_sample_rate(10000L);
+//        inv_set_accel_sample_rate(10000L);
+//        break;
+//	case ',':
+//        /* Set hardware to interrupt on gesture event only. This feature is
+//         * useful for keeping the MCU asleep until the DMP detects as a tap or
+//         * orientation event.
+//         */
+//        dmp_set_interrupt_mode(DMP_INT_GESTURE);
+//        break;
+//    case '.':
+//        /* Set hardware to interrupt periodically. */
+//        dmp_set_interrupt_mode(DMP_INT_CONTINUOUS);
+//        break;
+//    case '6':
+//        /* Toggle pedometer display. */
+//        hal.report ^= PRINT_PEDO;
+//        break;
+//    case '7':
+//        /* Reset pedometer. */
+//        dmp_set_pedometer_step_count(0);
+//        dmp_set_pedometer_walk_time(0);
+//        break;
+//    case 'f':
+//        if (hal.lp_accel_mode)
+//            /* LP accel is not compatible with the DMP. */
+//            return;
+//        /* Toggle DMP. */
+//        if (hal.dmp_on) {
+//            unsigned short dmp_rate;
+//            unsigned char mask = 0;
+//            hal.dmp_on = 0;
+//            mpu_set_dmp_state(0);
+//            /* Restore FIFO settings. */
+//            if (hal.sensors & ACCEL_ON)
+//                mask |= INV_XYZ_ACCEL;
+//            if (hal.sensors & GYRO_ON)
+//                mask |= INV_XYZ_GYRO;
+//            if (hal.sensors & COMPASS_ON)
+//                mask |= INV_XYZ_COMPASS;
+//            mpu_configure_fifo(mask);
+//            /* When the DMP is used, the hardware sampling rate is fixed at
+//             * 200Hz, and the DMP is configured to downsample the FIFO output
+//             * using the function dmp_set_fifo_rate. However, when the DMP is
+//             * turned off, the sampling rate remains at 200Hz. This could be
+//             * handled in inv_mpu.c, but it would need to know that
+//             * inv_mpu_dmp_motion_driver.c exists. To avoid this, we'll just
+//             * put the extra logic in the application layer.
+//             */
+//            dmp_get_fifo_rate(&dmp_rate);
+//            mpu_set_sample_rate(dmp_rate);
+//            inv_quaternion_sensor_was_turned_off();
+//            MPL_LOGI("DMP disabled.\n");
+//        } else {
+//            unsigned short sample_rate;
+//            hal.dmp_on = 1;
+//            /* Preserve current FIFO rate. */
+//            mpu_get_sample_rate(&sample_rate);
+//            dmp_set_fifo_rate(sample_rate);
+//            inv_set_quat_sample_rate(1000000L / sample_rate);
+//            mpu_set_dmp_state(1);
+//            MPL_LOGI("DMP enabled.\n");
+//        }
+//        break;
+//    case 'm':
+//        /* Test the motion interrupt hardware feature. */
+//	#ifndef MPU6050 // not enabled for 6050 product
+//	hal.motion_int_mode = 1;
+//	#endif 
+//        break;
 
-    case 'v':
-        /* Toggle LP quaternion.
-         * The DMP features can be enabled/disabled at runtime. Use this same
-         * approach for other features.
-         */
-        hal.dmp_features ^= DMP_FEATURE_6X_LP_QUAT;
-        dmp_enable_feature(hal.dmp_features);
-        if (!(hal.dmp_features & DMP_FEATURE_6X_LP_QUAT)) {
-            inv_quaternion_sensor_was_turned_off();
-            MPL_LOGI("LP quaternion disabled.\n");
-        } else
-            MPL_LOGI("LP quaternion enabled.\n");
-        break;
-    default:
-        break;
-    }
-    hal.rx.cmd = 0;
-}
+//    case 'v':
+//        /* Toggle LP quaternion.
+//         * The DMP features can be enabled/disabled at runtime. Use this same
+//         * approach for other features.
+//         */
+//        hal.dmp_features ^= DMP_FEATURE_6X_LP_QUAT;
+//        dmp_enable_feature(hal.dmp_features);
+//        if (!(hal.dmp_features & DMP_FEATURE_6X_LP_QUAT)) {
+//            inv_quaternion_sensor_was_turned_off();
+//            MPL_LOGI("LP quaternion disabled.\n");
+//        } else
+//            MPL_LOGI("LP quaternion enabled.\n");
+//        break;
+//    default:
+//        break;
+//    }
+//    hal.rx.cmd = 0;
+//}
 
 
 void gyro_data_ready_cb(void)
@@ -1036,15 +1038,15 @@ void MPU6050Config()
 	getAnglesFront();
 }
 
-static void delay(void)
-{
-	int i;
-	for(i=10000;i>0;i--);
-}
+//static void delay(void)
+//{
+//	int i;
+//	for(i=10000;i>0;i--);
+//}
 
-static float old_angle[3], new_angle[3];
+//static float old_angle[3], new_angle[3];
 
-static int PitchFalling(float pitch1, float pitch2)
+int PitchFalling(float pitch1, float pitch2)
 {
 	if(pitch1>0.1)
 	{
@@ -1067,21 +1069,18 @@ static int PitchFalling(float pitch1, float pitch2)
 
 void MPU6050Triaxial(float Angle[4])
 {
-	float pitch1, pitch2;
+	static float pitch;   //用于存储上一次的姿态角
 	getEulerAngles(Angle);
-	pitch1=Angle[0];
-	mdelay(10);	//延时
-	getEulerAngles(Angle);
-	pitch2=Angle[0];
 //	if(pitch1-pitch2 != 0)
 //		printf("pitch1 == %f ,pitch2 == %f , 差为：%f\r\n",pitch1,pitch2,pitch1-pitch2);
-	if(PitchFalling(pitch1, pitch2))
+	if(PitchFalling(pitch, Angle[0]))
 	{
-		printf("\r\nhelp!\n");//首次摔倒
+		printf("\r\n盲人摔倒\n");//首次摔倒
 		flag_FALLING=1;
 	}
 	
 }
+
 
 void Filter(float Angle[4])
 {
@@ -1162,5 +1161,178 @@ void MPU6050Triaxial(float Angle[4])
 
 //	printf("\nmpu 6050 test finish");	
 }
+
+
+
 #endif
+
+/**
+  * @brief   从MPU6050寄存器读取数据
+  * @param   
+  * @retval  
+  */
+void MPU6050_ReadData(u8 reg_add,unsigned char*Read,u8 num)
+{
+	unsigned char i;
+	
+	i2c_Start();
+	i2c_SendByte(MPU6050_SLAVE_ADDRESS);
+	i2c_WaitAck();
+	i2c_SendByte(reg_add);
+	i2c_WaitAck();
+	
+	i2c_Start();
+	i2c_SendByte(MPU6050_SLAVE_ADDRESS+1);
+	i2c_WaitAck();
+	
+	for(i=0;i<(num-1);i++){
+		*Read=i2c_ReadByte(1);
+		Read++;
+	}
+	*Read=i2c_ReadByte(0);
+	i2c_Stop();
+}
+
+/**
+  * @brief   读取MPU6050的ID
+  * @param   
+  * @retval  
+  */
+uint8_t MPU6050ReadID(void)
+{
+	unsigned char Re = 0;
+    MPU6050_ReadData(MPU6050_RA_WHO_AM_I,&Re,1);    //读器件地址
+	if(Re != 0x68)
+	{
+		printf("MPU6050 dectected error!\r\n检测不到MPU6050模块，请检查模块与开发板的接线");
+		return 0;
+	}
+	else
+	{
+		printf("MPU6050 ID = %d\r\n",Re);
+		return 1;
+	}
+}
+
+
+/**
+  * @brief   读取MPU6050的加速度数据
+  * @param   
+  * @retval  
+  */
+void MPU6050ReadAcc(float *accData)
+{
+    u8 buf[6];
+		short Accel[3];
+    MPU6050_ReadData(MPU6050_ACC_OUT, buf, 6);
+    Accel[0] = (buf[0] << 8) | buf[1];
+    Accel[1] = (buf[2] << 8) | buf[3];
+    Accel[2] = (buf[4] << 8) | buf[5];
+		accData[0] = Accel[0]/16384.0;
+		accData[1] = Accel[1]/16384.0;
+		accData[2] = Accel[2]/16384.0;
+}
+
+/**
+  * @brief   读取MPU6050的角加速度数据
+  * @param   
+  * @retval  
+  */
+void MPU6050ReadGyro(short *gyroData)
+{
+    u8 buf[6];
+    MPU6050_ReadData(MPU6050_GYRO_OUT,buf,6);
+    gyroData[0] = (buf[0] << 8) | buf[1];
+    gyroData[1] = (buf[2] << 8) | buf[3];
+    gyroData[2] = (buf[4] << 8) | buf[5];
+}
+
+
+/**
+  * @brief   读取MPU6050的原始温度数据
+  * @param   
+  * @retval  
+  */
+void MPU6050ReadTemp(short *tempData)
+{
+	u8 buf[2];
+    MPU6050_ReadData(MPU6050_RA_TEMP_OUT_H,buf,2);     //读取温度值
+    *tempData = (buf[0] << 8) | buf[1];
+}
+
+
+/**
+  * @brief   读取MPU6050的温度数据，转化成摄氏度
+  * @param   
+  * @retval  
+  */
+void MPU6050_ReturnTemp(float *Temperature)
+{
+	short temp3;
+	u8 buf[2];
+	
+	MPU6050_ReadData(MPU6050_RA_TEMP_OUT_H,buf,2);     //读取温度值
+  temp3= (buf[0] << 8) | buf[1];	
+	*Temperature=((double) temp3/340.0)+36.53;
+
+}
+
+/**
+  * @brief  判断是否需要通过蓝牙发送危险信息
+  * @param  无  
+  * @retval 无
+  */
+void blind_falled()
+{
+	static float pitch,Level_Accel = 0;  								//用于存储上一次的姿态角与加速度
+	float Angle[4],Accel[3];														//用于存储当前的姿态角与加速度
+	int i;
+	MPU6050ReadAcc(Accel);	                            //获取加速度信息
+	getEulerAngles(Angle);															//获取角度信息
+	
+	if(Level_Accel == 0)                                //第一次编译
+	{
+	Level_Accel = sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] );
+	   pitch    = Angle[0];	
+		return;
+	}
+
+	if(fabs(Level_Accel-sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] ))>1.0&& fabs(pitch - Angle[0]))   //判断是否出现摔倒
+	{
+		printf("盲人aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa摔倒\r\n");		
+		for(i=15;i>0;i--)   //延时10秒
+			{
+				mdelay(1000);	
+				USART3_Send_String(AutoAlarm,sizeof(AutoAlarm));
+				printf("播放：是否需要发送求救信息,i == %d\r\n",i);
+//				if(flag_FALLING == 0)
+//				{
+//						Filter(Angle);
+//						return ;
+//				}			
+			}	
+	}
+	printf("差 = %f\r\n",fabs(Level_Accel-sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] )));
+//	printf("\r\n加速度： %16f%16f%16f\r\n",Accel[0],Accel[1],Accel[2]);
+//	printf("\r\n加速度前： %16f",Level_Accel );
+	Level_Accel = sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] );
+//	printf("\r\n加速度后： %16f\r\n",Level_Accel );
+}
+
+void SendHelp(void)
+{
+			if(1==flag_FALLING){		//如果安全键还是没有被按下，那么flag_FALLING标志位还是为1，可以发送蓝牙信息
+				
+			USART_SendData(USART1, '!');		//发送危险信息
+			while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
+				continue;	
+			flag_volume=0;
+			USART3_Send_String(Alarm,sizeof(Alarm));           //播放相关语音信息
+			printf("已启动自动报警功能\r\n");
+			flag_FALLING=0;
+		}
+}
+
+
+
 
