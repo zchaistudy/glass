@@ -89,6 +89,7 @@ int Weighting(int degree);
 void PlayVoice(int position,int left_right);
 void PlayRate(int degree);
 void PlayDirection(char direction);
+void AdjustVibrationFrequencyGlasses(char degree);
 
 void TIM6_Config(void);
 void TIM6_TIM_NVIC_Config(void);

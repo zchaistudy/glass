@@ -4,7 +4,8 @@
 #include "stm32f10x.h"
 
 
-void blind_falled(float Angle[4]);
+
+void blind_falled();
 void key_module(void);
 void SendHelp(void);
 
