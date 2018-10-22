@@ -62,17 +62,12 @@ static void PeriphInit()
 
 int main(void)
 {	
-	float Angle[4];             //用于3轴数据的传输
 
 	USART_Config();	     			   //初始化串口,串口1用于无线通讯、串口2用于调试、初始化串口3用于语音模块
 
 	NVIC_Configuration();				//设置串口优先级，优先级分组使用NVIC_PriorityGroup_2
-	
-	TIM6_Config();              //初始化定时器6,优先级分组使用NVIC_PriorityGroup_2
 
-// 	UltrasonicWave_Configuration();
-//	GENERAL_TIM_Init();
-//	TIM2_Init();
+    UltrasonicWave_Init();          //初始化测距
 	
 	PeriphInit();              	//报警模块以及按钮的初始化
 	printf("\n系统初始化完毕......\n");
