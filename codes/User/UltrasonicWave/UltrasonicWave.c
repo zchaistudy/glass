@@ -22,7 +22,7 @@
 #ifdef DEBUG_ON_OFF 
 #undef  DEBUG_ON_OFF
 #endif
-#define DEBUG_ON_OFF 0       //1打开调试。0关闭
+#define DEBUG_ON_OFF 1       //1打开调试。0关闭
 //////////////////////////////
 
 //障碍物检测次数判断，若distance>MAX_DISTACE，则obstacleNum++，obstacleNum最大值为LATE_NUM
