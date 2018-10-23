@@ -9,7 +9,8 @@
   */ 
 #include "mp3.h"
 #include <stdio.h>
-int Rate=0;
+int Rate=2;
+int Shake=2;
 int time=0;
 int flag_volume=0;
 
@@ -120,6 +121,29 @@ void SubRate()
 		Rate--;
 }
 
+/*
+ * 函数名：AddRate
+ * 描述  ：增加频率
+ * 输入  ：无
+ * 输出  ：无	
+ */
+void AddShake()
+{
+	if(Shake<2)
+		Shake++;
+}
+
+/*
+ * 函数名：SubRate
+ * 描述  ：减少频率
+ * 输入  ：无
+ * 输出  ：无	
+ */
+void SubShake()
+{
+	if(Shake>0)
+		Shake--;
+}
 
 /*
  * 函数名：AddVolume
@@ -206,7 +230,8 @@ void PlayVoice(int position,int left_right)
  */
 void PlayRate(int degree)
 {
-	degree = degree + Rate;
+	if(degree)
+		degree = degree + Rate;
 	printf("Rate = %d \r\n",Rate);
 //	static int last_degree = 0 ;
 //	if(last_degree == degree)

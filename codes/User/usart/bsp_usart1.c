@@ -136,7 +136,8 @@ void GetWalkingStickRequire(void)
 
 void AdjustVibrationFrequencyGlasses(char degree)
 {
-	degree=degree+'0';
+	if(degree)
+		degree=degree+'0';
 	USART_SendData(USART1,degree);          //字符'3'为获取信息信号
 }
 
