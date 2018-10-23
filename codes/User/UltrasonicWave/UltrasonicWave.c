@@ -41,6 +41,7 @@ int MODE_FLAG = 1;       //1 语音 0 频率 2 震动
 int8_t  MEASURE_FLAG = 1;   // 1 眼镜采集数据， 0 等待拐杖采集数据
 int8_t GET_WALK_FLAG = 0;       //接收拐杖数据标志
 
+extern int flag_volume;  
 extern int flag_FALLING;             
 static int UltrasonicWave_Distance[AVER_NUM_GLASS];      //计算出的距离    
 static int16_t MAX_DISTACE =150;        //最大距离
@@ -151,10 +152,10 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	HAS_OBSTACLE_NUM(distance_walk[3],lateobstacle[5]);		
 	HAS_OBSTACLE_NUM(distance_walk[4],lateobstacle[6]);	
 	
-	p_debug("\r\ndistance  ");
+//	p_debug("\r\ndistance  ");
 	for( i = 0; i < 5;i++ )
-	p_debug("%d ",distance_walk[i]);
-    p_debug("macx: %d", MAX_DISTACE);
+//	p_debug("%d ",distance_walk[i]);
+ //   p_debug("macx: %d", MAX_DISTACE);
  
 //判断头部是否有障碍物
 	if( lateobstacle[0] == LATE_NUM)
@@ -232,14 +233,14 @@ void HasObstacle()
 	{
 		if(distanceVoice)
 		{
-			printf("调用语音模快\r\n");
-			p_debug("\r\ndistanceVoice:%d  , %d\r\n", distanceVoice,side);
+			printf("调用语音模快 flag_volume = %d \r\n",flag_volume);
+//			p_debug("\r\ndistanceVoice:%d  , %d\r\n", distanceVoice,side);
 			PlayVoice(distanceVoice,side);                  //修改语音模式	
 		}		
 	}
 	else if(MODE_FLAG == 0)
 	{
-		printf("频率：%d\r\n",distanceRate);
+		printf("频率 = %d , flag_volume = %d\r\n",distanceRate,flag_volume);
 		PlayRate(distanceRate);                    //调用频率模式
 	}
 	else if(MODE_FLAG == 2)

@@ -245,19 +245,22 @@ void USART1_IRQHandler(void)
 void USART3_IRQHandler(void)  
 {  
 	uint8_t ch;
+	
      if(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == SET)   //语音播放完成后，flag_volume置0，允许下一次的语音播放
         {       
           ch = USART_ReceiveData(USART3);
-					p_debug("%c\r\n",ch);
+//					printf("收到%c",ch);
+					if(ch == 'K')           //有时候发送语音指令，不一定会返回ok，所以当接到OK时才设置标志，防止形成死锁
+					{
+						flag_volume=1;
+					}
 					if(ch == 'S')
 					{
 						flag_volume=0;
-						p_debug("完成\r\n"); 
 					}
    
         }   
 } 
-
 
 
 //采集超声波模块数据

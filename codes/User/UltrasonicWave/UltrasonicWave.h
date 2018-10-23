@@ -10,7 +10,7 @@
 
 #define AVER_NUM_GLASS        2              //眼睛上超声波数量
 #define AVER_NUM_WALK         5              //拐杖上超声波数量
-#define AVER_NUM_ALL   AVER_NUM_GLASS +AVER_NUM_WALK    //超声波总数量
+#define AVER_NUM_ALL          7    //超声波总数量
 #define LATE_NUM              3               //保留最近？次数据
 
 #define OBSTACLE_HEAD            3

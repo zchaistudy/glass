@@ -321,9 +321,7 @@ static void read_from_mpl(float Angle[4])
 					Angle[0] =	Pitch;
 					Angle[1] =	Roll;
 					Angle[2] =	Yaw;
-//					printf("\n俯仰角pitch=%.4f\n", Pitch);
-//							printf("\n滚轮角roll=%.4f\n", Roll);
-//							printf("\n偏航角yaw=%.4f\n", Yaw);
+
 						/* 获取温度 */
 						mpu_get_temperature(data,(inv_time_t*)&timestamp); 							
 						Angle[3] =	data[0]*1.0/(1<<16);
@@ -1297,26 +1295,30 @@ void blind_falled()
 			return;
 	}
 
-	if(fabs(Level_Accel-sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] ))>1.0&& fabs(pitch - Angle[0]))   //判断是否出现摔倒
+	if(fabs(Level_Accel-sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] ))>1.0&& fabs(pitch - Angle[0])>1.0)   //判断是否出现摔倒
 	{
+		flag_FALLING = 1;
 		printf("盲人aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa摔倒\r\n");		
 		for(i=15;i>0;i--)   //延时10秒
 			{
 				mdelay(1000);	
 				USART3_Send_String(AutoAlarm,sizeof(AutoAlarm));
 				printf("播放：是否需要发送求救信息,i == %d\r\n",i);
-//				if(flag_FALLING == 0)
-//				{
-//						Filter(Angle);
-//						return ;
-//				}			
+				if(flag_FALLING == 0)
+				{
+						MPU6050ReadAcc(Accel);	                            //获取加速度信息
+						getEulerAngles(Angle);															//获取角度信息
+						Level_Accel = sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] );
+						pitch=Angle[0];
+						return ;
+				}			
 			}	
+			SendHelp();
 	}
-	printf("差 = %f\r\n",fabs(Level_Accel-sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] )));
-//	printf("\r\n加速度： %16f%16f%16f\r\n",Accel[0],Accel[1],Accel[2]);
-//	printf("\r\n加速度前： %16f",Level_Accel );
-	Level_Accel = sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] );
-//	printf("\r\n加速度后： %16f\r\n",Level_Accel );
+//		printf("fabs(Level_Accel-sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] ))的差 = %f\r\n",fabs(Level_Accel-sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] )));
+//		printf("fabs(pitch - Angle[0])的差 = %f\r\n",fabs(pitch - Angle[0]));
+		Level_Accel = sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] );
+		pitch=Angle[0];
 }
 
 void SendHelp(void)

@@ -69,7 +69,6 @@ void USART3_Send_String(u8 *p,u8 cnt)
 			return;
 		else
 		{
-			flag_volume=1;
 			 while(cnt>0)
 			 {	 
 					 USART_ClearFlag(USART3, USART_FLAG_TC);
@@ -105,7 +104,7 @@ void USART3_Send_String_Key(u8 *p,u8 cnt)
  */
 void AddRate()
 {
-	if(Rate<3)
+	if(Rate<2)
 		Rate++;
 }
 
@@ -117,7 +116,7 @@ void AddRate()
  */
 void SubRate()
 {
-	if(Rate>1)
+	if(Rate>0)
 		Rate--;
 }
 
@@ -207,28 +206,30 @@ void PlayVoice(int position,int left_right)
  */
 void PlayRate(int degree)
 {
-	static int last_degree = 0 ;
-	if(last_degree == degree)
-		return;	
-	last_degree = degree;
+	degree = degree + Rate;
+	printf("Rate = %d \r\n",Rate);
+//	static int last_degree = 0 ;
+//	if(last_degree == degree)
+//		return;	
+//	last_degree = degree;
 //			degree=Rate+degree;
 			switch(degree)
 			{
 				case 0:
-					USART3_Send_String_Key(Call,sizeof(Call));				//频率1
+					                                      				    //频率1
 					break;
 				case 1:
-					USART3_Send_String_Key(rate_4,sizeof(rate_4));				//频率2
+					USART3_Send_String(rate_2,sizeof(rate_2));				//频率2
 					break;
 				case 2:
-					USART3_Send_String_Key(rate_5,sizeof(rate_5));				//频率3
+					USART3_Send_String(rate_3,sizeof(rate_3));				//频率3
 					break;
-//				case forth:
-//					USART3_Send_String(rate_2,sizeof(rate_2));				//频率4
-//					break;
-//				case fifth:
-//					USART3_Send_String(rate_1,sizeof(rate_1));				//频率5
-//					break;
+				case 3:
+					USART3_Send_String(rate_4,sizeof(rate_4));				//频率4
+					break;
+				case 4:
+					USART3_Send_String(rate_5,sizeof(rate_5));				//频率5
+					break;
 			}
 
 }
