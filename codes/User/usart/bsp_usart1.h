@@ -35,4 +35,6 @@ int fgetc(FILE *f);
 void Deal_Data(void);
 void GetWalkingStickRequire(void);      //用于发送拐杖数据请求信号
 void AdjustVibrationFrequencyGlasses(char degree);//用于发送震动信息。
+void SubShake(void );
+void AddShake(void);
 #endif /* __USART1_H */

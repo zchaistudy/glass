@@ -27,7 +27,7 @@
 //按键的三种模式
 #define MODE_VOLUME     0	//音量模式
 #define MODE_FREQUENCY 	1 //频率模式
-#define MODE_SNAKE   2 //震动模式
+#define MODE_SHAKE   2 //震动模式
 #define MODE_DISTANCE 3  //距离模式
 
 //按键的四种状态等级
@@ -39,21 +39,23 @@
 #define MAX_MODE 2      //两种模式 音频模式  语音模式
 
 //设置参数
-#define SET_CLOSE       0//关闭设置
-#define SET_VOLUME      1//音量设置
-#define SET_FREQUENCY 	2 //频率模式
-#define SET_DISTANCE    3 //距离模式
-#define SET_MAX         4  //4种模式
+#define SET_CLOSE       0//关闭设置参数
+#define SET_VOLUME      1//音量设置参数
+#define SET_FREQUENCY 	2 //频率设置参数
+#define SET_DISTANCE    3 //距离设置参数
+#define SET_SHAKE       4 //震动设置参数
+#define SET_MAX         5  //5种设置参数
 
 
 //参数最大值
 #define MAX_RANK_VOLUME       15     //最大音量等级
 #define MAX_RANK_FREQUENCY    3      //最大频率等级
 #define MAX_RANK_DISTANCE     3      //最大距离等级
+#define MAX_RANK_SHAKE        2      //最大距离等级
 
 typedef struct key{
 	int current_mode;//当前模式
-	int key_rank[4];//每个模式的等级
+	int key_rank[SET_MAX];//每个模式的等级
 	int max_mode;//最大模式是2。0 1 2   MODE_VOLUME MODE_FREQUENCY MODE_DISTANCE
 	int max_rank;//最大等级是4。0 1 2 3 NO_RANK LOW_RANK MID_RANK UP_RANK
 	int min_mode;//最小模式是0
