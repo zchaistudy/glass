@@ -5,7 +5,7 @@
 
 
 
-void blind_falled();
+void blind_falled(void);
 void key_module(void);
 void SendHelp(void);
 

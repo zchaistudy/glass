@@ -1292,9 +1292,9 @@ void blind_falled()
 	
 	if(Level_Accel == 0)                                //第一次编译
 	{
-	Level_Accel = sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] );
-	   pitch    = Angle[0];	
-		return;
+		Level_Accel = sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] );
+			 pitch    = Angle[0];	
+			return;
 	}
 
 	if(fabs(Level_Accel-sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] ))>1.0&& fabs(pitch - Angle[0]))   //判断是否出现摔倒

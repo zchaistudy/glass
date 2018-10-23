@@ -74,17 +74,10 @@ int main(void)
 
 	for(;;)
 	{	
-
-		
-//		MPU6050Triaxial(Angle);		//»˝÷·ºÏ≤‚
-		
 		blind_falled();						//√§»À «∑ÒÀ§µπ		
-//		Filter(Angle);
-//		SendHelp();
 //#if BREAK_EXTI_OPEN
 //#else
 		KeyPolling();
-
 //#endif
 
 	}
