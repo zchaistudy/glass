@@ -67,7 +67,7 @@ int main(void)
 
 	NVIC_Configuration();				//设置串口优先级，优先级分组使用NVIC_PriorityGroup_2
 
-    UltrasonicWave_Init();          //初始化测距
+  UltrasonicWave_Init();          //初始化测距
 	
 	PeriphInit();              	//报警模块以及按钮的初始化
 	printf("\n系统初始化完毕......\n");
