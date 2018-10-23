@@ -378,7 +378,7 @@ void EXTI_Key_Config(void)
 }
 
 
-void KEY1_IRQHandler(void)
+void KEY1_IRQHandler(void)          //确定按键，有种情况
 {
   //确保是否产生了EXTI Line中断
 	if(EXTI_GetITStatus(KEY1_INT_EXTI_LINE) != RESET) 
@@ -389,7 +389,7 @@ void KEY1_IRQHandler(void)
 		{
 			if(0 == flag_FALLING)
 			{
-					USART_SendData(USART1, '2');		//发送一般求助信息
+					USART_SendData(USART1, '!');		//发送一般求助信息
 					while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
 						continue;		
 					flag_volume=0;

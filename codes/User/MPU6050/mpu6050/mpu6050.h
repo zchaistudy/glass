@@ -382,7 +382,7 @@ void PMU6050_WriteReg(u8 reg_add,u8 reg_dat);
 void MPU6050_PWR_MGMT_1_INIT(void);
 
 void MPU6050Config(void);
-
+void SendHelp(void);
 void MPU6050Triaxial(float Angle[4]);
 int PitchFalling(float pitch1, float pitch2);
 void Filter(float Angle[4]);

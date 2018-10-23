@@ -67,24 +67,17 @@ int main(void)
 
 	NVIC_Configuration();				//设置串口优先级，优先级分组使用NVIC_PriorityGroup_2
 
-    UltrasonicWave_Init();          //初始化测距
+  UltrasonicWave_Init();          //初始化测距
 	
 	PeriphInit();              	//报警模块以及按钮的初始化
 	printf("\n系统初始化完毕......\n");
 
 	for(;;)
 	{	
-
-		
-//		MPU6050Triaxial(Angle);		//三轴检测
-		
 		blind_falled();						//盲人是否摔倒		
-//		Filter(Angle);
-//		SendHelp();
 //#if BREAK_EXTI_OPEN
 //#else
 		KeyPolling();
-
 //#endif
 
 	}
