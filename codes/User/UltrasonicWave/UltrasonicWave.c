@@ -151,10 +151,10 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	HAS_OBSTACLE_NUM(distance_walk[3],lateobstacle[5]);		
 	HAS_OBSTACLE_NUM(distance_walk[4],lateobstacle[6]);	
 	
-	p_debug("\r\ndistance  ");
+//	p_debug("\r\ndistance  ");
 	for( i = 0; i < 5;i++ )
-	p_debug("%d ",distance_walk[i]);
-    p_debug("macx: %d", MAX_DISTACE);
+//	p_debug("%d ",distance_walk[i]);
+ //   p_debug("macx: %d", MAX_DISTACE);
  
 //判断头部是否有障碍物
 	if( lateobstacle[0] == LATE_NUM)
@@ -232,8 +232,8 @@ void HasObstacle()
 	{
 		if(distanceVoice)
 		{
-			printf("调用语音模快\r\n");
-			p_debug("\r\ndistanceVoice:%d  , %d\r\n", distanceVoice,side);
+//			printf("调用语音模快\r\n");
+//			p_debug("\r\ndistanceVoice:%d  , %d\r\n", distanceVoice,side);
 			PlayVoice(distanceVoice,side);                  //修改语音模式	
 		}		
 	}

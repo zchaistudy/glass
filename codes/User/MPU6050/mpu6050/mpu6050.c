@@ -1312,7 +1312,7 @@ void blind_falled()
 //				}			
 			}	
 	}
-	printf("差 = %f\r\n",fabs(Level_Accel-sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] )));
+//	printf("差 = %f\r\n",fabs(Level_Accel-sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] )));
 //	printf("\r\n加速度： %16f%16f%16f\r\n",Accel[0],Accel[1],Accel[2]);
 //	printf("\r\n加速度前： %16f",Level_Accel );
 	Level_Accel = sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] );

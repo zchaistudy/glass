@@ -34,35 +34,35 @@ void Key_GPIO_Config(void)
 	// 设置按键的引脚为浮空输入
 //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; 
 
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; 
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; 
 	//使用结构体初始化按键
 	GPIO_Init(KEY1_GPIO_PORT, &GPIO_InitStructure);
 	
 	//选择按键的引脚
 	GPIO_InitStructure.GPIO_Pin = KEY2_GPIO_PIN; 					//K2
 	//设置按键的引脚为浮空输入
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; 
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; 
 	//使用结构体初始化按键
 	GPIO_Init(KEY2_GPIO_PORT, &GPIO_InitStructure);	
 	
 		//选择按键的引脚
 	GPIO_InitStructure.GPIO_Pin = KEY3_GPIO_PIN; 					//K3
 	//设置按键的引脚为浮空输入
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; 
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; 
 	//使用结构体初始化按键
 	GPIO_Init(KEY3_GPIO_PORT, &GPIO_InitStructure);	
 
 	//选择按键的引脚
 	GPIO_InitStructure.GPIO_Pin = KEY4_GPIO_PIN; 					//K4
 	//设置按键的引脚为浮空输入
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; 
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; 
 	//使用结构体初始化按键
 	GPIO_Init(KEY4_GPIO_PORT, &GPIO_InitStructure);	
 
 	//选择按键的引脚
 	GPIO_InitStructure.GPIO_Pin = KEY5_GPIO_PIN; 					//K5
 	//设置按键的引脚为浮空输入
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; 
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; 
 	//使用结构体初始化按键
 	GPIO_Init(KEY5_GPIO_PORT, &GPIO_InitStructure);	
 }
