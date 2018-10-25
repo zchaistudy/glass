@@ -173,13 +173,14 @@ void switchMode()
 {
 	flag_volume=0;
 	printf("\n按下进入下一个模式键!\r\n");
-	key4.current_mode=(++key4.current_mode)%key4.max_mode;
+	key4.current_mode= (++key4.current_mode) % MAX_MODE;
 	if(MODE_VOLUME == key4.current_mode)
 	{
 		MODE_FLAG=1;
 		printf("\t当前模式调整为：%s", "音量模式\r\n");
 		USART3_Send_String(ModeVolume,sizeof(ModeVolume));
 		//播放
+		AdjustVibrationFrequencyGlasses(0);   //震动模式
 	}
 	else if(MODE_FREQUENCY == key4.current_mode)
 	{
@@ -187,6 +188,7 @@ void switchMode()
 		printf("\t当前模式调整为：%s", "频率模式\r\n");
 		USART3_Send_String(ModeRate,sizeof(ModeRate));
 		//播放
+		AdjustVibrationFrequencyGlasses(0);   //震动模式
 	}
 	else if(MODE_SHAKE == key4.current_mode)
 	{

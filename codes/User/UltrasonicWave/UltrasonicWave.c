@@ -44,7 +44,7 @@ int8_t GET_WALK_FLAG = 0;       //接收拐杖数据标志
 extern int flag_volume;  
 extern int flag_FALLING;             
 static int UltrasonicWave_Distance[AVER_NUM_GLASS];      //计算出的距离    
-static int16_t MAX_DISTACE =150;        //最大距离
+static int16_t MAX_DISTACE =100;        //最大距离
 static int8_t lateobstacle[AVER_NUM_WALK+AVER_NUM_GLASS] = {0};      //记录最近几次测距障碍物状态，连续监测障碍物时+1，2未监测到障碍物时清零
 
 static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin); 
@@ -120,7 +120,7 @@ static void dealTIM_ICUserValueStructureData(TIM_ICUserValueTypeDef TIM_ICUserVa
 	ftime = ((double) TIM_ICUserValueStructurex.Capture_CcrValue+1)/TIM_PscCLK;
 	UltrasonicWave_Distance[i] = ftime * 340 / 2  * 100;
 	UltrasonicWave_Distance[i] = KalmanFilter(i, UltrasonicWave_Distance[i]); //滤波
-	p_debug( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i]);
+//	p_debug( "\r\n%d : distance %d\r\n",i, UltrasonicWave_Distance[i]);
 }
 
 /**
@@ -154,7 +154,8 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	
 //	p_debug("\r\ndistance  ");
 	for( i = 0; i < 5;i++ )
-//	p_debug("%d ",distance_walk[i]);
+	p_debug("%d ",distance_walk[i]);
+	p_debug("\r\n");
  //   p_debug("macx: %d", MAX_DISTACE);
  
 //判断头部是否有障碍物
@@ -233,19 +234,19 @@ void HasObstacle()
 	{
 		if(distanceVoice)
 		{
-			printf("调用语音模快 flag_volume = %d \r\n",flag_volume);
+//			printf("调用语音模快 flag_volume = %d \r\n",flag_volume);
 //			p_debug("\r\ndistanceVoice:%d  , %d\r\n", distanceVoice,side);
 			PlayVoice(distanceVoice,side);                  //修改语音模式	
 		}		
 	}
 	else if(MODE_FLAG == 0)
 	{
-		printf("频率 = %d , flag_volume = %d\r\n",distanceRate,flag_volume);
+//		printf("频率 = %d , flag_volume = %d\r\n",distanceRate,flag_volume);
 		PlayRate(distanceRate);                    //调用频率模式
 	}
 	else if(MODE_FLAG == 2)
 	{
-		printf("震动等级：%d\r\n",distanceRate);
+//		printf("震动等级：%d\r\n",distanceRate);
 		AdjustVibrationFrequencyGlasses(distanceRate);   //震动模式
 	}
 }

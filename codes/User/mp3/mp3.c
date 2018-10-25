@@ -85,6 +85,7 @@ void USART3_Send_String(u8 *p,u8 cnt)
 
 void USART3_Send_String_Key(u8 *p,u8 cnt)
 {   
+				flag_volume = 0;
 			 while(cnt>0)
 			 {	 
 					 USART_ClearFlag(USART3, USART_FLAG_TC);

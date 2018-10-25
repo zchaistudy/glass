@@ -36,7 +36,7 @@
 #define MID_RANK		2 //中等级
 #define UP_RANK			3 //高等级
 
-#define MAX_MODE 2      //两种模式 音频模式  语音模式
+#define MAX_MODE 3      //两种模式 音频模式  语音模式
 
 //设置参数
 #define SET_CLOSE       0//关闭设置参数

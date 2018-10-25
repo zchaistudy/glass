@@ -69,12 +69,15 @@ int main(void)
 
   UltrasonicWave_Init();          //初始化测距
 	
+	TIM6_Config();
+	
 	PeriphInit();              	//报警模块以及按钮的初始化
 	printf("\n系统初始化完毕......\n");
 
 	for(;;)
 	{	
-		blind_falled();						//盲人是否摔倒		
+		blind_falled();			
+		//盲人是否摔倒		
 //#if BREAK_EXTI_OPEN
 //#else
 		KeyPolling();

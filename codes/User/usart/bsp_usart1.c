@@ -12,6 +12,8 @@
 char Receive[10];
 int Num;
 int flag=0;
+extern int Shake;
+
 /*
  * 函数名：USART_Config
  * 描述  ：串口函数的配置
@@ -131,13 +133,15 @@ int fgetc(FILE *f)
 void GetWalkingStickRequire(void)
 {
 	USART_SendData(USART1,'#');          //字符'3'为获取信息信号
-		printf("数据已发送\r\n");
+	//	printf("数据已发送\r\n");
 }
 
 void AdjustVibrationFrequencyGlasses(char degree)
 {
 	if(degree)
-		degree=degree+'0';
+		degree=Shake+degree+'0';
+	else
+		degree = '0';
 	USART_SendData(USART1,degree);          //字符'3'为获取信息信号
 }
 
