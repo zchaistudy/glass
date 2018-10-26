@@ -750,6 +750,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\User\UltrasonicWave\Kalman.c</FilePath>
             </File>
+            <File>
+              <FileName>smooth.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\UltrasonicWave\smooth.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
