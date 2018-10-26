@@ -15,9 +15,9 @@ void Init_Kalman()
 		Kalman[i].P[0][1] = 1;
 		Kalman[i].P[1][0] = 1;
 		Kalman[i].P[1][1] = 1;
-		Kalman[i].Q[0] = 5;    //预测（过程）噪声方差 影响收敛速率，可以根据实际需求给出
+		Kalman[i].Q[0] = 30;    //预测（过程）噪声方差 影响收敛速率，可以根据实际需求给出
 		Kalman[i].Q[1] = 0.5; 
-		Kalman[i].R = 10;    //测量（观测）噪声方差 可以通过实验手段获得
+		Kalman[i].R = 60;    //测量（观测）噪声方差 可以通过实验手段获得
 		Kalman[i].filterValue[0] = 200;// 测量的初始值
 		Kalman[i].filterValue[1] = 1;// 测量的初始值
 		Kalman[i].dt = 0.06;		

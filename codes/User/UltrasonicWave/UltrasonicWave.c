@@ -17,6 +17,7 @@
 #include "debug.h"
 #include "mp3.h"
 #include "Kalman.h"
+#include "Fliter.h"
 
 ////////调试开关//////////////
 #ifdef DEBUG_ON_OFF 
@@ -44,7 +45,7 @@ int8_t GET_WALK_FLAG = 0;       //接收拐杖数据标志
 extern int flag_volume;  
 extern int flag_FALLING;             
 static int UltrasonicWave_Distance[AVER_NUM_GLASS];      //计算出的距离    
-static int16_t MAX_DISTACE =100;        //最大距离
+static int16_t MAX_DISTACE =150;        //最大距离
 static int8_t lateobstacle[AVER_NUM_WALK+AVER_NUM_GLASS] = {0};      //记录最近几次测距障碍物状态，连续监测障碍物时+1，2未监测到障碍物时清零
 
 static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin); 
@@ -72,7 +73,7 @@ static void ObstacleDelayUs( uint32_t t )
  */
 int addDistance()
 {
-	MAX_DISTACE += 100;
+	MAX_DISTACE += 50;
 	if( MAX_DISTACE > 300 )           //最大检测范围为3oocm	
 		MAX_DISTACE = 300;
 	return MAX_DISTACE;
@@ -86,9 +87,9 @@ int addDistance()
  */
 int minusDistance()
 {
-	MAX_DISTACE -= 100;
-	if( MAX_DISTACE < 100  )
-		MAX_DISTACE = 100;		
+	MAX_DISTACE -= 50;
+	if( MAX_DISTACE < 50  )
+		MAX_DISTACE = 50;		
 	return MAX_DISTACE;
 }
 
@@ -152,9 +153,17 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	HAS_OBSTACLE_NUM(distance_walk[3],lateobstacle[5]);		
 	HAS_OBSTACLE_NUM(distance_walk[4],lateobstacle[6]);	
 	
+	
+	p_debug("%d ",distance_glass[0]);
+	p_debug("%d   ",distance_glass[1]);
 //	p_debug("\r\ndistance  ");
 	for( i = 0; i < 5;i++ )
-	p_debug("%d ",distance_walk[i]);
+	{
+		p_debug("%d@",distance_walk[i]);
+		distance_walk[i] = KalmanFilter(AVER_NUM_GLASS+i, distance_walk[i]);
+		p_debug("%d ",distance_walk[i]);
+	}
+	
 	p_debug("\r\n");
  //   p_debug("macx: %d", MAX_DISTACE);
  
@@ -193,20 +202,39 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	}	
 /***************频率模式***********************/	
 //频率模式下障碍物提示,取最近障碍物距离
-	for( i = 0; i < AVER_NUM_GLASS; i++ )                
+//	for( i = 0; i < AVER_NUM_GLASS; i++ )                
+//	{
+//		mindistace = mindistace > distance_glass[i] ? distance_glass[i] : mindistace;
+//	}
+//	for( i = 0; i < AVER_NUM_WALK; i++ )
+//	{
+//		mindistace = mindistace > distance_walk[i] ? distance_walk[i] : mindistace;
+//	}	
+
+	mindistace = distance_glass[0] > distance_glass[1]?distance_glass[0] :distance_glass[1];
+	if( distance_walk[0] < distance_walk[1] )
 	{
-		mindistace = mindistace > distance_glass[i] ? distance_glass[i] : mindistace;
-	}	
-	for( i = 0; i < AVER_NUM_WALK; i++ )
-	{
-		mindistace = mindistace > distance_walk[i] ? distance_walk[i] : mindistace;
+		mindistace =  mindistace > distance_walk[1]? distance_walk[1]:mindistace;
 	}
+	else
+	{
+		mindistace =  mindistace > distance_walk[0]? distance_walk[0]:mindistace;
+	}
+	if( distance_walk[2] < distance_walk[3] )
+	{
+		mindistace =  mindistace > distance_walk[3]? distance_walk[3]:mindistace;
+	}
+	else
+	{
+		mindistace =  mindistace > distance_walk[2]? distance_walk[2]:mindistace;
+	}	
+	mindistace =  mindistace > distance_walk[4]? distance_walk[4]:mindistace;
 	*distanceRate = 2 - mindistace / 100 ;
   if( *distanceRate < 0 )
 	{
 		*distanceRate = 0;
 	}  
-
+//	*distanceRate = smooth_n(0,*distanceRate);        //去毛刺
 /**********************重置数组，避免干扰*******************************/
 	for( i = 0; i < AVER_NUM_GLASS; i++ )
 	{
@@ -241,7 +269,7 @@ void HasObstacle()
 	}
 	else if(MODE_FLAG == 0)
 	{
-//		printf("频率 = %d , flag_volume = %d\r\n",distanceRate,flag_volume);
+		printf("频率 = %d , flag_volume = %d\r\n",distanceRate,flag_volume);
 		PlayRate(distanceRate);                    //调用频率模式
 	}
 	else if(MODE_FLAG == 2)
