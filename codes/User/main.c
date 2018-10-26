@@ -34,6 +34,18 @@ extern int time;
 //key4.min_mode=0;
 //key4.min_rank=0;
 
+void delaymain()
+{
+	int i = 1000, j;
+	while( i-- )
+	{
+		j = 1000;
+		while(j-- )
+			;
+	}
+}
+
+
 
 /**
   * @brief  初始化函数
@@ -62,7 +74,7 @@ static void PeriphInit()
 
 int main(void)
 {	
-
+	delaymain();
 	USART_Config();	     			   //初始化串口,串口1用于无线通讯、串口2用于调试、初始化串口3用于语音模块
 
 	NVIC_Configuration();				//设置串口优先级，优先级分组使用NVIC_PriorityGroup_2
@@ -75,7 +87,8 @@ int main(void)
 	printf("\n系统初始化完毕......\n");
 
 	for(;;)
-	{	
+	{
+//printf("\runing......\n");		
 		blind_falled();			
 		//盲人是否摔倒		
 //#if BREAK_EXTI_OPEN

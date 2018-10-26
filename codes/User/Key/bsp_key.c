@@ -7,7 +7,7 @@
 extern int flag_volume;  
 extern int flag_FALLING;
 extern  int MODE_FLAG;       //1 语音 0 频率
-key_four key4 = {0, {1, 1, 1}, MAX_MODE, 4, 0, 0,0};
+key_four key4 = {0, {1, 1, 1,3}, MAX_MODE, 4, 0, 0,0};
 
 static void delay(int i)
 {
@@ -204,16 +204,16 @@ void switchMode()
 */
 static void volumeUp()
 {
-	if(MAX_RANK_VOLUME <= key4.key_rank[MODE_VOLUME])
+	if(MAX_RANK_VOLUME <= key4.key_rank[SET_VOLUME])
 	{
-		printf("\t当前音量调节为等级：%d，达到最大等级不可再调大\r\n", key4.key_rank[MODE_VOLUME]);				
+		printf("\t当前音量调节为等级：%d，达到最大等级不可再调大\r\n", key4.key_rank[SET_VOLUME]);				
 			AddVolume();         //音量增加函数调用
 	}
 	else
 	{
 		AddVolume();         //音量增加函数调用
-		++key4.key_rank[MODE_VOLUME];					
-		printf("\t当前音量调节为等级：%d\r\n", key4.key_rank[MODE_VOLUME]);
+		++key4.key_rank[SET_VOLUME];					
+		printf("\t当前音量调节为等级：%d\r\n", key4.key_rank[SET_VOLUME]);
 	}	
 }	
 
@@ -224,15 +224,15 @@ static void volumeUp()
 */
 static void rateUp()
 {
-	if(MAX_RANK_FREQUENCY == key4.key_rank[MODE_FREQUENCY])
+	if(MAX_RANK_FREQUENCY == key4.key_rank[SET_FREQUENCY])
 	{
-		printf("\t当前频率调节为等级：%d，达到最大等级不可再调大\r\n", key4.key_rank[MODE_FREQUENCY]);			
+		printf("\t当前频率调节为等级：%d，达到最大等级不可再调大\r\n", key4.key_rank[SET_FREQUENCY]);			
 	}
 	else
 	{
 		AddRate();//频率增加函数调用
-		++key4.key_rank[MODE_FREQUENCY];					
-		printf("\t当前频率调节为等级：%d\r\n", key4.key_rank[MODE_FREQUENCY]);
+		++key4.key_rank[SET_FREQUENCY];					
+		printf("\t当前频率调节为等级：%d\r\n", key4.key_rank[SET_FREQUENCY]);
 	}		
 }
 
@@ -243,15 +243,15 @@ static void rateUp()
 */
 void distanceUp()
 {
-	if(MAX_RANK_DISTANCE == key4.key_rank[MODE_DISTANCE])
+	if(MAX_RANK_DISTANCE == key4.key_rank[SET_DISTANCE])
 	{			
-		printf("\t当前距离调节为等级：%d，达到最大等级不可再调大\r\n", key4.key_rank[MODE_DISTANCE]);
+		printf("\t当前距离调节为等级：%d，达到最大等级不可再调大\r\n", key4.key_rank[SET_DISTANCE]);
 	}
 	else
 	{
 		addDistance();             //距离增加函数调用
-		++key4.key_rank[MODE_DISTANCE];					
-		printf("\t当前距离调节为等级：%d\r\n", key4.key_rank[MODE_DISTANCE]);
+		++key4.key_rank[SET_DISTANCE];					
+		printf("\t当前距离调节为等级：%d\r\n", key4.key_rank[SET_DISTANCE]);
 	}	
 }
 /*
@@ -261,15 +261,15 @@ void distanceUp()
 */
 void shakeUp()
 {
-	if(MAX_RANK_SHAKE == key4.key_rank[MODE_SHAKE])
+	if(MAX_RANK_SHAKE == key4.key_rank[SET_SHAKE])
 	{			
-		printf("\t当前距离调节为等级：%d，达到最大等级不可再调大\r\n", key4.key_rank[MODE_SHAKE]);
+		printf("\t当前震动调节为等级：%d，达到最大等级不可再调大\r\n", key4.key_rank[SET_SHAKE]);
 	}
 	else
 	{
 		AddShake();             //距离增加函数调用
-		++key4.key_rank[MODE_SHAKE];					
-		printf("\t当前距离调节为等级：%d\r\n", key4.key_rank[MODE_SHAKE]);
+		++key4.key_rank[SET_SHAKE];					
+		printf("\t当前震动调节为等级：%d\r\n", key4.key_rank[SET_SHAKE]);
 	}	
 }
 
@@ -280,16 +280,16 @@ void shakeUp()
 */
 static void volumeDown()
 {
-	if(key4.min_rank == key4.key_rank[MODE_VOLUME])
+	if(key4.min_rank == key4.key_rank[SET_VOLUME])
 	{
-		printf("\t当前音量调节为等级：%d，达到最小等级不可再调小\r\n", key4.key_rank[MODE_VOLUME]);
+		printf("\t当前音量调节为等级：%d，达到最小等级不可再调小\r\n", key4.key_rank[SET_VOLUME]);
 		SubVolume();//音量减少函数调用
 	}
 	else
 	{
 		SubVolume();//音量减少函数调用
-		--key4.key_rank[MODE_VOLUME];					
-		printf("\t当前音量调节为等级：%d\r\n", key4.key_rank[MODE_VOLUME]);
+		--key4.key_rank[SET_VOLUME];					
+		printf("\t当前音量调节为等级：%d\r\n", key4.key_rank[SET_VOLUME]);
 	}				
 }
 	
@@ -300,15 +300,15 @@ static void volumeDown()
 */
 static void rateDown()
 {
-	if(key4.min_rank == key4.key_rank[MODE_FREQUENCY])
+	if(key4.min_rank == key4.key_rank[SET_FREQUENCY])
 	{
-		printf("\t当前频率调节为等级：%d，达到最小等级不可再调小\r\n", key4.key_rank[MODE_FREQUENCY]);
+		printf("\t当前频率调节为等级：%d，达到最小等级不可再调小\r\n", key4.key_rank[SET_FREQUENCY]);
 	}
 	else
 	{
 		SubRate();//频率减少函数调用
-		--key4.key_rank[MODE_FREQUENCY];					
-		printf("\t当前频率调节为等级：%d\r\n", key4.key_rank[MODE_FREQUENCY]);
+		--key4.key_rank[SET_FREQUENCY];					
+		printf("\t当前频率调节为等级：%d\r\n", key4.key_rank[SET_FREQUENCY]);
 	}	
 }	
 
@@ -319,15 +319,15 @@ static void rateDown()
 */
 static void distanceDown() 
 {
-	if(key4.min_rank == key4.key_rank[MODE_DISTANCE])
+	if(MIN_RANK == key4.key_rank[SET_DISTANCE])
 	{
-		printf("\t当前距离调节为等级：%d，达到最小等级不可再调小\r\n", key4.key_rank[MODE_DISTANCE]);			
+		printf("\t当前距离调节为等级：%d，达到最小等级不可再调小\r\n", key4.key_rank[SET_DISTANCE]);			
 	}
 	else
 	{
 		minusDistance();       //距离减少函数调用
-		--key4.key_rank[MODE_DISTANCE];					
-		printf("\t当前距离调节为等级：%d\r\n", key4.key_rank[MODE_DISTANCE]);
+		--key4.key_rank[SET_DISTANCE];					
+		printf("\t当前距离调节为等级：%d\r\n", key4.key_rank[SET_DISTANCE]);
 	}
 }
 
@@ -338,15 +338,15 @@ static void distanceDown()
 */
 static void shakeDown()
 {
-	if(key4.min_rank == key4.key_rank[MODE_SHAKE])
+	if(key4.min_rank == key4.key_rank[SET_SHAKE])
 	{
-		printf("\t当前频率调节为等级：%d，达到最小等级不可再调小\r\n", key4.key_rank[MODE_SHAKE]);
+		printf("\t当前频率调节为等级：%d，达到最小等级不可再调小\r\n", key4.key_rank[SET_SHAKE]);
 	}
 	else
 	{
 		SubShake();//震动减少函数调用
-		--key4.key_rank[MODE_SHAKE];					
-		printf("\t当前频率调节为等级：%d\r\n", key4.key_rank[MODE_SHAKE]);
+		--key4.key_rank[SET_SHAKE];					
+		printf("\t当前频率调节为等级：%d\r\n", key4.key_rank[SET_SHAKE]);
 	}	
 }	
 

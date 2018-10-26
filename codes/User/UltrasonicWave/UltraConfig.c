@@ -1,7 +1,7 @@
 
 #include "UltraConfig.h"
 #include "Kalman.h"
-
+#include "Fliter.h"
 // 定时器输入捕获用户自定义变量结构体定义
 TIM_ICUserValueTypeDef TIM_ICUserValueStructure[AVER_NUM_GLASS];
 // 中断优先级配置
@@ -159,6 +159,7 @@ void UltrasonicWave_Config(void)
  */
 void UltrasonicWave_Init(void)
 {
+	Init_Smooth_n(AVER_NUM_ALL,0,LATE_NUM);
 	Init_Kalman();
 	UltrasonicWave_Config();
 	GENERAL_TIM_Init();

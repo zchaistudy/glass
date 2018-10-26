@@ -50,8 +50,10 @@
 //参数最大值
 #define MAX_RANK_VOLUME       15     //最大音量等级
 #define MAX_RANK_FREQUENCY    3      //最大频率等级
-#define MAX_RANK_DISTANCE     3      //最大距离等级
-#define MAX_RANK_SHAKE        2      //最大距离等级
+#define MAX_RANK_DISTANCE     6      //最大距离等级
+#define MAX_RANK_SHAKE        3      //最大震动等级
+
+#define MIN_RANK        1      //最大距离等级
 
 typedef struct key{
 	int current_mode;//当前模式

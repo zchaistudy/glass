@@ -269,7 +269,7 @@ void PlayRate(int degree)
 void PlayDirection(char direction)
 {
 		flag_volume=0;
-		printf("内  收到的方位为：%c\r\n",direction);
+//		printf("内  收到的方位为：%c\r\n",direction);
 		switch(direction)
 		{
 				case InEast:
