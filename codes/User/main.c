@@ -23,8 +23,8 @@
 #include "debug.h"
 #include "bsp_mpu6050.h"
 #include "mpu6050.h"
+#include "key.h"
 
-extern key_four key4;
 extern int time;
 
 //key4.current_mode=0;	//按键结构初始化

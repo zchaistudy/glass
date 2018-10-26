@@ -395,6 +395,42 @@ void  TIM6_IRQHandler (void)
 	}		 	
 }
 
+
+void KEY1_IRQHandler(void)          //确定按键，有种情况
+{
+  //确保是否产生了EXTI Line中断
+	if(EXTI_GetITStatus(KEY1_INT_EXTI_LINE) != RESET) 
+	{
+//		EXTI_n(KEY1);
+		delay_key(10);		
+		if(GPIO_ReadInputDataBit(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == KEY_DOWN )  //消抖
+		{
+			if(0 == flag_FALLING)
+			{
+					USART_SendData(USART1, '!');		//发送一般求助信息
+					while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
+						continue;		
+					flag_volume=0;
+					USART3_Send_String(Alarm,sizeof(Alarm));
+					printf("\t 播放：求救信息已发出r\n");
+			}
+			else
+			{
+					flag_FALLING=0;	//盲人安全
+					flag_volume=0;
+					USART3_Send_String(QuitAlarm,sizeof(QuitAlarm));
+					printf("\t 已退出自动报警模式，请注意安全r\n");
+			}
+
+		//清除中断标志位
+			delay_key(iCOUNT);			
+		}			
+//		EXTI_n_Open(KEY1);
+		EXTI_ClearITPendingBit(KEY1_INT_EXTI_LINE); 
+	}  
+}
+
+
 /**
   * @brief  This function handles PPP interrupt request.
   * @param  None
