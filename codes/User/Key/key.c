@@ -41,8 +41,30 @@ static uint8_t Key_Scan_down(GPIO_TypeDef* GPIOx,uint16_t GPIO_Pin)
 	}
 }
 
+/*
+* @brief 初始化按键逻辑参数
+* @param  no
+* @return no
+*/
+void Init_key(int mode, int volume, int frequency, int shake, int distance)
+{
+	KeyConfig.current_mode = mode;
+	KeyConfig.set_parameter = volume;
+	KeyConfig.set_frequency = frequency;
+	KeyConfig.set_shake = shake;
+	KeyConfig.set_distance = distance;
+}
 
-
+/*
+* @brief 初始化按键逻辑参数
+* @param  no
+* @return no
+*/
+void Key_Config()
+{
+	Key_GPIO_Config();    //初始化按键硬件
+	Init_key(MODE_VOLUME, 1,1,1,3);
+}
 /*
 * @brief 参数设置,选择指定参数进行调节
 * @param  no

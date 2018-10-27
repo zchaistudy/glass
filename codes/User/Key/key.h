@@ -37,8 +37,7 @@ struct key{
 #define MIN_RANK_DISTANCE     1      //最小距离等级
 #define MIN_RANK_SHAKE        1      //最小震动等级
 
-
-
+void Key_Config(void);
 void KeyPolling(void);
 
 
