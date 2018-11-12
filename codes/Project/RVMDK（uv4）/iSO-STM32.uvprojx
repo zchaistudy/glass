@@ -704,6 +704,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\User\Key\bsp_key.c</FilePath>
             </File>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\Key\key.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

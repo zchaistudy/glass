@@ -23,8 +23,8 @@
 #include "debug.h"
 #include "bsp_mpu6050.h"
 #include "mpu6050.h"
+#include "key.h"
 
-extern key_four key4;
 extern int time;
 
 //key4.current_mode=0;	//按键结构初始化
@@ -68,7 +68,6 @@ static void PeriphInit()
 	EXTI_Key_Config();	//中断
 #else
 	EXTI_Key_Config();
-	Key_GPIO_Config();	//轮询
 #endif
 }
 
@@ -76,14 +75,13 @@ int main(void)
 {	
 	delaymain();
 	USART_Config();	     			   //初始化串口,串口1用于无线通讯、串口2用于调试、初始化串口3用于语音模块
-
 	NVIC_Configuration();				//设置串口优先级，优先级分组使用NVIC_PriorityGroup_2
-
-  UltrasonicWave_Init();          //初始化测距
+    Key_Config();                       //初始化按键
+	UltrasonicWave_Init();          //初始化测距
 	
 	TIM6_Config();
 	
-	PeriphInit();              	//报警模块以及按钮的初始化
+	PeriphInit();              	//报警模块初始化
 	printf("\n系统初始化完毕......\n");
 
 	for(;;)

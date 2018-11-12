@@ -21,11 +21,10 @@
 
 
 #define TASK_ENABLE 0
+extern int flag_volume;
 extern unsigned int Task_Delay[NumOfTask];
-extern int flag_FALLING;	//盲人摔倒标志 =1表示摔倒， =0表示正常
-extern int flag_volume; 
-
-int flag_FALLING=0;
+int flag_FALLING = 0;	//盲人摔倒标志 =1表示摔倒， =0表示正常
+ 
 
 
 /* Private typedef -----------------------------------------------------------*/
