@@ -23,7 +23,7 @@
 #ifdef DEBUG_ON_OFF 
 #undef  DEBUG_ON_OFF
 #endif
-#define DEBUG_ON_OFF 1       //1打开调试。0关闭
+#define DEBUG_ON_OFF 0      //1打开调试。0关闭
 //////////////////////////////
 
 //障碍物检测次数判断，若distance>MAX_DISTACE，则obstacleNum++，obstacleNum最大值为LATE_NUM
@@ -195,7 +195,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 		*distanceVoice = OBSTACLE_FOOT;
 		*sides = OBSTACLE_RIGHT_SIDE;
 	}
-	else if( lateobstacle[5] == LATE_NUM || lateobstacle[6] == LATE_NUM )
+	else if( lateobstacle[5] == LATE_NUM && lateobstacle[6] == LATE_NUM )
 	{
 		*distanceVoice = OBSTACLE_FOOT;
 		*sides = OBSTACLE_LEFT_SIDE;
@@ -262,7 +262,7 @@ void HasObstacle()
 	{
 		if(distanceVoice)
 		{
-//			printf("调用语音模快 flag_volume = %d \r\n",flag_volume);
+			printf("调用语音模快 flag_volume = %d \r\n",flag_volume);
 //			p_debug("\r\ndistanceVoice:%d  , %d\r\n", distanceVoice,side);
 			PlayVoice(distanceVoice,side);                  //修改语音模式	
 		}		
@@ -274,7 +274,7 @@ void HasObstacle()
 	}
 	else if(MODE_FLAG == 2)
 	{
-//		printf("震动等级：%d\r\n",distanceRate);
+		printf("震动等级：%d\r\n",distanceRate);
 		AdjustVibrationFrequencyGlasses(distanceRate);   //震动模式
 	}
 }

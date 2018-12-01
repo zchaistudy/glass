@@ -209,7 +209,7 @@ void USART1_IRQHandler(void)
 	//	printf("收到数据");   //不能使用，否则会出问题
 	//		printf("%d",ch);
 	//printf("%c",ch);                  //printf出来的都是字符
-			if(ch==DirectionFlag||ch==WalkingStickFlag)    //判断当前的接收状态
+			if(ch==DirectionFlag||ch==WalkingStickFlag)    //判断当前的接收状态，DirectionFlag表示当收到的是方位信息请求，WalkingStickFlag表示收到的是超声波数据请求
 			{
 				Status=ch;
 				memset(UltrasonicWave_Distance_Walk, 0, sizeof(UltrasonicWave_Distance_Walk));   //对UltrasonicWave_Distance_Walk[]初始化
@@ -224,11 +224,11 @@ void USART1_IRQHandler(void)
 			}
 			else if(Status==WalkingStickFlag)							//接收数据为拐杖信息
 			{
-				ReceiveFromWalk[IndexWalkingStick]=ch-'0';
+				ReceiveFromWalk[IndexWalkingStick]=ch-'0';  //串口收到的数据都是字符型，而志活的需求是三位整型数据，所以进行类型的转化。
 				IndexWalkingStick++;
 				if(IndexWalkingStick == AVER_NUM_WALK*3)    //当15个数据单位全部收集齐时，进行数据解析
 				{
-						for(i=0;i<15;)                         //直接使用for循环会出现位置错乱——逆序
+						for(i=0;i<15;)                         
 						{
 								UltrasonicWave_Distance_Walk[i/3]=ReceiveFromWalk[i]*100+ReceiveFromWalk[i+1]*10+ReceiveFromWalk[i+2];
 				//				p_debug("%d %d %d\r\n ,",ReceiveFromWalk[i],ReceiveFromWalk[i+1],ReceiveFromWalk[i+2]);
@@ -291,7 +291,7 @@ void TIM2_IRQHandler(void)
 /************************/		
 			GetWalkingStickRequire();//$$$$$$$$$$向拐杖发送测距请求
 				MEASURE_FLAG = 0;	 
-				time_wait=0;		               //time_wait是个全局变量，用来计时，当开始等待拐杖数据时置0
+				time_wait=0;		            //time_wait是个全局变量，用来计时，当开始等待拐杖数据时置0
 			}
 		}
 		else if( GET_WALK_FLAG )       //如果接收到拐杖数据则进行提示，否则继续等待，超过3秒重新发送
