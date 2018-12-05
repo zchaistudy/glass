@@ -21,10 +21,11 @@
 
 
 #define TASK_ENABLE 0
-extern int flag_volume;
 extern unsigned int Task_Delay[NumOfTask];
-int flag_FALLING = 0;	//盲人摔倒标志 =1表示摔倒， =0表示正常
- 
+extern int flag_FALLING;	//盲人摔倒标志 =1表示摔倒， =0表示正常
+extern int flag_volume; 
+
+int flag_FALLING=0;
 
 
 /* Private typedef -----------------------------------------------------------*/
@@ -1279,9 +1280,9 @@ void MPU6050_ReturnTemp(float *Temperature)
   * @param  无  
   * @retval 无
   */
-void blind_falled()
+void blind_falled(void)
 {
-	static float pitch,Level_Accel = 0;  								//用于存储上一次的姿态角与加速度
+	static float pitch,Level_Accel = 0;  								//数据换缓冲区，用于存储上一次的姿态角与加速度
 	float Angle[4],Accel[3];														//用于存储当前的姿态角与加速度
 	int i;
 	MPU6050ReadAcc(Accel);	                            //获取加速度信息
@@ -1289,29 +1290,34 @@ void blind_falled()
 	
 	if(Level_Accel == 0)                                //第一次编译
 	{
-		Level_Accel = sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] );
-			 pitch    = Angle[0];	
+		Level_Accel = sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] );  //水平加速度
+			 pitch    = Angle[0];	                                           //仰俯角
 			return;
 	}
-
+//此处的判断是通过实验数据的一般规律而总结出来的，缺乏科学性，在之后的优化中应该进行改善
+//此处是通过水平加速度以及仰俯角的变化来判断是否发生摔倒的
 	if(fabs(Level_Accel-sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] ))>1.0&& fabs(pitch - Angle[0])>1.0)   //判断是否出现摔倒
 	{
-		flag_FALLING = 1;
-		printf("盲人aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa摔倒\r\n");		
-		for(i=15;i>0;i--)   //延时10秒
+		flag_FALLING = 1;                    //设置盲人摔倒标志          
+		printf("盲人摔倒\r\n");		
+		for(i=15;i>0;i--)   //延时
 			{
 				mdelay(1000);	
 				USART3_Send_String(AutoAlarm,sizeof(AutoAlarm));
 				printf("播放：是否需要发送求救信息,i == %d\r\n",i);
-				if(flag_FALLING == 0)
-				{
+				if(flag_FALLING == 0)            //说明此时盲人按下了眼睛上的报警按钮，取消了报警
+				{                                //此时需要将产生目前时刻的加速度倾斜角信息存放入缓冲区中，避免在摔倒过程后检测中二次摔倒导致立马发生第二次报警。
 						MPU6050ReadAcc(Accel);	                            //获取加速度信息
 						getEulerAngles(Angle);															//获取角度信息
 						Level_Accel = sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] );
 						pitch=Angle[0];
 						return ;
 				}			
-			}	
+			}
+			MPU6050ReadAcc(Accel);	                            //获取加速度信息
+			getEulerAngles(Angle);															//获取角度信息
+			Level_Accel = sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] );
+			pitch=Angle[0];			
 			SendHelp();
 	}
 //		printf("fabs(Level_Accel-sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] ))的差 = %f\r\n",fabs(Level_Accel-sqrt ( Accel[0] * Accel[0] + Accel[1] * Accel[1] )));

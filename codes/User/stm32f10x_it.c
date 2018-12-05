@@ -209,7 +209,7 @@ void USART1_IRQHandler(void)
 	//	printf("收到数据");   //不能使用，否则会出问题
 	//		printf("%d",ch);
 	//printf("%c",ch);                  //printf出来的都是字符
-			if(ch==DirectionFlag||ch==WalkingStickFlag)    //判断当前的接收状态
+			if(ch==DirectionFlag||ch==WalkingStickFlag)    //判断当前的接收状态，DirectionFlag表示当收到的是方位信息请求，WalkingStickFlag表示收到的是超声波数据请求
 			{
 				Status=ch;
 				memset(UltrasonicWave_Distance_Walk, 0, sizeof(UltrasonicWave_Distance_Walk));   //对UltrasonicWave_Distance_Walk[]初始化
@@ -224,11 +224,11 @@ void USART1_IRQHandler(void)
 			}
 			else if(Status==WalkingStickFlag)							//接收数据为拐杖信息
 			{
-				ReceiveFromWalk[IndexWalkingStick]=ch-'0';
+				ReceiveFromWalk[IndexWalkingStick]=ch-'0';  //串口收到的数据都是字符型，而志活的需求是三位整型数据，所以进行类型的转化。
 				IndexWalkingStick++;
 				if(IndexWalkingStick == AVER_NUM_WALK*3)    //当15个数据单位全部收集齐时，进行数据解析
 				{
-						for(i=0;i<15;)                         //直接使用for循环会出现位置错乱——逆序
+						for(i=0;i<15;)                         
 						{
 								UltrasonicWave_Distance_Walk[i/3]=ReceiveFromWalk[i]*100+ReceiveFromWalk[i+1]*10+ReceiveFromWalk[i+2];
 				//				p_debug("%d %d %d\r\n ,",ReceiveFromWalk[i],ReceiveFromWalk[i+1],ReceiveFromWalk[i+2]);
@@ -269,22 +269,30 @@ void USART3_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
 	extern int8_t  MEASURE_FLAG;   // 1 眼镜采集数据， 0 等待拐杖采集数据
+	
+	static int portNum = 0;      //选择测距通道	
 	if ( TIM_GetITStatus( TIM2, TIM_IT_Update) != RESET ) 
 	{			
 //		p_debug("tim2\r\n");
 		
 		if( MEASURE_FLAG)
 		{
-			UltrasonicWave();    //采集数据
+			UltrasonicWave(portNum);    //采集一个模块数据
+			portNum++;
+			if( portNum == AVER_NUM_GLASS +1 )   //眼睛上模块数据采集完毕
+			{
+				portNum = 0;
 /************************/				
 #ifdef ONLY_GLASS                //眼镜单独测试
 				HasObstacle();		 //判断障碍物 
+			}
 		}
 #else		                    //眼镜加拐杖		
 /************************/		
 			GetWalkingStickRequire();//$$$$$$$$$$向拐杖发送测距请求
 				MEASURE_FLAG = 0;	 
-				time_wait=0;		               //time_wait是个全局变量，用来计时，当开始等待拐杖数据时置0
+				time_wait=0;		            //time_wait是个全局变量，用来计时，当开始等待拐杖数据时置0
+			}
 		}
 		else if( GET_WALK_FLAG )       //如果接收到拐杖数据则进行提示，否则继续等待，超过3秒重新发送
 		{
@@ -386,42 +394,6 @@ void  TIM6_IRQHandler (void)
 		TIM_ClearITPendingBit(TIM6 , TIM_FLAG_Update);  		 
 	}		 	
 }
-
-
-void KEY1_IRQHandler(void)          //确定按键，有种情况
-{
-  //确保是否产生了EXTI Line中断
-	if(EXTI_GetITStatus(KEY1_INT_EXTI_LINE) != RESET) 
-	{
-//		EXTI_n(KEY1);
-		delay_key(10);		
-		if(GPIO_ReadInputDataBit(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == KEY_DOWN )  //消抖
-		{
-			if(0 == flag_FALLING)
-			{
-					USART_SendData(USART1, '!');		//发送一般求助信息
-					while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
-						continue;		
-					flag_volume=0;
-					USART3_Send_String(Alarm,sizeof(Alarm));
-					printf("\t 播放：求救信息已发出r\n");
-			}
-			else
-			{
-					flag_FALLING=0;	//盲人安全
-					flag_volume=0;
-					USART3_Send_String(QuitAlarm,sizeof(QuitAlarm));
-					printf("\t 已退出自动报警模式，请注意安全r\n");
-			}
-
-		//清除中断标志位
-			delay_key(iCOUNT);			
-		}			
-//		EXTI_n_Open(KEY1);
-		EXTI_ClearITPendingBit(KEY1_INT_EXTI_LINE); 
-	}  
-}
-
 
 /**
   * @brief  This function handles PPP interrupt request.

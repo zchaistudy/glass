@@ -23,8 +23,8 @@
 #include "debug.h"
 #include "bsp_mpu6050.h"
 #include "mpu6050.h"
-#include "key.h"
 
+extern key_four key4;
 extern int time;
 
 //key4.current_mode=0;	//按键结构初始化
@@ -68,6 +68,7 @@ static void PeriphInit()
 	EXTI_Key_Config();	//中断
 #else
 	EXTI_Key_Config();
+	Key_GPIO_Config();	//轮询
 #endif
 }
 
@@ -75,25 +76,26 @@ int main(void)
 {	
 	delaymain();
 	USART_Config();	     			   //初始化串口,串口1用于无线通讯、串口2用于调试、初始化串口3用于语音模块
-	NVIC_Configuration();				//设置串口优先级，优先级分组使用NVIC_PriorityGroup_2
-    Key_Config();                       //初始化按键
-	UltrasonicWave_Init();          //初始化测距
+
+	NVIC_Configuration();				 //设置串口优先级，优先级分组使用NVIC_PriorityGroup_2
+
+  UltrasonicWave_Init();       //初始化测距
 	
-	TIM6_Config();
+	TIM6_Config();               //用于定时，当眼镜发出获取拐杖数据请求后，会停留在等待阶段，
+	                             //如果此时发生丢包，则程序就会出项卡死状态，该定时器在眼镜发出请求后开始计时，若超时，可以进行重传。
 	
-	PeriphInit();              	//报警模块初始化
+	PeriphInit();              	//报警模块以及按钮的初始化
 	printf("\n系统初始化完毕......\n");
 
 	for(;;)
 	{
-//printf("\runing......\n");		
 		blind_falled();			
 		//盲人是否摔倒		
 //#if BREAK_EXTI_OPEN
 //#else
 		KeyPolling();
 //#endif
-
+	delaymain(1);
 	}
 }
 

@@ -23,7 +23,7 @@
 #ifdef DEBUG_ON_OFF 
 #undef  DEBUG_ON_OFF
 #endif
-#define DEBUG_ON_OFF 1       //1打开调试。0关闭
+#define DEBUG_ON_OFF 0      //1打开调试。0关闭
 //////////////////////////////
 
 //障碍物检测次数判断，若distance>MAX_DISTACE，则obstacleNum++，obstacleNum最大值为LATE_NUM
@@ -143,6 +143,10 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	*distanceRate = 0;
 	*sides = 0;
 	
+	distance_walk[4] = 500;      //最后一个超声波模块数据不用
+	
+	
+	
 //头部障碍物次数统计	
 	HAS_OBSTACLE_NUM(distance_glass[0],lateobstacle[0]);	
 	HAS_OBSTACLE_NUM(distance_glass[1],lateobstacle[1]);	
@@ -195,7 +199,7 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 		*distanceVoice = OBSTACLE_FOOT;
 		*sides = OBSTACLE_RIGHT_SIDE;
 	}
-	else if( lateobstacle[5] == LATE_NUM || lateobstacle[6] == LATE_NUM )
+	else if( lateobstacle[5] == LATE_NUM && lateobstacle[6] == LATE_NUM )
 	{
 		*distanceVoice = OBSTACLE_FOOT;
 		*sides = OBSTACLE_LEFT_SIDE;
@@ -229,6 +233,9 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 		mindistace =  mindistace > distance_walk[2]? distance_walk[2]:mindistace;
 	}	
 	mindistace =  mindistace > distance_walk[4]? distance_walk[4]:mindistace;
+	
+	p_debug("                        $$%d    %d\r\n", mindistace, distance_walk[4] );
+	
 	*distanceRate = 2 - mindistace / 100 ;
   if( *distanceRate < 0 )
 	{
@@ -262,7 +269,7 @@ void HasObstacle()
 	{
 		if(distanceVoice)
 		{
-//			printf("调用语音模快 flag_volume = %d \r\n",flag_volume);
+			printf("调用语音模快 flag_volume = %d \r\n",flag_volume);
 //			p_debug("\r\ndistanceVoice:%d  , %d\r\n", distanceVoice,side);
 			PlayVoice(distanceVoice,side);                  //修改语音模式	
 		}		
@@ -274,7 +281,7 @@ void HasObstacle()
 	}
 	else if(MODE_FLAG == 2)
 	{
-//		printf("震动等级：%d\r\n",distanceRate);
+		printf("震动等级：%d\r\n",distanceRate);
 		AdjustVibrationFrequencyGlasses(distanceRate);   //震动模式
 	}
 }
@@ -302,7 +309,7 @@ static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin)
 * 说    明：
 * 调用方法：无 
 ****************************************************************************/
-void UltrasonicWave()
+void UltrasonicWave(int portNum)
 {
     if( TIM_ICUserValueStructure[0].Capture_FinishFlag == 1 )  
 	{
