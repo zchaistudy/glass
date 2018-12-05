@@ -143,6 +143,10 @@ static void Obstacle(int distance_glass[], int distance_walk[], int* distanceVoi
 	*distanceRate = 0;
 	*sides = 0;
 	
+	distance_walk[4] = 500;      //最后一个超声波模块数据不用
+	
+	
+	
 //头部障碍物次数统计	
 	HAS_OBSTACLE_NUM(distance_glass[0],lateobstacle[0]);	
 	HAS_OBSTACLE_NUM(distance_glass[1],lateobstacle[1]);	
