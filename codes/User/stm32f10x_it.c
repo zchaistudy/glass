@@ -269,30 +269,22 @@ void USART3_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
 	extern int8_t  MEASURE_FLAG;   // 1 眼镜采集数据， 0 等待拐杖采集数据
-	
-	static int portNum = 0;      //选择测距通道	
 	if ( TIM_GetITStatus( TIM2, TIM_IT_Update) != RESET ) 
 	{			
 //		p_debug("tim2\r\n");
 		
 		if( MEASURE_FLAG)
 		{
-			UltrasonicWave(portNum);    //采集一个模块数据
-			portNum++;
-			if( portNum == AVER_NUM_GLASS +1 )   //眼睛上模块数据采集完毕
-			{
-				portNum = 0;
+			UltrasonicWave();    //采集数据
 /************************/				
 #ifdef ONLY_GLASS                //眼镜单独测试
 				HasObstacle();		 //判断障碍物 
-			}
 		}
 #else		                    //眼镜加拐杖		
 /************************/		
 			GetWalkingStickRequire();//$$$$$$$$$$向拐杖发送测距请求
 				MEASURE_FLAG = 0;	 
 				time_wait=0;		               //time_wait是个全局变量，用来计时，当开始等待拐杖数据时置0
-			}
 		}
 		else if( GET_WALK_FLAG )       //如果接收到拐杖数据则进行提示，否则继续等待，超过3秒重新发送
 		{

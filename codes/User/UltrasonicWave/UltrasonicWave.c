@@ -302,7 +302,7 @@ static void UltrasonicWave_StartMeasure(GPIO_TypeDef *  port, int32_t pin)
 * 说    明：
 * 调用方法：无 
 ****************************************************************************/
-void UltrasonicWave(int portNum)
+void UltrasonicWave()
 {
     if( TIM_ICUserValueStructure[0].Capture_FinishFlag == 1 )  
 	{

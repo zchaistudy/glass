@@ -26,7 +26,7 @@ int minusDistance(void);
 int addDistance(void);
 
 void UltrasonicWave_Configuration(void);               //对超声波模块初始化
-void UltrasonicWave(int);
+void UltrasonicWave(void);
 
 void HasObstacle(void);
 #endif /* __UltrasonicWave_H */
